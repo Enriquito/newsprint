@@ -1,16 +1,23 @@
 let Parser = require('rss-parser');
 let parser = new Parser();
+const Feed = require('./models/feed')
+const Article = require('./models/article')
 
-(async () => {
 
-    let feed = await parser.parseURL('https://blogs.windows.com/feed/');
-    delete feed.items;
+async function test(){
+  try{
+    const feed = new Feed();
+    await feed.getData('https://www.webdesignernews.com/rss');
+
+    await feed.create();
+    await feed.createArticles();
+    delete feed.articles
+    // const feed = await Article.findOne(1);
     console.log(feed);
+  }
+  catch(error){
+    console.log(error);
+  }
+}
 
-    // feed.items.forEach(item => {
-    //   console.log(item);
-    // });
-
-    // console.log(feed.items[0]);
-
-  })();
+test();
