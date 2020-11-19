@@ -34,18 +34,22 @@
 
             <div class="folder-holder">
                 <NavigationFolder name="All" :notifications="allFeeds.totalNotifications" :feeds="allFeeds.feeds" />
-                <NavigationFolder v-for="folder in data" :key="folder.id" :name="folder.name" :notifications="folder.totalNotifications" :feeds="folder.feeds" />
+                <NavigationFolder v-for="folder in d" :key="folder.id" :name="folder.name" :notifications="folder.totalNotifications" :feeds="folder.feeds" />
             </div>
         </ul>
     </nav>
 </template>
 <script>
+import axios from 'axios'
 import NavigationFolder from '@/components/NavigationFolder.vue'
 
 export default {
     name: "Navigation",
     components:{
         NavigationFolder
+    },
+    mounted(){
+        this.getData();
     },
     data(){
         return({
@@ -76,8 +80,19 @@ export default {
                                     {id: 1, name: 'IBMD', notifications: 0}
                                 ]
                     }
-                ]
+                ],
+            d: null
         });
+    },
+    methods:{
+        getData(){
+            axios.get(`${process.env.VUE_APP_API}/folders/user/1`)
+            .then(response => {
+                if(response.status === 200){
+                    this.d = response.data;
+                }
+            })
+        }
     },
     computed:{
         allFeeds(){
@@ -86,12 +101,16 @@ export default {
                 feeds: []
             };
 
-            this.data.forEach(el => {
-                obj.totalNotifications+= el.totalNotifications;
-                el.feeds.forEach(f => {
-                    obj.feeds.push(f);
+            if(this.d !== null){
+                this.d.forEach(el => {
+                    obj.totalUnread+= el.totalNotifications;
+                    el.feeds.forEach(f => {
+                        obj.feeds.push(f);
+                    });
                 });
-            });
+            }
+
+            
 
             return obj;
         }

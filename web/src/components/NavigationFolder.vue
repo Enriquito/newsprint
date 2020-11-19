@@ -9,16 +9,16 @@
             </svg>
 
             <router-link to="/">{{name}}</router-link>
-            <small>{{getNotificationCount(this.notifications)}}</small>
+            <small>{{getNotificationCount(this.unreadArticles)}}</small>
         </div>
 
 
         <ul v-if="feeds && isOpen">
             <li v-for="feed in feeds" :key="feed.id" class="d-flex align-items-center">
                 <div style="padding-left: 30px">
-                    <img src="https://rss.kreuk.dev/images/favicon.png" />
-                    <router-link to="/">{{feed.name}}</router-link>
-                    <small>{{getNotificationCount(feed.notifications)}}</small>
+                    <img :src="feed.iconUrl" />
+                    <router-link to="/">{{feed.title}}</router-link>
+                    <small>{{getNotificationCount(feed.unreadArticles)}}</small>
                 </div>
             </li>
         </ul>
