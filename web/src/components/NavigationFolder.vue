@@ -9,7 +9,7 @@
             </svg>
 
             <router-link to="/">{{name}}</router-link>
-            <small>{{getNotificationCount(this.unreadArticles)}}</small>
+            <small>{{getNotificationCount(totalNotifications)}}</small>
         </div>
 
 
@@ -29,7 +29,6 @@ export default {
     name: "NavigationFolder",
     props:{
         name: String,
-        notifications: Number,
         feeds: Array
     },
     data(){
@@ -52,6 +51,17 @@ export default {
                 return "";
             else
                 return num;
+        }
+    },
+    computed:{
+        totalNotifications(){
+            let tmp = 0;
+
+            this.feeds.forEach(feed => {
+                tmp += feed.unreadArticles;
+            });
+
+            return tmp;
         }
     }
 }

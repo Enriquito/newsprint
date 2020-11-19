@@ -32,9 +32,9 @@
                 </svg>
             </li>
 
-            <div class="folder-holder">
+            <div v-if="data" class="folder-holder">
                 <NavigationFolder name="All" :notifications="allFeeds.totalNotifications" :feeds="allFeeds.feeds" />
-                <NavigationFolder v-for="folder in d" :key="folder.id" :name="folder.name" :notifications="folder.totalNotifications" :feeds="folder.feeds" />
+                <NavigationFolder v-for="folder in data" :key="folder.id" :name="folder.name" :notifications="folder.totalUnread" :feeds="folder.feeds" />
             </div>
         </ul>
     </nav>
@@ -53,35 +53,7 @@ export default {
     },
     data(){
         return({
-            data: [
-                    {
-                        id: 1,
-                        name:"Programming",
-                        totalNotifications: 5,
-                        feeds: [
-                                    {id: 1, name: 'Vue', notifications: 0},
-                                    {id: 2, name: 'NodeJS', notifications: 5},
-                                    {id: 3, name: 'React', notifications: 0}
-                                ]
-                    },
-                    {
-                        id: 1,
-                        name:"News",
-                        totalNotifications: 10,
-                        feeds: [
-                                    {id: 1, name: 'NOS', notifications: 10}
-                                ]
-                    },
-                    {
-                        id: 1,
-                        name:"Movies",
-                        totalNotifications: 0,
-                        feeds: [
-                                    {id: 1, name: 'IBMD', notifications: 0}
-                                ]
-                    }
-                ],
-            d: null
+            data: null
         });
     },
     methods:{
@@ -89,7 +61,7 @@ export default {
             axios.get(`${process.env.VUE_APP_API}/folders/user/1`)
             .then(response => {
                 if(response.status === 200){
-                    this.d = response.data;
+                    this.data = response.data;
                 }
             })
         }
@@ -101,16 +73,17 @@ export default {
                 feeds: []
             };
 
-            if(this.d !== null){
-                this.d.forEach(el => {
-                    obj.totalUnread+= el.totalNotifications;
+            if(this.data !== null){
+                this.data.forEach(el => {
+                    obj.totalNotifications += el.totalUnread;
+
                     el.feeds.forEach(f => {
                         obj.feeds.push(f);
                     });
                 });
             }
 
-            
+
 
             return obj;
         }
