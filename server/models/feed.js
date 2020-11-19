@@ -65,7 +65,7 @@ class Feed{
                         lastBuildDate: this.lastBuildDate
                   };
       
-                  database.query('INSERT feeds SET ?', [toInsert], (error, result) => {
+                  database.query('INSERT INTO feeds SET ?', [toInsert], (error, result) => {
                         if(error)
                             reject(error);
                         

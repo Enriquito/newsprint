@@ -23,7 +23,7 @@ class Article{
                         isoDate: this.isoDate
                   };
       
-                  database.query('INSERT articles SET ?', [toInsert], (error, result) => {
+                  database.query('INSERT INTO articles SET ?', [toInsert], (error, result) => {
                         if(error)
                             reject(error);
                         
@@ -50,7 +50,7 @@ class Article{
                         });
                   })
 
-                  database.query('INSERT article_categories SET ?', toInsert, (error, result) => {
+                  database.query('INSERT INTO article_categories SET ?', toInsert, (error, result) => {
                         if(error)
                               reject(error);
             
