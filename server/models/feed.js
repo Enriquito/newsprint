@@ -44,8 +44,6 @@ class Feed{
                         feed.lastBuildDate = f.last_build_date;
                         feed.lastScanDate = f.last_scan_date;
 
-                        feed.checkUnReadArticles();
-
                         resolve(feed);
                   });
             });
@@ -55,7 +53,46 @@ class Feed{
             this.articles.forEach(article => {
                   if(!article.isRead){
                         this.unreadArticles++;
+                        console.log(this.unreadArticles);
                   }
+            });
+      }
+
+      getArticles(){
+            return new Promise( async (resolve, reject) => {
+                  database.query('SELECT * FROM articles WHERE feed = ?', [this.id], (error, result) => {
+                        if(error){
+                              console.log(error);
+                              reject(error);
+                              return;
+                        }
+
+                        if(result.length === 0){
+                              resolve(null);
+                              return;
+                        }
+
+                        result.forEach(a => {
+                              const article = new Article();
+
+                              article.id = a.id;
+                              article.creator = a.creator;
+                              article.title = a.title;
+                              article.pubDate = a.pub_date;
+                              article.content = a.content;
+                              article.contentSnippet = a.content_snippet;
+                              article.isoDate = a.iso_date
+                              
+                              if(a.is_read == 1)
+                                    article.isRead = true;
+                              else
+                                    article.isRead = false;
+
+                              this.articles.push(article);
+                        });
+                  });
+
+                  resolve();
             });
       }
 

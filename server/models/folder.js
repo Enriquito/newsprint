@@ -69,10 +69,14 @@ class Folder{
 
                               try{
                                     await folder.getFeeds();
-                                    
-                                    folder.feeds.forEach(feed => {
+
+                                    for(let i = 0; i < folder.feeds.length; i++){
+                                          const feed = folder.feeds[i];
+
+                                          await feed.getArticles();
+                                          feed.checkUnReadArticles();
                                           this.totalUnread+= feed.unreadArticles;
-                                    });
+                                    }
                               }
                               catch(error){
                                     console.log(error);
@@ -110,13 +114,7 @@ class Folder{
       getFeeds(){
             return new Promise( async (resolve, reject) => {
                   const q = `
-                        SELECT fe.id 
-                        FROM feed_folder_assignments ffa 
-                        JOIN feeds fe 
-                        ON fe.id = ffa.feed 
-                        JOIN folders fo 
-                        ON fo.id = fe.id
-                        WHERE fo.id = ?
+                        SELECT feed as 'id' FROM feed_folder_assignments WHERE folder = ?
                   `;
 
                   database.query(q,[this.id], async (error, result) => {
@@ -136,6 +134,7 @@ class Folder{
 
                               try{
                                     feed = await Feed.findOne(id);
+                                    await feed.getArticles();
 
                                     this.feeds.push(feed);
                               }
