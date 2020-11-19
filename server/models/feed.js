@@ -1,16 +1,62 @@
-const Article = require('./articles');
+const Article = require('./article');
 const database = require('../database');
 
 class Feed{
       constructor(){
             this.id;
+            this.user = 1;
+            this.displayname = "test";
+            this.iconUrl;
             this.title;
             this.description;
             this.feedUrl;
             this.link;
             this.language;
             this.lastBuildDate; // Or pubDate
+            this.lastScanDate;
+            this.unreadArticles = 0;
             this.articles = [];
+      }
+
+      static findOne(id){
+            return new Promise( async (resolve, reject) => {
+                  database.query('SELECT * FROM feeds WHERE id = ?', [id], (error, result) => {
+                        if(error){
+                              console.log(error);
+                              reject(error);
+                              return;
+                        }
+
+                        if(result.length === 0){
+                              resolve(null);
+                              return;
+                        }
+
+                        const f = result[0];
+                        const feed = new Feed();
+
+                        feed.title = f.title;
+                        feed.description = f.description;
+                        feed.iconUrl = f.icon_url;
+                        feed.feedUrl = f.feed_url;
+                        feed.link = f.link;
+                        feed.language = f.language;
+                        feed.lastBuildDate = f.last_build_date;
+                        feed.lastScanDate = f.last_scan_date;
+
+                        feed.checkUnReadArticles();
+
+                        resolve(feed);
+                  });
+            });
+      }
+
+      checkUnReadArticles(){
+            this.articles.forEach(article => {
+                  if(!article.isRead){
+                        this.unreadArticles++;
+                  }
+            });
       }
 
       getData(url){
@@ -22,10 +68,12 @@ class Feed{
 
                   try{
                         f = await parser.parseURL(url);
+                        const temp = f.link.match(/( |https:\/\/|http:\/\/)([A-Za-z0-9]{1,}\.[A-Za-z0-9]{1,10}\.?[A-Za-z]{1,}\.?[A-Za-z]{1,})(?: |\/|$)/);
                         
                         this.title = f.title;
                         this.description = f.description;
-                        this.feedUrl = f.feedUrl;
+                        this.iconUrl = `${temp[1]+temp[2]}/favicon.ico`;
+                        this.feedUrl = f.feedUrl || url;
                         this.link = f.link;
                         this.language = f.language;
                         this.lastBuildDate = f.lastBuildDate;
@@ -56,23 +104,56 @@ class Feed{
 
       create(){
             return new Promise((resolve,reject) => {
+
                   const toInsert = {
+                        user: this.user,
                         title: this.title,
                         description: this.description,
-                        feedUrl: this.feedUrl,
+                        icon_url: this.iconUrl,
+                        feed_url: this.feedUrl,
                         link: this.link,
                         language: this.language,
-                        lastBuildDate: this.lastBuildDate
+                        last_build_date: this.lastBuildDate
                   };
       
                   database.query('INSERT INTO feeds SET ?', [toInsert], (error, result) => {
-                        if(error)
-                            reject(error);
+                        if(error){
+                              console.log(error);
+                              reject(error);
+                              return;
+                        }
                         
                         this.id = result.insertId
             
                         resolve(this);
                   });
+            });
+      }
+
+      createArticles(){
+            return new Promise(async (resolve,reject) => {
+                  const failedInserts = [];
+
+                  for(let i = 0; i < this.articles.length; i++){
+                        let article = this.articles[i];
+                        article.feedId = this.id;
+
+                        try{
+                              const a = await article.create();
+                              this.articles[i].id = a.id;
+
+                              await article.createCategories();
+                        }
+                        catch(error){    
+                              console.log(error);
+                              failedInserts.push(article);
+                        }
+                  }
+
+                  // console.log('Failed inserts:');
+                  // console.log(failedInserts);
+
+                  resolve();
             });
       }
 }
