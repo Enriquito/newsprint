@@ -35,6 +35,7 @@ class Feed{
                         const f = result[0];
                         const feed = new Feed();
 
+                        feed.id = f.id;
                         feed.title = f.title;
                         feed.description = f.description;
                         feed.iconUrl = f.icon_url;
@@ -46,15 +47,6 @@ class Feed{
 
                         resolve(feed);
                   });
-            });
-      }
-
-      checkUnReadArticles(){
-            this.articles.forEach(article => {
-                  if(!article.isRead){
-                        this.unreadArticles++;
-                        console.log(this.unreadArticles);
-                  }
             });
       }
 
@@ -82,17 +74,20 @@ class Feed{
                               article.content = a.content;
                               article.contentSnippet = a.content_snippet;
                               article.isoDate = a.iso_date
-                              
-                              if(a.is_read == 1)
+
+                              if(a.is_read == 1){
                                     article.isRead = true;
-                              else
+                              }
+                              else{
+                                    this.unreadArticles++;
                                     article.isRead = false;
+                              }
 
                               this.articles.push(article);
                         });
-                  });
 
-                  resolve();
+                        resolve();
+                  });
             });
       }
 
@@ -101,12 +96,12 @@ class Feed{
                   let Parser = require('rss-parser');
                   let parser = new Parser();
                   let f = null;
-                  
+
 
                   try{
                         f = await parser.parseURL(url);
                         const temp = f.link.match(/( |https:\/\/|http:\/\/)([A-Za-z0-9]{1,}\.[A-Za-z0-9]{1,10}\.?[A-Za-z]{1,}\.?[A-Za-z]{1,})(?: |\/|$)/);
-                        
+
                         this.title = f.title;
                         this.description = f.description;
                         this.iconUrl = `${temp[1]+temp[2]}/favicon.ico`;
@@ -152,16 +147,16 @@ class Feed{
                         language: this.language,
                         last_build_date: this.lastBuildDate
                   };
-      
+
                   database.query('INSERT INTO feeds SET ?', [toInsert], (error, result) => {
                         if(error){
                               console.log(error);
                               reject(error);
                               return;
                         }
-                        
+
                         this.id = result.insertId
-            
+
                         resolve(this);
                   });
             });
@@ -181,7 +176,7 @@ class Feed{
 
                               await article.createCategories();
                         }
-                        catch(error){    
+                        catch(error){
                               console.log(error);
                               failedInserts.push(article);
                         }

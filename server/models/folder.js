@@ -31,7 +31,7 @@ class Folder{
                         folder.name = f.name;
                         folder.user = f.user;
                         folder.showOrder = f.show_order;
-                        
+
                         resolve(folder);
                   });
             });
@@ -71,11 +71,7 @@ class Folder{
                                     await folder.getFeeds();
 
                                     for(let i = 0; i < folder.feeds.length; i++){
-                                          const feed = folder.feeds[i];
-
-                                          await feed.getArticles();
-                                          feed.checkUnReadArticles();
-                                          this.totalUnread+= feed.unreadArticles;
+                                          folder.totalUnread += folder.feeds[i].unreadArticles;
                                     }
                               }
                               catch(error){
@@ -84,7 +80,7 @@ class Folder{
 
                               folders.push(folder);
                         }
-                        
+
                         resolve(folders);
                   });
             });
@@ -97,15 +93,15 @@ class Folder{
                         name: this.name,
                         show_order: 0,
                   };
-      
+
                   database.query('INSERT INTO folders SET ?', [toInsert], (error, result) => {
                         if(error){
                               console.log(error);
                               reject(error);
                         }
-                        
+
                         this.id = result.insertId
-            
+
                         resolve(this);
                   });
             });
@@ -113,11 +109,7 @@ class Folder{
 
       getFeeds(){
             return new Promise( async (resolve, reject) => {
-                  const q = `
-                        SELECT feed as 'id' FROM feed_folder_assignments WHERE folder = ?
-                  `;
-
-                  database.query(q,[this.id], async (error, result) => {
+                  database.query("SELECT feed as 'id' FROM feed_folder_assignments WHERE folder = ?",[this.id], async (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -143,7 +135,7 @@ class Folder{
                                     reject(error);
                               }
                         }
-                        
+
                         resolve();
                   });
             });
