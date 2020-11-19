@@ -158,5 +158,10 @@ nav ul.feeds li span
 .folder-holder
 {
     overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.folder-holder::-webkit-scrollbar {
+  display: none;
 }
 </style>
