@@ -15,7 +15,7 @@
 
         <ul v-if="feeds && isOpen">
             <li v-for="feed in feeds" :key="feed.id" class="d-flex align-items-center">
-                <div style="padding-left: 30px">
+                <div class="d-flex align-content-center" style="padding-left: 20px">
                     <img :src="feed.iconUrl" />
                     <router-link to="/">{{feed.title}}</router-link>
                     <small>{{getNotificationCount(feed.unreadArticles)}}</small>
@@ -78,6 +78,7 @@ export default {
     {
         position: absolute;
         right: 10px;
+        top: 7px;
     }
     nav ul li a
     {
@@ -89,7 +90,8 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 240px;
+        max-width: 190px;
+        display: inline-block;
     }
     nav ul li ul li a
     {
@@ -99,6 +101,8 @@ export default {
     nav ul li ul li img
     {
         width: 20px;
+        height: 20px;
+        margin-top: 7px;
     }
     .open
     {
