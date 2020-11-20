@@ -20,7 +20,7 @@ class Feed{
 
       static findOne(id){
             return new Promise( async (resolve, reject) => {
-                  database.query('SELECT * FROM feeds WHERE id = ?', [id], (error, result) => {
+                  database.query('SELECT * FROM feeds WHERE id = ?', [id], async (error, result) => {
                         if(error){
                               console.log(error);
                               reject(error);
@@ -45,9 +45,37 @@ class Feed{
                         feed.lastBuildDate = f.last_build_date;
                         feed.lastScanDate = f.last_scan_date;
 
+                        try{
+                              await feed.getUnreadArticles();
+                        }
+                        catch(error){
+                              console.log(error);
+                              reject(error);
+                        }
+
                         resolve(feed);
                   });
             });
+      }
+
+      getUnreadArticles(){
+            return new Promise( async (resolve, reject) => {
+                  database.query(`SELECT COUNT(*) as 'unreadArticles' FROM articles WHERE feed = ? AND is_read = 0`, [this.id], (error, result) => {
+                        if(error){
+                              console.log(error);
+                              reject(error);
+                              return;
+                        }
+
+                        if(result.length === 0){
+                              resolve(null);
+                              return;
+                        }
+
+                        this.unreadArticles = result[0].unreadArticles;
+                        resolve();
+                  });
+            })
       }
 
       getArticles(){
