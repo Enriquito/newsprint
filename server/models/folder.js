@@ -126,7 +126,8 @@ class Folder{
 
                               try{
                                     feed = await Feed.findOne(id);
-                                    await feed.getArticles();
+                                    await feed.getUnreadArticles();
+                                    // await feed.getArticles();
 
                                     this.feeds.push(feed);
                               }
