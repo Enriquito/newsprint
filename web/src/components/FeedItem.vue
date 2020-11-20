@@ -1,13 +1,12 @@
 <template>
-    <figure @click="open" class="d-flex">
-      <img :src="searchImage()" alt="plaatje" />
-      <figcaption>
-        <h2>{{data.title}}</h2>
-        <span class="date-time">November 18, 20:10</span><span v-if="data.creator" class="spacer">by</span><strong v-if="data.creator" class="author">Enrique Kreuk</strong>
-        <div v-if="isOpen" style="max-height:1500px;" id="article-content" v-html="content"></div>
-        <div v-else id="article-content" v-html="content"></div>
-      </figcaption>
-    </figure>
+  <article @click="open">
+    <h2 v-if="!isOpen">{{data.title}}</h2>
+    <a v-else :href="data.link" target="_blank"><h2>{{data.title}}</h2></a>
+
+    <span class="date-time">November 18, 20:10</span><span v-if="data.creator" class="spacer">by</span><strong v-if="data.creator" class="author">{{data.creator}}</strong>
+    <div v-if="isOpen" style="max-height:1500px;" id="article-content" v-html="content"></div>
+    <div v-else id="article-content" v-html="content"></div>
+  </article>
 </template>
 <script>
 export default {
@@ -48,7 +47,7 @@ export default {
 }
 </script>
 <style scoped>
-figure
+article
 {
   width: 1024px;
   margin: 0;
@@ -56,38 +55,33 @@ figure
   margin-top: 30px;
   cursor: pointer;
 }
-figure img
+article a h2
 {
-  width: 250px;
-  height: 180px;
-  border-radius: 10px;
+  color: #707070 !important;
+  text-decoration: underline;
 }
-figure figcaption #article-content
+article #article-content
 {
   max-height: 120px;
   overflow: hidden;
   transition: max-height 0.5s;
 }
-figure figcaption
-{
-  padding: 0 20px;
-}
-figure figcaption p
+article p
 {
   font-weight: 100;
   font-size: 18px;
 }
-figure figcaption h2
+article h2
 {
   margin-bottom: -5px;
   font-weight: 700;
 }
-figure figcaption .date-time
+article .date-time
 {
   font-weight: 100;
   font-size: 13px;
 }
-figure figcaption .spacer
+article .spacer
 {
   font-size: 12px;
   font-weight: 100;
@@ -100,6 +94,7 @@ figure figcaption .spacer
 {
   width: 100%;
   border-radius: 10px;
+  margin: 15px 0;
 }
 #article-content * > a
 {
