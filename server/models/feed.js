@@ -108,7 +108,6 @@ class Feed{
                                     article.isRead = true;
                               }
                               else{
-                                    this.unreadArticles++;
                                     article.isRead = false;
                               }
 
