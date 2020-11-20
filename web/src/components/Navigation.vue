@@ -58,16 +58,6 @@ export default {
     props:{
         data: Array
     },
-    methods:{
-        // getData(){
-        //     axios.get(`${process.env.VUE_APP_API}/folders/user/1`)
-        //     .then(response => {
-        //         if(response.status === 200){
-        //             this.data = response.data;
-        //         }
-        //     })
-        // }
-    },
     computed:{
         allFeeds(){
             const obj = {
@@ -100,6 +90,7 @@ nav
     margin: 0;
     background: #F6F7F8;
     position: fixed;
+    box-shadow: 1px 0px 9px -7px #000;
 }
 nav ul
 {
