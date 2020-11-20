@@ -70,6 +70,7 @@ class Feed{
                               article.id = a.id;
                               article.creator = a.creator;
                               article.title = a.title;
+                              article.link = a.link;
                               article.pubDate = a.pub_date;
                               article.content = a.content;
                               article.contentSnippet = a.content_snippet;
