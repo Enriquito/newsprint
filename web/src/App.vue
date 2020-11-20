@@ -1,14 +1,34 @@
 <template>
   <div class="d-flex" id="app">
-    <Navigation />
+    <Navigation :data="data" />
     <router-view/>
   </div>
 </template>
 
 <script>
 import Navigation from '@/components/Navigation.vue';
+import axios from 'axios'
 
 export default {
+  mounted(){
+    this.getData();
+  },
+  data(){
+    return({
+      data: null
+    });
+  },
+  methods:{
+    getData(){
+        axios.get(`${process.env.VUE_APP_API}/folders/user/1`)
+        .then(response => {
+            if(response.status === 200){
+                this.$store.commit('setFolders', response.data);
+                this.data = response.data;
+            }
+        });
+    }
+  },
   components:{
     Navigation
   }

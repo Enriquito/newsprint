@@ -3,9 +3,18 @@
     <h1>{{folderName}}</h1>
     <div style="padding-bottom: 50px">
       <span>New today</span>
-      <FeedItem v-for="index in 3" :key="index" />
+      <!-- <div v-if="feeds">
+        <div v-for="feed in feeds" :key="feed.id">
+          <FeedItem v-for="article in feed.articles" :key="article.id" />
+        </div>
+      </div> -->
+
       <span style="margin-top:60px; display:block;">Older articles</span>
-      <FeedItem v-for="index in 10" :key="index" />
+      <div v-if="feeds">
+        <div v-for="feed in feeds" :key="feed.id">
+          <FeedItem v-for="article in feed.articles" :key="article.id" :data="article"/>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -15,9 +24,48 @@ import FeedItem from '@/components/FeedItem.vue';
 
 export default {
   name: 'FolderFeed',
-
   components: {
     FeedItem
+  },
+  mounted(){
+    this.getData();
+  },
+  data(){
+    return({
+      folders: null,
+      feeds: []
+    });
+  },
+  methods:{
+    getData(){
+      const inter = setInterval(() => {
+        if(this.folders){
+          clearInterval(inter);
+          this.getCurrentFolder();
+        }
+
+        this.folders = this.$store.state.folders;
+      }, 500);
+    },
+    getCurrentFolder(){
+      this.folders.forEach(folder => {
+        if(this.folderName === 'All'){
+          this.folders.forEach(folder => {
+            this.feeds.push(folder.feeds);
+          });
+        }
+        else if(folder.name === this.folderName){
+          this.feeds = folder.feeds;
+          return;
+        }
+      });
+    }
+  },
+  watch:{
+    folderName(newVal, oldVal){
+      this.getCurrentFolder();
+      console.log(`${newVal} ${oldVal}`);
+    }
   },
   computed:{
     folderName(){

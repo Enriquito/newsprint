@@ -9,6 +9,11 @@ const routes = [
     path: '/folder/:folder',
     name: 'FolderFeed',
     component: FolderFeed
+  },
+  {
+    path: '/folder/:folder',
+    name: 'FolderView',
+    component: FolderFeed
   }
 ]
 

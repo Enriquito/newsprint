@@ -7,6 +7,9 @@ export default new Vuex.Store({
   state: {
   },
   mutations: {
+    setFolders(state, folder) {
+      state.folders = folder;
+    }
   },
   actions: {
   },

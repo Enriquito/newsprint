@@ -40,7 +40,6 @@
     </nav>
 </template>
 <script>
-import axios from 'axios'
 import NavigationFolder from '@/components/NavigationFolder.vue'
 
 export default {
@@ -49,22 +48,25 @@ export default {
         NavigationFolder
     },
     mounted(){
-        this.getData();
+        // this.getData();
     },
     data(){
         return({
-            data: null
+
         });
     },
+    props:{
+        data: Array
+    },
     methods:{
-        getData(){
-            axios.get(`${process.env.VUE_APP_API}/folders/user/1`)
-            .then(response => {
-                if(response.status === 200){
-                    this.data = response.data;
-                }
-            })
-        }
+        // getData(){
+        //     axios.get(`${process.env.VUE_APP_API}/folders/user/1`)
+        //     .then(response => {
+        //         if(response.status === 200){
+        //             this.data = response.data;
+        //         }
+        //     })
+        // }
     },
     computed:{
         allFeeds(){
