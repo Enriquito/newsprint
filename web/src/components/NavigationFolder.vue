@@ -8,7 +8,8 @@
                 <path id="ic_chevron_right_24px" d="M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z" transform="translate(-8.59 -6)"/>
             </svg>
 
-            <router-link :to="{name:'FolderView', params:{folder: name}}">{{name}}</router-link>
+            <router-link v-if="name != 'All'" :to="{name:'FolderView', params:{folder: name}}">{{name}}</router-link>
+            <router-link v-else to="/">{{name}}</router-link>
             <small>{{getNotificationCount(totalNotifications)}}</small>
         </div>
 
@@ -56,10 +57,6 @@ export default {
             let res = name;
             res = res.replaceAll('-', '');
             return res.replaceAll(' ', '');
-        },
-        setCurrentFeed(feed){
-            console.log('a');
-            this.$store.commit('setCurrentFeed', feed);
         }
     },
     computed:{
