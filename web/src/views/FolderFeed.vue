@@ -2,18 +2,13 @@
   <section>
     <h1>{{folderName}}</h1>
     <div style="padding-bottom: 50px">
-      <span>New today</span>
-      <!-- <div v-if="feeds">
-        <div v-for="feed in feeds" :key="feed.id">
-          <FeedItem v-for="article in feed.articles" :key="article.id" />
-        </div>
-      </div> -->
-
-      <span style="margin-top:60px; display:block;">Older articles</span>
       <div v-if="feeds">
         <div v-for="feed in feeds" :key="feed.id">
           <FeedItem v-for="article in feed.articles" :key="article.id" :data="article"/>
         </div>
+      </div>
+      <div v-else>
+        <h2 style="text-align: center">Loading...</h2>
       </div>
     </div>
   </section>
@@ -84,7 +79,7 @@ section
   width: 100%;
   height: 100%;
   text-align: start;
-  padding-left: 80px;
+  padding-left: 50px;
   margin-left: 350px;
 }
 section h1
