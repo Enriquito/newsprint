@@ -5,6 +5,7 @@ class Article{
             this.id;
             this.creator;
             this.title;
+            this.link;
             this.pubDate;
             this.content;
             this.contentSnippet;
@@ -29,10 +30,11 @@ class Article{
 
                         const f = result[0];
                         const article = new Article();
-                        
+
                         article.id = f.id;
                         article.creator = f.creator;
                         article.title = f.title;
+                        article.link = f.link;
                         article.pubDate = f.pub_date;
                         article.content = f.content;
                         article.contentSnippet = f.content_snippet;
@@ -42,7 +44,7 @@ class Article{
                               article.isRead = true;
                         else
                               article.isRead = false;
-                        
+
                         resolve(feed);
                   });
             });
@@ -53,21 +55,22 @@ class Article{
                   const toInsert = {
                         feed: this.feedId,
                         creator: this.creator,
+                        link: this.link,
                         title: this.title,
                         pub_date: this.pubDate,
                         content: this.content,
                         content_snippet: this.contentSnippet,
                         iso_date: this.isoDate
                   };
-      
+
                   database.query('INSERT INTO articles SET ?', [toInsert], (error, result) => {
                         if(error){
                               console.log(error);
                               reject(error);
                         }
-                        
+
                         this.id = result.insertId
-            
+
                         resolve(this);
                   });
             });
@@ -79,7 +82,7 @@ class Article{
                         resolve();
                         return;
                   }
-            
+
                   const toInsert = [];
                   this.categories.forEach(cat => {
                         toInsert.push({
@@ -93,8 +96,8 @@ class Article{
                               reject(error);
                               return;
                         }
-                              
-            
+
+
                         resolve();
                   });
             });
