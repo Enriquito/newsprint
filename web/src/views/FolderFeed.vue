@@ -4,7 +4,7 @@
     <div style="padding-bottom: 50px">
       <div v-if="feeds">
         <div v-for="feed in feeds" :key="feed.id">
-          <FeedItem v-for="article in feed.articles" :key="article.id" :data="article"/>
+          <Article v-for="article in feed.articles" :key="article.id" :data="article"/>
         </div>
       </div>
       <div v-else>
@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import FeedItem from '@/components/FeedItem.vue';
+import Article from '@/components/Article.vue';
 
 export default {
   name: 'FolderFeed',
   components: {
-    FeedItem
+    Article
   },
   mounted(){
     this.getData();

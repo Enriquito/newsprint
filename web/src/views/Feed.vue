@@ -2,18 +2,20 @@
   <section>
     <h1 v-if="feedData">{{feedData.title}}</h1>
     <h1 v-else>Loading...</h1>
+
     <div style="padding-bottom: 50px">
         <div v-if="feedData && newToday.length > 0">
             <span>New today</span>
             <div>
-                <FeedItem v-for="article in newToday" :key="article.id" :data="article"/>
+                <Article v-for="article in newToday" :key="article.id" :data="article"/>
             </div>
+            <div style="border: 1px solid rgba(0,0,0,0.1); margin-top: 60px;"></div>
         </div>
 
       <!-- <span style="margin-top:60px; display:block;">Older articles</span> -->
       <div style="margin-top:60px; display:block;"></div>
       <div v-if="feedData">
-          <FeedItem v-for="article in older" :key="article.id" :data="article"/>
+          <Article v-for="article in older" :key="article.id" :data="article"/>
       </div>
       <div v-else>
           <h2 style="text-align: center">Loading...</h2>
@@ -23,13 +25,13 @@
 </template>
 
 <script>
-import FeedItem from '@/components/FeedItem.vue';
+import Article from '@/components/Article.vue';
 import moment from 'moment-timezone'
 
 export default {
   name: 'Feed',
   components: {
-    FeedItem
+    Article
   },
   mounted(){
     this.getData();
