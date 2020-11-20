@@ -3,16 +3,22 @@
     <h2 v-if="!isOpen">{{data.title}}</h2>
     <a v-else :href="data.link" target="_blank"><h2>{{data.title}}</h2></a>
 
-    <span class="date-time">November 18, 20:10</span><span v-if="data.creator" class="spacer">by</span><strong v-if="data.creator" class="author">{{data.creator}}</strong>
+    <span class="date-time">{{date}}</span>
+    <span v-if="data.creator" class="spacer">by</span>
+    <strong v-if="data.creator" class="author">{{data.creator}}</strong>
+
     <div v-if="isOpen" style="max-height:1500px;" id="article-content" v-html="content"></div>
     <div v-else id="article-content" v-html="content"></div>
   </article>
 </template>
 <script>
+import moment from 'moment-timezone';
+
 export default {
-    name: "FeedItem",
+    name: "Article",
     mounted(){
-      this.searchImage();
+      // this.searchImage();
+      this.editLinkAttributes();
     },
     props: {
       data: Object,
@@ -42,6 +48,21 @@ export default {
           this.isOpen = true;
         else
           this.isOpen = false;
+      },
+      editLinkAttributes(){
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(this.data.content, "text/html");
+
+        doc.querySelectorAll('a').forEach(a => {
+          a.setAttribute('target', '_blank');
+        });
+
+        this.content = doc.body.innerHTML;
+      }
+    },
+    computed:{
+      date(){
+        return moment(this.data.isoDate).format('LL')
       }
     }
 }
