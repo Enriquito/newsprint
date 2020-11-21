@@ -78,6 +78,26 @@ class Feed{
             })
       }
 
+      addToDefaultFolder(){
+            return new Promise((resolve,reject) => {
+                  const toInsert = {
+                        feed: this.id,
+                        folder: 4,
+                        user: 1
+                  };
+
+                  database.query('INSERT INTO feed_folder_assignments SET ?', [toInsert], (error, result) => {
+                        if(error){
+                              console.log(error);
+                              reject(error);
+                              return;
+                        }
+
+                        resolve();
+                  });
+            });
+      }
+
       getArticles(){
             return new Promise( async (resolve, reject) => {
                   database.query('SELECT * FROM articles WHERE feed = ?', [this.id], (error, result) => {
@@ -128,7 +148,7 @@ class Feed{
 
                   try{
                         f = await parser.parseURL(url);
-                        const temp = f.link.match(/( |https:\/\/|http:\/\/)([A-Za-z0-9]{1,}\.[A-Za-z0-9]{1,10}\.?[A-Za-z]{1,}\.?[A-Za-z]{1,})(?: |\/|$)/);
+                        const temp = f.link.match(/( |https:\/\/|http:\/\/)([A-Za-z0-9]{1,10}\.?[A-Za-z]{1,}\.?[A-Za-z]{1,})(?: |\/|$)/);
 
                         this.title = f.title;
                         this.description = f.description;
@@ -176,7 +196,7 @@ class Feed{
                         last_build_date: this.lastBuildDate
                   };
 
-                  database.query('INSERT INTO feeds SET ?', [toInsert], (error, result) => {
+                  database.query('INSERT INTO feeds SET ?', [toInsert], async (error, result) => {
                         if(error){
                               console.log(error);
                               reject(error);
@@ -184,6 +204,14 @@ class Feed{
                         }
 
                         this.id = result.insertId
+
+                        try{
+                              await this.addToDefaultFolder();
+                        }
+                        catch(error){
+                              reject(error);
+                              return;
+                        }
 
                         resolve(this);
                   });

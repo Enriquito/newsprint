@@ -22,6 +22,9 @@ next();
 app.route('/feeds/:id')
 .get(feedRoutes.findOne)
 
+app.route('/feeds')
+.post(feedRoutes.create)
+
 app.route('/folders/:id')
 .get(folderRoutes.findOne)
 
