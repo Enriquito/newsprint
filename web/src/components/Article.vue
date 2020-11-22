@@ -3,6 +3,9 @@
     <h2 v-if="!isOpen">{{data.title}}</h2>
     <a v-else :href="data.link" target="_blank"><h2>{{data.title}}</h2></a>
 
+    <svg style="width: 12px; margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 14 18">
+      <path id="ic_turned_in_not_24px" d="M17,3H7A2,2,0,0,0,5.01,5L5,21l7-3,7,3V5A2.006,2.006,0,0,0,17,3Zm0,15-5-2.18L7,18V5H17Z" transform="translate(-5 -3)"/>
+    </svg>
     <span class="date-time">{{date}}</span>
     <span v-if="data.creator" class="spacer">by</span>
     <strong v-if="data.creator" class="author">{{data.creator}}</strong>
@@ -26,7 +29,8 @@ export default {
     data(){
       return({
         content: null,
-        isOpen: false
+        isOpen: false,
+        AddFeedIsOpen: false
       });
     },
     methods:{
@@ -94,7 +98,7 @@ article p
 }
 article h2
 {
-  margin-bottom: -5px;
+  margin-bottom: 0px;
   font-weight: 700;
 }
 article .date-time
