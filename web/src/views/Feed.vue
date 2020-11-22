@@ -1,10 +1,10 @@
 <template>
   <section>
-    <h1 v-if="feedData">{{feedData.title}}</h1>
+    <h1 v-if="feed">{{feed.title}}</h1>
     <h1 v-else>Loading...</h1>
 
     <div style="padding-bottom: 50px">
-        <div v-if="feedData && newToday.length > 0">
+        <div v-if="feed && newToday.length > 0">
             <span>New today</span>
             <div>
                 <Article v-for="article in newToday" :key="article.id" :data="article"/>
@@ -12,9 +12,8 @@
             <div style="border: 1px solid rgba(0,0,0,0.1); margin-top: 60px;"></div>
         </div>
 
-      <!-- <span style="margin-top:60px; display:block;">Older articles</span> -->
       <div style="margin-top:60px; display:block;"></div>
-      <div v-if="feedData">
+      <div v-if="feed">
           <Article v-for="article in older" :key="article.id" :data="article"/>
       </div>
       <div v-else>
@@ -27,6 +26,7 @@
 <script>
 import Article from '@/components/Article.vue';
 import moment from 'moment-timezone'
+import axios from 'axios';
 
 export default {
   name: 'Feed',
@@ -38,38 +38,26 @@ export default {
   },
   data(){
     return({
-      feedData: null,
-      folders: null,
+      feed: null,
       newToday: [],
       older: []
     });
   },
   methods:{
     getData(){
-      const inter = setInterval(() => {
-        if(this.folders){
-          clearInterval(inter);
-          this.getCurrentFeed();
-        }
-
-        this.folders = this.$store.state.folders;
-      }, 500);
-    },
-    getCurrentFeed(){
-      this.folders.forEach(folder => {
-        folder.feeds.forEach(feed => {
-            if(feed.id == this.feedId){
-                this.feedData = feed;
-                this.sortArticles();
-            }
-        });
+      axios.get(`${process.env.VUE_APP_API}/feeds/${this.feedId}`)
+        .then(response => {
+          if(response.status === 200){
+              this.feed = response.data;
+              this.sortArticles();
+          }
       });
     },
     sortArticles(){
         this.newToday = [];
         this.older = [];
 
-        this.feedData.articles.forEach(article => {
+        this.feed.articles.forEach(article => {
             const postDate = moment(article.isoDate);
             const now = moment();
 
@@ -82,7 +70,7 @@ export default {
   },
   watch:{
     feedId(){
-      this.getCurrentFeed();
+      this.getData();
     }
   },
   computed:{
