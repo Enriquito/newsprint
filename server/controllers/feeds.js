@@ -27,7 +27,7 @@ module.exports.findOne = async (req,res) => {
     }
 }
 module.exports.create = async (req,res) => {
-    console.log(`POST blocks/`);
+    console.log(`POST feeds/`);
     // const validator = Validator.NewBlockData(req.body);
 
     // if(validator.error){
@@ -42,7 +42,7 @@ module.exports.create = async (req,res) => {
         await feed.create();
         await feed.createArticles();
 
-        res.json(feed);
+        res.status(201).json(feed);
     }
     catch(error){
         console.log(error);
