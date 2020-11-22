@@ -3,9 +3,10 @@
         <h3>Readster</h3>
         <ul>
             <li class="d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 19.94 19.5">
-                    <path id="ic_notifications_active_24px" d="M7.58,4.08,6.15,2.65A10.425,10.425,0,0,0,2.03,10.5h2A8.446,8.446,0,0,1,7.58,4.08ZM19.97,10.5h2a10.489,10.489,0,0,0-4.12-7.85L16.43,4.08A8.5,8.5,0,0,1,19.97,10.5ZM18,11c0-3.07-1.64-5.64-4.5-6.32V4a1.5,1.5,0,0,0-3,0v.68C7.63,5.36,6,7.92,6,11v5L4,18v1H20V18l-2-2ZM12,22a1.752,1.752,0,0,0,.4-.04,2.029,2.029,0,0,0,1.44-1.18,2.008,2.008,0,0,0,.15-.78h-4A2.014,2.014,0,0,0,12,22Z" transform="translate(-2.03 -2.5)"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 18 18">
+                    <path id="ic_move_to_inbox_24px" d="M19,3H4.99A1.982,1.982,0,0,0,3.01,5L3,19a1.991,1.991,0,0,0,1.99,2H19a2.006,2.006,0,0,0,2-2V5A2.006,2.006,0,0,0,19,3Zm0,12H15a3,3,0,0,1-6,0H4.99V5H19Zm-3-5H14V7H10v3H8l4,4Z" transform="translate(-3 -3)"/>
                 </svg>
+
 
                 <router-link to="/">New</router-link>
                 <small>10</small>
@@ -18,6 +19,15 @@
                 <router-link to="/">Read Later</router-link>
             </li>
             <li class="d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 20 18.35">
+                    <path id="ic_favorite_border_24px" d="M16.5,3A5.988,5.988,0,0,0,12,5.09,5.988,5.988,0,0,0,7.5,3,5.447,5.447,0,0,0,2,8.5c0,3.78,3.4,6.86,8.55,11.54L12,21.35l1.45-1.32C18.6,15.36,22,12.28,22,8.5A5.447,5.447,0,0,0,16.5,3ZM12.1,18.55l-.1.1-.1-.1C7.14,14.24,4,11.39,4,8.5A3.418,3.418,0,0,1,7.5,5a3.909,3.909,0,0,1,3.57,2.36h1.87A3.885,3.885,0,0,1,16.5,5,3.418,3.418,0,0,1,20,8.5C20,11.39,16.86,14.24,12.1,18.55Z" transform="translate(-2 -3)"/>
+                </svg>
+
+
+
+                <router-link to="/">Saved</router-link>
+            </li>
+            <li class="d-flex align-items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 21 18">
                     <path id="ic_history_24px" d="M13,3a9,9,0,0,0-9,9H1l3.89,3.89.07.14L9,12H6a7.034,7.034,0,1,1,2.06,4.94L6.64,18.36A9,9,0,1,0,13,3ZM12,8v5l4.28,2.54L17,14.33l-3.5-2.08V8Z" transform="translate(-1 -3)"/>
                 </svg>
@@ -27,9 +37,10 @@
         <ul class="feeds">
             <li class="d-flex align-items-center" style="cursor:default">
                 <span>Feeds</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                <svg style="cursor: pointer" @click="openAddFeedPopUp" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
                     <path id="ic_add_24px" d="M19,13H13v6H11V13H5V11h6V5h2v6h6Z" transform="translate(-5 -5)"/>
                 </svg>
+                <AddFeedForm v-if="IsOpenAddFeed" />
             </li>
 
             <div v-if="data" class="folder-holder">
@@ -41,19 +52,28 @@
 </template>
 <script>
 import NavigationFolder from '@/components/NavigationFolder.vue'
+import AddFeedForm from '@/components/AddFeedForm.vue'
 
 export default {
     name: "Navigation",
     components:{
-        NavigationFolder
-    },
-    mounted(){
-        // this.getData();
+        NavigationFolder,
+        AddFeedForm
     },
     data(){
         return({
-
+            IsOpenAddFeed: false
         });
+    },
+    methods:{
+        openAddFeedPopUp(){
+            if(this.IsOpenAddFeed){
+                this.IsOpenAddFeed = false;
+            }
+            else{
+                this.IsOpenAddFeed = true;
+            }
+        }
     },
     props:{
         data: Array
@@ -74,8 +94,6 @@ export default {
                     });
                 });
             }
-
-
 
             return obj;
         }
