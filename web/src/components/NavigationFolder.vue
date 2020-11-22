@@ -1,15 +1,14 @@
 <template>
     <li>
-        <div class="d-flex align-items-center">
-            <svg @click="open" v-if="!isOpen" class="close" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 7.41 12">
+        <div @click="open" class="d-flex align-items-center">
+            <svg v-if="!isOpen" class="close" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 7.41 12">
                 <path id="ic_chevron_right_24px" d="M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z" transform="translate(-8.59 -6)"/>
             </svg>
-            <svg @click="open" v-else class="open" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 7.41 12">
+            <svg v-else class="open" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 7.41 12">
                 <path id="ic_chevron_right_24px" d="M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z" transform="translate(-8.59 -6)"/>
             </svg>
 
-            <router-link v-if="name != 'All'" :to="{name:'FolderView', params:{folder: name}}">{{name}}</router-link>
-            <router-link v-else to="/">{{name}}</router-link>
+            <strong>{{name}}</strong>
             <small>{{getNotificationCount(totalNotifications)}}</small>
         </div>
 
@@ -85,6 +84,11 @@ export default {
         position: absolute;
         right: 10px;
         top: 7px;
+    }
+    nav ul li div strong
+    {
+        font-size: 25px;
+        padding-left: 30px;
     }
     nav ul li a
     {
