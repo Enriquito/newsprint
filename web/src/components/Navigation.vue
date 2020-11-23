@@ -8,8 +8,8 @@
                 </svg>
 
 
-                <router-link to="/">New</router-link>
-                <small>10</small>
+                <router-link :to="{name: 'NewArticles'}">New</router-link>
+                <small>{{getNotificationCount(unreadArticles)}}</small>
             </li>
             <li class="d-flex align-items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 14 18">
@@ -53,6 +53,7 @@
 <script>
 import NavigationFolder from '@/components/NavigationFolder.vue'
 import AddFeedForm from '@/components/AddFeedForm.vue'
+import axios from 'axios'
 
 export default {
     name: "Navigation",
@@ -60,9 +61,15 @@ export default {
         NavigationFolder,
         AddFeedForm
     },
+    created(){
+        this.getData();
+        this.getNewArticles();
+    },
     data(){
         return({
-            IsOpenAddFeed: false
+            IsOpenAddFeed: false,
+            data: null,
+            unreadArticles: 0
         });
     },
     methods:{
@@ -73,10 +80,42 @@ export default {
             else{
                 this.IsOpenAddFeed = true;
             }
+        },
+        getData(){
+            axios.get(`${process.env.VUE_APP_API}/folders/user/1`)
+            .then(response => {
+                if(response.status === 200){
+                    // this.$store.commit('setFolders', response.data);
+                    this.data = response.data;
+                }
+            })
+            .catch(error => {
+                alert('Error fetching folders');
+                console.log(error);
+            })
+        },
+        getNewArticles(){
+            axios.get(`${process.env.VUE_APP_API}/articles/count/unread`)
+            .then(response => {
+                if(response.status === 200){
+                    // this.$store.commit('setFolders', response.data);
+                    this.unreadArticles = response.data.unreadArticles;
+                }
+            })
+            .catch(error => {
+                alert('Error fetching new articles');
+                console.log(error);
+            })
+        },
+        getNotificationCount(num){
+            if(num > 999){
+                return "999+";
+            }
+            else if(num == 0)
+                return "";
+            else
+                return num;
         }
-    },
-    props:{
-        data: Array
     },
     computed:{
         allFeeds(){
