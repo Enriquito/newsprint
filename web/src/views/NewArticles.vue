@@ -30,27 +30,23 @@ export default {
   data(){
     return({
       articles: null,
-      limit: {
-            min: 0,
-            max: 20
-      }
     });
   },
   methods:{
     getData(){
-      axios.get(`${process.env.VUE_APP_API}/unread/articles/${(this.$router.params.page - 1) * 20}/${this.$router.params.page * 20}`)
+      axios.get(`${process.env.VUE_APP_API}/unread/articles/${(this.$route.params.page - 1) * 10}/${this.$route.params.page * 10}`)
         .then(response => {
           if(response.status === 200){
               this.articles = response.data;
           }
       });
     },
-    loadMoreArticles(){
-          const page = this.$router.params.page;
-          this.limit.min = page * 20;
-          this.limit.max += page * 20;
-
-          this.getData();
+    loadMoreArticles(event){
+      event.preventDefault();
+      const page = parseInt(this.$route.params.page) + 1;
+      this.$router.push({name: 'NewArticles', params: {page: page}});
+      this.articles = [];
+      this.getData();
     }
   }
 }
@@ -92,5 +88,8 @@ button
       border-radius: 10px;
       margin-top: 50px;
       color: inherit;
+      background: #FC7C7C;
+      color: #FFF;
+      outline: none;
 }
 </style>
