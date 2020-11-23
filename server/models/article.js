@@ -78,12 +78,12 @@ class Article{
       static getAllUnreadArticles(min,max){
             return new Promise((resolve, reject) => {
 
-                        
+
                   // console.log(limit);
 
-                  const query = `SELECT * FROM articles a JOIN feeds f ON f.id = a.feed WHERE a.is_read = 0 AND f.user = 1 LIMIT ?,?
+                  const query = `SELECT * FROM articles a JOIN feeds f ON f.id = a.feed WHERE a.is_read = 0 AND f.user = 1 LIMIT ? OFFSET ?
                   `;
-                  database.query(query,[min,max], (error, result) => {
+                  database.query(query,[max,max], (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -111,8 +111,8 @@ class Article{
                               if(f.is_read == 1)
                                     article.isRead = true;
                               else
-                                    article.isRead = false; 
-                                    
+                                    article.isRead = false;
+
                               articles.push(article);
                        });
 
@@ -141,6 +141,36 @@ class Article{
                         }
 
                         this.id = result.insertId
+
+                        resolve(this);
+                  });
+            });
+      }
+
+      setToRead(){
+            return new Promise((resolve, reject) => {
+                  const query = `UPDATE articles SET is_read = 1 WHERE id = ?`;
+
+                  database.query(query,[this.id], (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
+
+                        resolve(this);
+                  });
+            });
+      }
+
+      setToUnread(){
+            return new Promise((resolve, reject) => {
+                  const query = `UPDATE articles SET is_read = 0 WHERE id = ?`;
+
+                  database.query(query,[this.id], (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
 
                         resolve(this);
                   });
