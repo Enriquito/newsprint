@@ -35,7 +35,8 @@ app.route('/folders/user/:id')
 app.route('/articles/:id')
 .get(articleRoutes.findOne)
 
-app.get('/unread/articles', articleRoutes.unreadArticles)
+app.get('/articles/count/unread', articleRoutes.unreadArticlesCount)
+app.get('/unread/articles/:minLimit/:maxLimit', articleRoutes.unreadArticles)
 
 app.listen(process.env.PORT, () => {
       console.log(`listening on port ${process.env.PORT}`)

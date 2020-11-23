@@ -50,7 +50,7 @@ class Article{
             });
       }
 
-      static getAllUnreadArticles(){
+      static getCountAllUnreadArticles(){
             return new Promise((resolve, reject) => {
                   const query = `
                         SELECT COUNT(a.id) as 'unread_articles' FROM articles a
@@ -71,6 +71,52 @@ class Article{
 
                         resolve({unreadArticles: result[0].unread_articles});
 
+                  });
+            });
+      }
+
+      static getAllUnreadArticles(min,max){
+            return new Promise((resolve, reject) => {
+
+                        
+                  // console.log(limit);
+
+                  const query = `SELECT * FROM articles a JOIN feeds f ON f.id = a.feed WHERE a.is_read = 0 AND f.user = 1 LIMIT ?,?
+                  `;
+                  database.query(query,[min,max], (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
+
+                        if(result.length === 0){
+                              resolve(null);
+                              return;
+                        }
+
+                        const articles = [];
+
+                       result.forEach(f => {
+                              const article = new Article();
+
+                              article.id = f.id;
+                              article.creator = f.creator;
+                              article.title = f.title;
+                              article.link = f.link;
+                              article.pubDate = f.pub_date;
+                              article.content = f.content;
+                              article.contentSnippet = f.content_snippet;
+                              article.isoDate = f.iso_date
+
+                              if(f.is_read == 1)
+                                    article.isRead = true;
+                              else
+                                    article.isRead = false; 
+                                    
+                              articles.push(article);
+                       });
+
+                       resolve(articles);
                   });
             });
       }

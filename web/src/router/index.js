@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import FolderFeed from '../views/FolderFeed.vue'
 import Feed from '../views/Feed.vue'
+import NewArticles from '../views/NewArticles.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,11 @@ const routes = [
     path: '/feed/:feedId/:feedName',
     name: 'Feed',
     component: Feed
+  },
+  {
+    path: '/new/:page',
+    name: 'NewArticles',
+    component: NewArticles,
   }
 ]
 
