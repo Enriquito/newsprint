@@ -11,10 +11,10 @@
       </div>
 
       <div class="d-flex justify-content-end" style="flex-grow: 1;">
-        <svg @click="setArticleToRead" v-if="!hasBeenSetToRead" class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
+        <svg @click="setArticleToRead" v-if="!hasBeenSetToRead && !data.isRead" class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
           <path id="ic_visibility_24px" d="M12,4.5A11.827,11.827,0,0,0,1,12a11.817,11.817,0,0,0,22,0A11.827,11.827,0,0,0,12,4.5ZM12,17a5,5,0,1,1,5-5A5,5,0,0,1,12,17Zm0-8a3,3,0,1,0,3,3A3,3,0,0,0,12,9Z" transform="translate(-1 -4.5)"/>
         </svg>
-        <svg @click="setToUnread" v-else class="icon-buttons" style="fill: #FC7C7C !important;" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
+        <svg @click="setToUnread" v-else-if="hasBeenSetToRead || data.isRead" class="icon-buttons" style="fill: #FC7C7C !important;" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
           <path id="ic_visibility_24px" d="M12,4.5A11.827,11.827,0,0,0,1,12a11.817,11.817,0,0,0,22,0A11.827,11.827,0,0,0,12,4.5ZM12,17a5,5,0,1,1,5-5A5,5,0,0,1,12,17Zm0-8a3,3,0,1,0,3,3A3,3,0,0,0,12,9Z" transform="translate(-1 -4.5)"/>
         </svg>
 
@@ -24,10 +24,6 @@
 
         <svg class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 14 18">
           <path id="ic_turned_in_not_24px" d="M17,3H7A2,2,0,0,0,5.01,5L5,21l7-3,7,3V5A2.006,2.006,0,0,0,17,3Zm0,15-5-2.18L7,18V5H17Z" transform="translate(-5 -3)"/>
-        </svg>
-
-        <svg class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 21 18">
-          <path id="ic_history_24px" d="M13,3a9,9,0,0,0-9,9H1l3.89,3.89.07.14L9,12H6a7.034,7.034,0,1,1,2.06,4.94L6.64,18.36A9,9,0,1,0,13,3ZM12,8v5l4.28,2.54L17,14.33l-3.5-2.08V8Z" transform="translate(-1 -3)"/>
         </svg>
       </div>
     </div>
