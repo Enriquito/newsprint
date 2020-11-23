@@ -81,9 +81,11 @@ class Article{
 
                   // console.log(limit);
 
-                  const query = `SELECT * FROM articles a JOIN feeds f ON f.id = a.feed WHERE a.is_read = 0 AND f.user = 1 LIMIT ? OFFSET ?
+                  const query = `SELECT a.id, a.creator, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date
+                  FROM articles a JOIN feeds f ON f.id = a.feed
+                  WHERE a.is_read = 0 AND f.user = 1 LIMIT ? OFFSET ?
                   `;
-                  database.query(query,[max,max], (error, result) => {
+                  database.query(query,[max,min], (error, result) => {
                         if(error){
                               reject(error);
                               return;
