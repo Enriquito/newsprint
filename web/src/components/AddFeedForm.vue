@@ -77,7 +77,7 @@ export default {
     border: none;
     border-radius: 5px;
     padding: 5px 15px;
-    background: lightgreen;
+    background: #56FC86;
     color: white;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
