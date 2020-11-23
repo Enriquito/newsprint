@@ -45,7 +45,32 @@ class Article{
                         else
                               article.isRead = false;
 
-                        resolve(feed);
+                        resolve(article);
+                  });
+            });
+      }
+
+      static getAllUnreadArticles(){
+            return new Promise((resolve, reject) => {
+                  const query = `
+                        SELECT COUNT(a.id) as 'unread_articles' FROM articles a
+                        JOIN feeds f
+                        ON f.id = a.feed
+                        WHERE a.is_read = 0 AND f.user = 1
+                  `;
+                  database.query(query, (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
+
+                        if(result.length === 0){
+                              resolve(null);
+                              return;
+                        }
+
+                        resolve({unreadArticles: result[0].unread_articles});
+
                   });
             });
       }

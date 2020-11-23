@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 // Controllers
 const feedRoutes = require('./controllers/feeds');
 const folderRoutes = require('./controllers/folders');
+const articleRoutes = require('./controllers/articles');
 
 dotenv.config();
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -30,6 +31,11 @@ app.route('/folders/:id')
 
 app.route('/folders/user/:id')
 .get(folderRoutes.findFoldersByUser)
+
+app.route('/articles/:id')
+.get(articleRoutes.findOne)
+
+app.get('/unread/articles', articleRoutes.unreadArticles)
 
 app.listen(process.env.PORT, () => {
       console.log(`listening on port ${process.env.PORT}`)
