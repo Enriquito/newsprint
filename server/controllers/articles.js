@@ -83,7 +83,7 @@ module.exports.setToRead = async (req,res) => {
 }
 module.exports.setToUnread = async (req,res) => {
     try{
-        console.log(`GET /articles/set/read`);
+        console.log(`PUT /articles/set/read`);
 
         const article = await Article.findOne(req.body.id);
 
@@ -93,6 +93,26 @@ module.exports.setToUnread = async (req,res) => {
         }
 
         article.setToUnread();
+
+        res.json(article);
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+module.exports.AddToFavorites = async (req,res) => {
+    try{
+        console.log(`POST /articles/save/favorites`);
+
+        const article = await Article.findOne(req.body.id);
+
+        if(article === null){
+            res.sendStatus(500);
+            return;
+        }
+
+        article.AddToFavorites();
 
         res.json(article);
     }

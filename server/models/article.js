@@ -177,6 +177,24 @@ class Article{
             });
       }
 
+      AddToFavorites(){
+            return new Promise((resolve, reject) => {
+                  const toInsert = {
+                        user: 1,
+                        article: this.id
+                  };
+
+                  database.query(`INSERT INTO favorites SET ?`,[toInsert], (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
+
+                        resolve(this);
+                  });
+            });
+      }
+
       createCategories(){
             return new Promise((resolve,reject) => {
                   if(this.categories === 0 || this.categories === undefined){
