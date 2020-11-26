@@ -100,7 +100,7 @@ class Feed{
 
       getArticles(){
             return new Promise( async (resolve, reject) => {
-                  database.query('SELECT * FROM articles WHERE feed = ?', [this.id], (error, result) => {
+                  database.query('SELECT * FROM articles WHERE feed = ? ORDER BY DATE(iso_date) DESC', [this.id], (error, result) => {
                         if(error){
                               console.log(error);
                               reject(error);
