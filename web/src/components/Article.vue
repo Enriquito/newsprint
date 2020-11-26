@@ -11,10 +11,10 @@
       </div>
 
       <div class="d-flex justify-content-end" style="flex-grow: 1;">
-        <svg @click="setArticleToRead" v-if="!hasBeenSetToRead && !data.isRead" class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
+        <svg @click="setArticleToRead" v-if="!data.isRead" class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
           <path id="ic_visibility_24px" d="M12,4.5A11.827,11.827,0,0,0,1,12a11.817,11.817,0,0,0,22,0A11.827,11.827,0,0,0,12,4.5ZM12,17a5,5,0,1,1,5-5A5,5,0,0,1,12,17Zm0-8a3,3,0,1,0,3,3A3,3,0,0,0,12,9Z" transform="translate(-1 -4.5)"/>
         </svg>
-        <svg @click="setToUnread" v-else-if="hasBeenSetToRead || data.isRead" class="icon-buttons" style="fill: #FC7C7C !important;" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
+        <svg @click="setToUnread" v-else-if="data.isRead" class="icon-buttons" style="fill: #FC7C7C !important;" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
           <path id="ic_visibility_24px" d="M12,4.5A11.827,11.827,0,0,0,1,12a11.817,11.817,0,0,0,22,0A11.827,11.827,0,0,0,12,4.5ZM12,17a5,5,0,1,1,5-5A5,5,0,0,1,12,17Zm0-8a3,3,0,1,0,3,3A3,3,0,0,0,12,9Z" transform="translate(-1 -4.5)"/>
         </svg>
 
@@ -58,9 +58,11 @@ export default {
       open(){
         if(!this.isOpen){
           this.isOpen = true;
-          this.setToRead = setTimeout(() => {
-            this.setArticleToRead();
-          }, 6000);
+          if(!this.data.isRead){
+            this.setToRead = setTimeout(() => {
+              this.setArticleToRead();
+            }, 6000);
+          }
         }
         else{
           this.isOpen = false;
@@ -81,7 +83,8 @@ export default {
         axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{id: this.data.id})
           .then(response => {
             if(response.status === 200){
-              this.hasBeenSetToRead = true;
+              // this.hasBeenSetToRead = true;
+              this.data.isRead = true;
             }
           });
       },
@@ -89,9 +92,15 @@ export default {
         axios.put(`${process.env.VUE_APP_API}/articles/set/unread`,{id: this.data.id})
           .then(response => {
             if(response.status === 200){
-              this.hasBeenSetToRead = false;
+              this.data.isRead = false;
+              this.changeUnreadNavigationNumber();
             }
           });
+      },
+      changeUnreadNavigationNumber(){
+        // this.$store.commit('setFolders', response.data);
+        const folderData = this.$store.state.folders;
+        console.log(folderData);
       }
     },
     computed:{
