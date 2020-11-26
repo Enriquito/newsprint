@@ -60,6 +60,10 @@ export default {
         AddFeedForm
     },
     created(){
+        this.$eventHub.$on('updateNavigation', () => {
+            this.getData();
+            this.getNewArticles();
+        });
         this.getData();
         this.getNewArticles();
     },
@@ -132,15 +136,6 @@ export default {
             }
 
             return obj;
-        }
-    },
-    watch:{
-        data:{
-            handler(val){
-                alert('change');
-                console.log(val);
-            },
-            deep: true
         }
     }
 }

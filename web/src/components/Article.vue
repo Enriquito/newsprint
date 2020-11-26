@@ -80,28 +80,31 @@ export default {
         this.content = doc.body.innerHTML;
       },
       setArticleToRead(){
+        this.data.isRead = true;
         axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{id: this.data.id})
           .then(response => {
             if(response.status === 200){
-              // this.hasBeenSetToRead = true;
-              this.data.isRead = true;
+              this.$eventHub.$emit('updateNavigation');
             }
+          })
+          .catch(error => {
+            this.data.isRead = false;
+            console.log(error);
           });
       },
       setToUnread(){
+        this.data.isRead = false;
         axios.put(`${process.env.VUE_APP_API}/articles/set/unread`,{id: this.data.id})
           .then(response => {
             if(response.status === 200){
-              this.data.isRead = false;
-              this.changeUnreadNavigationNumber();
+              this.$eventHub.$emit('updateNavigation');
             }
+          })
+          .catch(error => {
+            this.data.isRead = false;
+            console.log(error);
           });
       },
-      changeUnreadNavigationNumber(){
-        // this.$store.commit('setFolders', response.data);
-        const folderData = this.$store.state.folders;
-        console.log(folderData);
-      }
     },
     computed:{
       date(){
