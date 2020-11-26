@@ -83,7 +83,7 @@ export default {
             axios.get(`${process.env.VUE_APP_API}/folders/user/1`)
             .then(response => {
                 if(response.status === 200){
-                    // this.$store.commit('setFolders', response.data);
+                    this.$store.commit('setFolders', response.data);
                     this.data = response.data;
                 }
             })
@@ -96,7 +96,6 @@ export default {
             axios.get(`${process.env.VUE_APP_API}/articles/count/unread`)
             .then(response => {
                 if(response.status === 200){
-                    // this.$store.commit('setFolders', response.data);
                     this.unreadArticles = response.data.unreadArticles;
                 }
             })
@@ -133,6 +132,15 @@ export default {
             }
 
             return obj;
+        }
+    },
+    watch:{
+        data:{
+            handler(val){
+                alert('change');
+                console.log(val);
+            },
+            deep: true
         }
     }
 }
