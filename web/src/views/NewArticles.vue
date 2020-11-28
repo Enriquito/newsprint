@@ -11,6 +11,9 @@
                   Load more articles
             </button>
         </div>
+        <div v-else>
+          <h3>No articles found</h3>
+        </div>
     </div>
   </section>
 </template>
