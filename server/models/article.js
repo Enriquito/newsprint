@@ -11,13 +11,14 @@ class Article{
             this.contentSnippet;
             this.isoDate;
             this.isRead;
+            this.favorite = false;
             this.feedId;
             this.categories = [];
       }
 
       static findOne(id){
             return new Promise( async (resolve, reject) => {
-                  database.query('SELECT * FROM articles WHERE id = ?', [id], (error, result) => {
+                  database.query('SELECT * FROM articles WHERE id = ?', [id], async (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -38,7 +39,14 @@ class Article{
                         article.pubDate = f.pub_date;
                         article.content = f.content;
                         article.contentSnippet = f.content_snippet;
-                        article.isoDate = f.iso_date
+                        article.isoDate = f.iso_date;
+
+                        try{
+                              await article.isFavorite();
+                        }
+                        catch(error){
+                              article.favorite = false;
+                        }
 
                         if(f.is_read == 1)
                               article.isRead = true;
@@ -83,7 +91,7 @@ class Article{
                   FROM articles a JOIN feeds f ON f.id = a.feed
                   WHERE a.is_read = 0 AND f.user = 1 ORDER BY DATE(a.iso_date) DESC LIMIT ? OFFSET ?
                   `;
-                  database.query(query,[max,min], (error, result) => {
+                  database.query(query,[max,min], async (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -96,7 +104,9 @@ class Article{
 
                         const articles = [];
 
-                       result.forEach(f => {
+                        for(let i = 0; i < result.length; i++){
+                              const f = result[i];
+
                               const article = new Article();
 
                               article.id = f.id;
@@ -108,15 +118,41 @@ class Article{
                               article.contentSnippet = f.content_snippet;
                               article.isoDate = f.iso_date
 
+                              try{
+                                    await article.isFavorite();
+                              }
+                              catch(error){
+                                    article.favorite = false;
+                              }
+
                               if(f.is_read == 1)
                                     article.isRead = true;
                               else
                                     article.isRead = false;
 
                               articles.push(article);
-                       });
+                        }
 
                        resolve(articles);
+                  });
+            });
+      }
+
+      isFavorite(){
+            return new Promise((resolve, reject) => {
+                  database.query(`SELECT * FROM favorites WHERE article = ?`,[this.id], (error, result) => {
+                        if(error){
+                              this.favorite = false;
+                              reject(error);
+                              return;
+                        }
+
+                        if(result.length === 1)
+                              this.favorite = true;
+                        else
+                              this.favorite = false;
+
+                        resolve();
                   });
             });
       }
@@ -185,6 +221,20 @@ class Article{
                   };
 
                   database.query(`INSERT INTO favorites SET ?`,[toInsert], (error, result) => {
+                        if(error){
+                              console.log(error);
+                              reject(error);
+                              return;
+                        }
+
+                        resolve(this);
+                  });
+            });
+      }
+
+      removeFromFavorites(){
+            return new Promise((resolve, reject) => {
+                  database.query(`DELETE FROM favorites WHERE article = ?`,[this.id], (error, result) => {
                         if(error){
                               reject(error);
                               return;

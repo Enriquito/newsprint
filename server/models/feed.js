@@ -100,7 +100,7 @@ class Feed{
 
       getArticles(){
             return new Promise( async (resolve, reject) => {
-                  database.query('SELECT * FROM articles WHERE feed = ? ORDER BY DATE(iso_date) DESC', [this.id], (error, result) => {
+                  database.query('SELECT * FROM articles WHERE feed = ? ORDER BY DATE(iso_date) DESC', [this.id], async (error, result) => {
                         if(error){
                               console.log(error);
                               reject(error);
@@ -112,27 +112,34 @@ class Feed{
                               return;
                         }
 
-                        result.forEach(a => {
+                        for(let i = 0; i < result.length; i++){
+                              const f = result[i];
+
                               const article = new Article();
 
-                              article.id = a.id;
-                              article.creator = a.creator;
-                              article.title = a.title;
-                              article.link = a.link;
-                              article.pubDate = a.pub_date;
-                              article.content = a.content;
-                              article.contentSnippet = a.content_snippet;
-                              article.isoDate = a.iso_date
+                              article.id = f.id;
+                              article.creator = f.creator;
+                              article.title = f.title;
+                              article.link = f.link;
+                              article.pubDate = f.pub_date;
+                              article.content = f.content;
+                              article.contentSnippet = f.content_snippet;
+                              article.isoDate = f.iso_date
 
-                              if(a.is_read == 1){
+                              try{
+                                    await article.isFavorite();
+                              }
+                              catch(error){
+                                    article.favorite = false;
+                              }
+
+                              if(f.is_read == 1)
                                     article.isRead = true;
-                              }
-                              else{
+                              else
                                     article.isRead = false;
-                              }
 
                               this.articles.push(article);
-                        });
+                        }
 
                         resolve();
                   });

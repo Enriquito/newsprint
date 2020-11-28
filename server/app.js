@@ -39,7 +39,8 @@ app.get('/articles/count/unread', articleRoutes.unreadArticlesCount)
 app.get('/unread/articles/:minLimit/:maxLimit', articleRoutes.unreadArticles)
 app.put('/articles/set/read', articleRoutes.setToRead)
 app.put('/articles/set/unread', articleRoutes.setToUnread)
-app.post('/articles/save/favorites', articleRoutes.AddToFavorites)
+app.post('/articles/save/favorite', articleRoutes.addToFavorites)
+app.post('/articles/remove/favorite', articleRoutes.removeFromFavorites)
 
 app.listen(process.env.PORT, () => {
       console.log(`listening on port ${process.env.PORT}`)
