@@ -11,13 +11,16 @@
             </div>
             <div style="border: 1px solid rgba(0,0,0,0.1); margin-top: 60px;"></div>
         </div>
+        <div v-else>
+          <ArticleSkeleton v-for="index in 2" :key="index" />
+        </div>
 
       <div style="margin-top:60px; display:block;"></div>
       <div v-if="feed">
           <Article v-for="article in older" :key="article.id" :data="article"/>
       </div>
       <div v-else>
-          <h2 style="text-align: center">Loading...</h2>
+          <ArticleSkeleton v-for="index in 6" :key="index" />
       </div>
     </div>
   </section>
@@ -25,13 +28,15 @@
 
 <script>
 import Article from '@/components/Article.vue';
+import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
 import moment from 'moment-timezone'
 import axios from 'axios';
 
 export default {
   name: 'Feed',
   components: {
-    Article
+    Article,
+    ArticleSkeleton
   },
   mounted(){
     this.getData();

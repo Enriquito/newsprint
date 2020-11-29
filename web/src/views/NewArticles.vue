@@ -12,7 +12,7 @@
             </button>
         </div>
         <div v-else>
-          <h3>No articles found</h3>
+          <ArticleSkeleton v-for="index in 6" :key="index" />
         </div>
     </div>
   </section>
@@ -21,11 +21,13 @@
 <script>
 import Article from '@/components/Article.vue';
 import axios from 'axios';
+import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
 
 export default {
   name: 'NewArticles',
   components: {
-    Article
+    Article,
+    ArticleSkeleton
   },
   mounted(){
     this.getData();

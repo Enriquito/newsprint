@@ -107,8 +107,6 @@ module.exports.addToFavorites = async (req,res) => {
 
         const article = await Article.findOne(req.body.id);
 
-        console.log(article);
-
         if(article === null){
             res.sendStatus(500);
             return;
@@ -137,6 +135,24 @@ module.exports.removeFromFavorites = async (req,res) => {
         article.removeFromFavorites();
 
         res.json(article);
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+module.exports.getFavoriteArticles = async (req,res) => {
+    try{
+        console.log(`GET /favorites/articles`);
+
+        const articles = await Article.getFavorites();
+
+        if(articles === null){
+            res.sendStatus(500);
+            return;
+        }
+
+        res.json(articles);
     }
     catch(error){
         console.log(error);

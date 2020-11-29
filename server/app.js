@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const feedRoutes = require('./controllers/feeds');
 const folderRoutes = require('./controllers/folders');
 const articleRoutes = require('./controllers/articles');
+const historyRoutes = require('./controllers/history');
 
 dotenv.config();
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -41,6 +42,12 @@ app.put('/articles/set/read', articleRoutes.setToRead)
 app.put('/articles/set/unread', articleRoutes.setToUnread)
 app.post('/articles/save/favorite', articleRoutes.addToFavorites)
 app.post('/articles/remove/favorite', articleRoutes.removeFromFavorites)
+app.get('/favorite/articles', articleRoutes.getFavoriteArticles)
+
+app.route('/history')
+.get(historyRoutes.getAll)
+.post(historyRoutes.create)
+
 
 app.listen(process.env.PORT, () => {
       console.log(`listening on port ${process.env.PORT}`)

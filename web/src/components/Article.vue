@@ -1,5 +1,5 @@
 <template>
-  <article>
+  <article v-if="data">
     <h2 v-if="!isOpen">{{data.title}}</h2>
     <a v-else :href="data.link" target="_blank"><h2>{{data.title}}</h2></a>
 
@@ -25,25 +25,30 @@
           <path id="ic_favorite_border_24px" d="M16.5,3A5.988,5.988,0,0,0,12,5.09,5.988,5.988,0,0,0,7.5,3,5.447,5.447,0,0,0,2,8.5c0,3.78,3.4,6.86,8.55,11.54L12,21.35l1.45-1.32C18.6,15.36,22,12.28,22,8.5A5.447,5.447,0,0,0,16.5,3ZM12.1,18.55l-.1.1-.1-.1C7.14,14.24,4,11.39,4,8.5A3.418,3.418,0,0,1,7.5,5a3.909,3.909,0,0,1,3.57,2.36h1.87A3.885,3.885,0,0,1,16.5,5,3.418,3.418,0,0,1,20,8.5C20,11.39,16.86,14.24,12.1,18.55Z" transform="translate(-2 -3)"/>
         </svg>
 
-        <svg class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 14 18">
+        <!-- <svg class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 14 18">
           <path id="ic_turned_in_not_24px" d="M17,3H7A2,2,0,0,0,5.01,5L5,21l7-3,7,3V5A2.006,2.006,0,0,0,17,3Zm0,15-5-2.18L7,18V5H17Z" transform="translate(-5 -3)"/>
-        </svg>
+        </svg> -->
       </div>
     </div>
 
     <div @click="open" v-if="isOpen" style="max-height:1500px; cursor: pointer;" id="article-content" v-html="content"></div>
     <div @click="open" v-else id="article-content" style="cursor: pointer;" v-html="content"></div>
   </article>
+  <ArticleSkeleton v-else />
 </template>
 <script>
 import moment from 'moment-timezone';
 import axios from 'axios';
+import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
 
 export default {
     name: "Article",
     mounted(){
       // this.searchImage();
       this.editLinkAttributes();
+    },
+    components:{
+      ArticleSkeleton
     },
     props: {
       data: Object,
@@ -84,6 +89,7 @@ export default {
       },
       setArticleToRead(){
         this.data.isRead = true;
+        this.AddToHistory();
         axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{id: this.data.id})
           .then(response => {
             if(response.status === 200){
@@ -104,7 +110,7 @@ export default {
             }
           })
           .catch(error => {
-            this.data.isRead = false;
+            this.data.isRead = true;
             console.log(error);
           });
       },
@@ -124,6 +130,12 @@ export default {
           this.data.favorites = true;
           console.log(error);
         })
+      },
+      AddToHistory(){
+        axios.post(`${process.env.VUE_APP_API}/history`, {article: this.data.id})
+        .catch(error => {
+          console.error(error);
+        });
       }
 
     },

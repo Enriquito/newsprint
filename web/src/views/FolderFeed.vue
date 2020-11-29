@@ -8,7 +8,7 @@
         </div>
       </div>
       <div v-else>
-        <h2 style="text-align: center">Loading...</h2>
+        <ArticleSkeleton v-for="index in 4" :key="index" />
       </div>
     </div>
   </section>
@@ -16,11 +16,13 @@
 
 <script>
 import Article from '@/components/Article.vue';
+import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
 
 export default {
   name: 'FolderFeed',
   components: {
-    Article
+    Article,
+    ArticleSkeleton
   },
   mounted(){
     this.getData();

@@ -58,6 +58,7 @@ class Article{
             });
       }
 
+      // Change user
       static getCountAllUnreadArticles(){
             return new Promise((resolve, reject) => {
                   const query = `
@@ -83,13 +84,22 @@ class Article{
             });
       }
 
+      // Change user
       static getAllUnreadArticles(min,max){
             return new Promise((resolve, reject) => {
-
-
-                  const query = `SELECT a.id, a.creator, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date
-                  FROM articles a JOIN feeds f ON f.id = a.feed
-                  WHERE a.is_read = 0 AND f.user = 1 ORDER BY DATE(a.iso_date) DESC LIMIT ? OFFSET ?
+                  const query = `SELECT DISTINCT
+                                    a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read,
+                                    CASE WHEN f.article IS NOT NULL THEN 1 ELSE 0 END as 'favorite'
+                                    FROM articles a
+                                    LEFT JOIN favorites f
+                                    ON a.id = f.article
+                                    LEFT JOIN users u
+                                    ON u.id = f.user
+                                    LEFT JOIN feeds fe
+                                    ON fe.id = a.feed
+                                    WHERE a.is_read = 0
+                                    AND fe.user = 1
+                                    ORDER BY DATE(a.iso_date) DESC LIMIT ? OFFSET ?
                   `;
                   database.query(query,[max,min], async (error, result) => {
                         if(error){
@@ -117,13 +127,7 @@ class Article{
                               article.content = f.content;
                               article.contentSnippet = f.content_snippet;
                               article.isoDate = f.iso_date
-
-                              try{
-                                    await article.isFavorite();
-                              }
-                              catch(error){
-                                    article.favorite = false;
-                              }
+                              article.favorite = f.favorite;
 
                               if(f.is_read == 1)
                                     article.isRead = true;
@@ -213,6 +217,7 @@ class Article{
             });
       }
 
+      // Change user
       AddToFavorites(){
             return new Promise((resolve, reject) => {
                   const toInsert = {
@@ -268,6 +273,56 @@ class Article{
 
 
                         resolve();
+                  });
+            });
+      }
+      // Change user
+      static getFavorites(){
+            return new Promise((resolve,reject) => {
+                  const query = `
+                        SELECT
+                        a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read,
+                        CASE WHEN f.article IS NOT NULL THEN 1 ELSE 0 END as 'favorite'
+                        FROM articles a
+                        LEFT JOIN favorites f
+                        ON a.id = f.article
+                        WHERE f.user = 1
+                        ORDER BY DATE(f.created) DESC
+                        `;
+
+                  database.query(query, (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
+
+                        const articles = [];
+
+                        for(let i = 0; i < result.length; i++){
+                              const f = result[i];
+
+                              const article = new Article();
+
+                              article.id = f.id;
+                              article.creator = f.creator;
+                              article.title = f.title;
+                              article.link = f.link;
+                              article.pubDate = f.pub_date;
+                              article.content = f.content;
+                              article.contentSnippet = f.content_snippet;
+                              article.isoDate = f.iso_date
+                              article.favorite = true;
+
+
+                              if(f.is_read == 1)
+                                    article.isRead = true;
+                              else
+                                    article.isRead = false;
+
+                              articles.push(article);
+                        }
+
+                        resolve(articles);
                   });
             });
       }
