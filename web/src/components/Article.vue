@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div @click="open" v-if="isOpen" style="max-height:1500px; cursor: pointer;" id="article-content" v-html="content"></div>
+    <div @click="open" v-if="isOpen" style="max-height:10000px; cursor: pointer;" id="article-content" v-html="content"></div>
     <div @click="open" v-else id="article-content" style="cursor: pointer;" v-html="content"></div>
   </article>
   <ArticleSkeleton v-else />
