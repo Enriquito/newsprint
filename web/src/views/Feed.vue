@@ -16,10 +16,14 @@
       <div v-if="feed">
         <div  v-if="older.length > 0">
           <Article v-for="article in older" :key="article.id" :data="article"/>
-          <button id="load-more-button" @click="loadMoreArticles">Load more articles</button>
+          
         </div>
         <div v-else>
-          <h2>No Articles found</h2>
+          <h2 v-if="!loadingNewData">No Articles found</h2>
+        </div>
+
+        <div v-if="older.length > 0 || newToday.length > 0">
+          <button id="load-more-button" @click="nextPage">Load more articles</button>
         </div>
       
       </div>
@@ -49,7 +53,8 @@ export default {
     return({
       feed: null,
       newToday: [],
-      older: []
+      older: [],
+      loadingNewData: false
     });
   },
   methods:{
@@ -59,6 +64,7 @@ export default {
           if(response.status === 200){
               this.feed = response.data;
               this.sortArticles();
+              this.loadingNewData = false;
           }
       });
     },
@@ -76,8 +82,7 @@ export default {
                 this.older.push(article);
         });
     },
-    loadMoreArticles(event){
-      event.preventDefault();
+    loadMoreArticles(){
       const page = parseInt(this.$route.params.page) + 1;
       this.$router.push({
         name: 'Feed', 
@@ -90,11 +95,21 @@ export default {
       this.older = [];
       this.new = [];
       this.getData();
+    },
+    nextPage(event){
+      event.preventDefault();
+      this.loadingNewData = true;
+      this.loadMoreArticles();
     }
   },
   watch:{
     feedId(){
       this.feed = null;
+      this.getData();
+    },
+    pageNum(){
+      this.older = [];
+      this.new = [];
       this.getData();
     }
   },
@@ -102,6 +117,13 @@ export default {
     feedId(){
       if(this.$route.params.feedId){
         return this.$route.params.feedId
+      }
+      else
+        return ""
+    },
+    pageNum(){
+       if(this.$route.params.page){
+        return this.$route.params.page
       }
       else
         return ""
