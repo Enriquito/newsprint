@@ -37,7 +37,7 @@ app.route('/articles/:id')
 .get(articleRoutes.findOne)
 
 app.get('/articles/count/unread', articleRoutes.unreadArticlesCount)
-app.get('/unread/articles/:minLimit/:maxLimit', articleRoutes.unreadArticles)
+app.get('/unread/articles', articleRoutes.unreadArticles)
 app.put('/articles/set/read', articleRoutes.setToRead)
 app.put('/articles/set/unread', articleRoutes.setToUnread)
 app.post('/articles/save/favorite', articleRoutes.addToFavorites)
