@@ -77,12 +77,12 @@ class Feed{
                   });
             })
       }
-
+      // Change user
       addToDefaultFolder(){
             return new Promise((resolve,reject) => {
                   const toInsert = {
                         feed: this.id,
-                        folder: 4,
+                        folder: 1,
                         user: 1
                   };
 
