@@ -156,10 +156,17 @@ class Feed{
                   try{
                         f = await parser.parseURL(url);
                         const temp = f.link.match(/( |https:\/\/|http:\/\/)([A-Za-z0-9]{1,10}\.?[A-Za-z]{1,}\.?[A-Za-z]{1,})(?: |\/|$)/);
+                        // console.log(url);
+                        // console.log(temp);
+                        // console.log('----')
+
+                        if(temp === null)
+                              this.iconUrl = null;
+                        else
+                              this.iconUrl = `${temp[1]+temp[2]}/favicon.ico`;
 
                         this.title = f.title;
                         this.description = f.description;
-                        this.iconUrl = `${temp[1]+temp[2]}/favicon.ico`;
                         this.feedUrl = f.feedUrl || url;
                         this.link = f.link;
                         this.language = f.language;
@@ -184,7 +191,7 @@ class Feed{
                   }
                   catch(error){
                         console.log(error);
-                        reject(null);
+                        resolve(this);
                   }
             });
       }
@@ -240,7 +247,9 @@ class Feed{
                               await article.createCategories();
                         }
                         catch(error){
-                              console.log(error);
+                              if(error.errno !== 1062){
+                                    console.log(error);
+                              }
                               failedInserts.push(article);
                         }
                   }
@@ -249,6 +258,28 @@ class Feed{
                   // console.log(failedInserts);
 
                   resolve();
+            });
+      }
+
+      static async getNewItems(){
+            // const feed = await Feed.findOne(1);
+            // await feed.getData('https://developer.apple.com/news/rss/news.rss');
+            // await feed.createArticles();
+            return new Promise( async (resolve, reject) => {
+                  database.query('SELECT id,feed_url FROM feeds', async (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
+
+                        for(let i = 0; i < result.length; i++){
+                              const feed = await Feed.findOne(result[i].id);
+                              await feed.getData(result[i].feed_url);
+                              await feed.createArticles();
+                        }
+
+                        resolve();
+                  });
             });
       }
 }
