@@ -5,6 +5,7 @@ import Feed from '../views/Feed.vue'
 import NewArticles from '../views/NewArticles.vue'
 import Favorites from '../views/Favorites.vue'
 import History from '../views/History.vue'
+import Test from '../views/Test.vue'
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,11 @@ const routes = [
     path: '/history',
     name: 'History',
     component: History,
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    component: Test,
   }
 ]
 
