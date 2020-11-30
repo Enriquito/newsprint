@@ -20,7 +20,7 @@ class History{
 
     static getAll(userId){
         return new Promise((resolve, reject) => {
-            database.query(`SELECT article FROM article_history WHERE user = ?`, [userId], async (error, result) => {
+            database.query(`SELECT article FROM article_history WHERE user = ? ORDER BY created DESC`, [userId], async (error, result) => {
                 if(error){
                       reject(error);
                       return;
