@@ -176,13 +176,17 @@ class Article{
 
                   database.query('INSERT INTO articles SET ?', [toInsert], (error, result) => {
                         if(error){
-                              console.log(error);
+                              // console.log(error);
                               reject(error);
                         }
 
-                        this.id = result.insertId
-
-                        resolve(this);
+                        if(result){
+                              this.id = result.insertId
+                              resolve(this);
+                        }
+                        else{
+                              reject();
+                        }
                   });
             });
       }
