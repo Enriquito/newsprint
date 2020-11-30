@@ -52,7 +52,7 @@ article .small-text
 }
 article .main-text
 {
-    width: 100%;
-    height: 100px;
+    width: 80%;
+    height: 150px;
 }
 </style>
