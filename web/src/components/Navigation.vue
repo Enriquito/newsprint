@@ -44,7 +44,7 @@
             </div>
             <ul class="feeds folder-holder">
                 <div v-if="data">
-                    <NavigationFolder name="All" :notifications="allFeeds.totalNotifications" :feeds="allFeeds.feeds" />
+                    <!-- <NavigationFolder name="All" :notifications="allFeeds.totalNotifications" :feeds="allFeeds.feeds" /> -->
                     <NavigationFolder @move="moveFeedToFolder" v-for="folder in data" :key="folder.id" :name="folder.name" :id="folder.id" :notifications="folder.totalUnread" :feeds="folder.feeds" />
                 </div>
             </ul>
