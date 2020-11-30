@@ -2,7 +2,9 @@ const Feed = require('../models/feed')
 
 module.exports.findOne = async (req,res) => {
     try{
-        console.log(`GET /feed/${req.params.id}`);
+        console.log(`GET /feeds/${req.params.id}`);
+        const max = parseInt(req.query.max) || 10;
+        const offset = parseInt(req.query.offset) || 0;
 
     //     const validator = Validator.ValidateID(req.params.id);
 
@@ -12,7 +14,7 @@ module.exports.findOne = async (req,res) => {
     //     }
 
         const feed = await Feed.findOne(req.params.id);
-        await feed.getArticles();
+        await feed.getArticles(max, offset);
 
         if(feed === null){
             res.sendStatus(404);
