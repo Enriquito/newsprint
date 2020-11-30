@@ -1,4 +1,5 @@
 const database = require('../database');
+const Feed = require('./feed');
 
 class Article{
       constructor(){
@@ -13,6 +14,7 @@ class Article{
             this.isRead;
             this.favorite = false;
             this.feedId;
+            this.feed;
             this.categories = [];
       }
 
@@ -40,8 +42,10 @@ class Article{
                         article.content = f.content;
                         article.contentSnippet = f.content_snippet;
                         article.isoDate = f.iso_date;
+                        
 
                         try{
+                              // article.feed = await Feed.findOne(f.feed);
                               await article.isFavorite();
                         }
                         catch(error){
@@ -128,6 +132,13 @@ class Article{
                               article.contentSnippet = f.content_snippet;
                               article.isoDate = f.iso_date
                               article.favorite = f.favorite;
+
+                              try{
+                                    // article.feed = await Feed.findOne(f.feed);
+                              }
+                              catch(error){
+                                    console.log(error);
+                              }
 
                               if(f.is_read == 1)
                                     article.isRead = true;
