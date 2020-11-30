@@ -17,7 +17,14 @@
             <li v-for="feed in feeds" :key="feed.id" class="d-flex align-items-center">
                 <div class="d-flex align-content-center" style="padding-left: 20px">
                     <img :src="feed.iconUrl" />
-                    <router-link :to="{name: 'Feed', params:{feedId: feed.id, feedName: urlFriendlyTitle(feed.title)}}">{{feed.title}}</router-link>
+                    <router-link :to="{
+                        name: 'Feed', 
+                        params:{
+                            feedId: feed.id, 
+                            feedName: urlFriendlyTitle(feed.title),
+                            page: 1
+                        }
+                    }">{{feed.title}}</router-link>
                     <small>{{getNotificationCount(feed.unreadArticles)}}</small>
                 </div>
             </li>
