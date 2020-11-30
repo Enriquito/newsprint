@@ -39,7 +39,7 @@ export default {
   },
   methods:{
     getData(){
-      axios.get(`${process.env.VUE_APP_API}/unread/articles/${(this.$route.params.page - 1) * 10}/${this.$route.params.page * 10}`)
+      axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.$route.params.page * 10}`)
         .then(response => {
           if(response.status === 200){
               this.articles = response.data;
