@@ -6,7 +6,8 @@
           <Article v-for="article in data" :key="article.id" :data="article" />
         </div>
         <div v-else>
-          <h2>You dont have any favorite articles yet.</h2>
+          <h2>You dont have favorite articles yet.</h2>
+          <h5>Click the heart left of the article to favorite the article.</h5>
         </div>
     </div>
     <div v-else>
