@@ -45,9 +45,12 @@ module.exports.unreadArticlesCount = async (req,res) => {
 }
 module.exports.unreadArticles = async (req,res) => {
     try{
-        console.log(`GET /unread/articles/${req.params.minLimit}/${req.params.maxLimit}`);
+        console.log(`GET /unread/articles`);
 
-        const articleCount = await Article.getAllUnreadArticles(parseInt(req.params.minLimit),parseInt(req.params.maxLimit));
+        const offset = parseInt(req.query.offset);
+        const max = parseInt(req.query.max);
+
+        const articleCount = await Article.getAllUnreadArticles(offset, max);
 
         if(articleCount === null){
             res.sendStatus(500);
