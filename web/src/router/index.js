@@ -20,7 +20,7 @@ const routes = [
     component: FolderFeed
   },
   {
-    path: '/feed/:feedId/:feedName',
+    path: '/feed/:feedId/:feedName/page/:page',
     name: 'Feed',
     component: Feed
   },
