@@ -27,7 +27,7 @@
         </div>
       
       </div>
-      <div v-else>
+      <div v-else-if="!feed || loadingNewData">
           <ArticleSkeleton v-for="index in 4" :key="index" />
       </div>
     </div>
