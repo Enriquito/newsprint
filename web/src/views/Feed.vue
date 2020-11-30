@@ -11,16 +11,19 @@
             </div>
             <div style="border: 1px solid rgba(0,0,0,0.1); margin-top: 60px;"></div>
         </div>
-        <div v-else>
-          <ArticleSkeleton v-for="index in 2" :key="index" />
-        </div>
 
       <div style="margin-top:60px; display:block;"></div>
       <div v-if="feed">
+        <div  v-if="older.length > 0">
           <Article v-for="article in older" :key="article.id" :data="article"/>
+        </div>
+        <div v-else>
+          <h2>No Articles found</h2>
+        </div>
+          
       </div>
       <div v-else>
-          <ArticleSkeleton v-for="index in 6" :key="index" />
+          <ArticleSkeleton v-for="index in 4" :key="index" />
       </div>
     </div>
   </section>
@@ -75,6 +78,7 @@ export default {
   },
   watch:{
     feedId(){
+      this.feed = null;
       this.getData();
     }
   },
