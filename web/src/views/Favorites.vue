@@ -2,7 +2,12 @@
   <section>
     <h1>Favorites</h1>
     <div v-if="data">
-        <Article v-for="article in data" :key="article.id" :data="article" />
+        <div v-if="data.length > 0">
+          <Article v-for="article in data" :key="article.id" :data="article" />
+        </div>
+        <div v-else>
+          <h2>You dont have any favorite articles yet.</h2>
+        </div>
     </div>
     <div v-else>
       <ArticleSkeleton v-for="index in 2" :key="index" />
