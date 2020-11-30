@@ -1,8 +1,20 @@
 <template>
   <article>
-    <div class="heading"></div>
-    <div class="small-text"></div>
-    <div class="main-text"></div>
+    <div class="heading block"></div>
+    <div class="d-flex align-items-center">
+        <div class="d-flex justyfy-content-start">
+            <div class="small-text d-flex justify-content-start block"></div>
+        </div>
+        <div class="d-flex justify-content-end" style="flex-grow: 1">
+            <div class="d-flex">
+               <div class="circle block"></div>
+               <div class="circle block"></div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="main-text block"></div>
   </article>
 </template>
 <script>
@@ -16,13 +28,13 @@ export default {
         background: rgba(0, 0, 0, 0.2);
     }
     25%{
-        background: rgba(0, 0, 0, 0.25);
-    }
-    50%{
         background: rgba(0, 0, 0, 0.3);
     }
+    50%{
+        background: rgba(0, 0, 0, 0.4);
+    }
     75%{
-        background: rgba(0, 0, 0, 0.25);
+        background: rgba(0, 0, 0, 0.3);
     }
     100%{
         background: rgba(0, 0, 0, 0.2);
@@ -31,11 +43,13 @@ export default {
 article
 {
     margin-top: 30px;
+    padding: 10px;
+    width: 1024px;
 }
-article > *
+.block
 {
     margin: 5px 0;
-    background: rgba(0, 0, 0, 0.616);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     animation: loading 4s infinite;
 }
@@ -45,14 +59,21 @@ article .heading
     height: 30px;
 
 }
-article .small-text
+article div .small-text
 {
     width: 100px;
     height: 10px;
 }
 article .main-text
 {
-    width: 80%;
+    width: 100%;
     height: 150px;
+}
+.circle
+{
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    margin: 0 2px;
 }
 </style>
