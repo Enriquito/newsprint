@@ -45,7 +45,7 @@
             <ul class="feeds folder-holder">
                 <div v-if="data">
                     <NavigationFolder name="All" :notifications="allFeeds.totalNotifications" :feeds="allFeeds.feeds" />
-                    <NavigationFolder v-for="folder in data" :key="folder.id" :name="folder.name" :notifications="folder.totalUnread" :feeds="folder.feeds" />
+                    <NavigationFolder @move="moveFeedToFolder" v-for="folder in data" :key="folder.id" :name="folder.name" :id="folder.id" :notifications="folder.totalUnread" :feeds="folder.feeds" />
                 </div>
             </ul>
         </div>
@@ -119,6 +119,34 @@ export default {
                 return "";
             else
                 return num;
+        },
+        moveFeedToFolder(obj){
+            this.data.forEach(folder => {
+                if(folder.id === obj.folderId){
+                    folder.feeds.push(obj.feed);
+                    this.data.forEach(folder => {
+                        if(folder.id === obj.currentFolderId){
+                            folder.feeds.forEach((feed, index) => {
+                                if(feed.id === obj.feed.id){
+                                    folder.feeds.splice(index, 1);
+                                    this.changeFolderRequest(obj.currentFolderId, obj.folderId, obj.feed.id)
+                                    return;
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        },
+        changeFolderRequest(from, to, feedId){
+            axios.post(`${process.env.VUE_APP_API}/move/feeds`, {
+                from: from,
+                to: to,
+                feedId: feedId
+            })
+            .catch(error => {
+                console.error(error);
+            })
         }
     },
     computed:{

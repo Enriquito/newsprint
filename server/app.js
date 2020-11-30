@@ -43,6 +43,7 @@ app.put('/articles/set/unread', articleRoutes.setToUnread)
 app.post('/articles/save/favorite', articleRoutes.addToFavorites)
 app.post('/articles/remove/favorite', articleRoutes.removeFromFavorites)
 app.get('/favorite/articles', articleRoutes.getFavoriteArticles)
+app.post('/move/feeds', feedRoutes.moveToFolder)
 
 app.route('/history')
 .get(historyRoutes.getAll)

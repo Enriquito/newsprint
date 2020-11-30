@@ -282,6 +282,28 @@ class Feed{
                   });
             });
       }
+
+      // Change user id
+      moveToFolder(from, to){
+            return new Promise((resolve, reject) => {
+                  const toInsert = {
+                        feed: this.id,
+                        folder: to,
+                        user : 1
+                  }
+
+                  const query = `DELETE FROM feed_folder_assignments WHERE feed = ? AND folder = ? AND user = ?; INSERT INTO feed_folder_assignments SET ?`;
+      
+                  database.query(query, [this.id, from, 1, toInsert], async (error, result) => {
+                      if(error){
+                              reject(error);
+                              return;
+                      }
+      
+                      resolve();
+                  });
+              });
+      }
 }
 
 module.exports = Feed;

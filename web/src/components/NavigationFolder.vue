@@ -1,5 +1,5 @@
 <template>
-    <li>
+    <li  @drop="onDrop($event, id)">
         <div @click="open" class="d-flex align-items-center">
             <svg v-if="!isOpen" class="close" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 7.41 12">
                 <path id="ic_chevron_right_24px" d="M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z" transform="translate(-8.59 -6)"/>
@@ -8,13 +8,13 @@
                 <path id="ic_chevron_right_24px" d="M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z" transform="translate(-8.59 -6)"/>
             </svg>
 
-            <strong>{{name}}</strong>
+            <strong @dragover.prevent @dragenter.prevent>{{name}}</strong>
             <small>{{getNotificationCount(totalNotifications)}}</small>
         </div>
 
 
         <ul v-if="feeds && isOpen">
-            <li v-for="feed in feeds" :key="feed.id" class="d-flex align-items-center">
+            <li draggable @dragstart="startDrag($event, feed, id)" v-for="feed in feeds" :key="feed.id" class="d-flex align-items-center">
                 <div class="d-flex align-content-center" style="padding-left: 20px">
                     <img :src="feed.iconUrl" />
                     <router-link :to="{
@@ -36,7 +36,8 @@ export default {
     name: "NavigationFolder",
     props:{
         name: String,
-        feeds: Array
+        feeds: Array,
+        id : Number
     },
     data(){
         return({
@@ -63,6 +64,15 @@ export default {
             let res = name;
             res = res.replaceAll('-', '');
             return res.replaceAll(' ', '');
+        },
+        startDrag(event, feed, currentFolderId){
+            event.dataTransfer.dropEffect = 'move'
+            event.dataTransfer.effectAllowed = 'move'
+            event.dataTransfer.setData('feed', JSON.stringify({feed: feed, currentFolderId: currentFolderId}))
+        },
+        onDrop(event, folderId){
+            const obj = JSON.parse(event.dataTransfer.getData('feed'));
+            this.$emit('move', {folderId: folderId, feed: obj.feed, currentFolderId: obj.currentFolderId});
         }
     },
     computed:{

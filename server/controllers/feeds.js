@@ -51,3 +51,24 @@ module.exports.create = async (req,res) => {
         res.sendStatus(500);
     }
 }
+module.exports.moveToFolder = async (req,res) => {
+    console.log(`POST move/feeds/`);
+    // const validator = Validator.NewBlockData(req.body);
+
+    // if(validator.error){
+    //     res.status(400).json({error: validator.error});
+    //     return;
+    // }
+
+    try{
+        const feed = await Feed.findOne(req.body.feedId);
+
+        await feed.moveToFolder(req.body.from, req.body.to);
+
+        res.status(201);
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
