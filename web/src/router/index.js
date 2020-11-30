@@ -25,7 +25,7 @@ const routes = [
     component: Feed
   },
   {
-    path: '/new/:page',
+    path: '/new/page/:page',
     name: 'NewArticles',
     component: NewArticles,
   },
