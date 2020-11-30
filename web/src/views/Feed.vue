@@ -16,11 +16,12 @@
       <div v-if="feed">
         <div  v-if="older.length > 0">
           <Article v-for="article in older" :key="article.id" :data="article"/>
+          <button id="load-more-button" @click="loadMoreArticles">Load more articles</button>
         </div>
         <div v-else>
           <h2>No Articles found</h2>
         </div>
-          
+      
       </div>
       <div v-else>
           <ArticleSkeleton v-for="index in 4" :key="index" />
@@ -53,7 +54,7 @@ export default {
   },
   methods:{
     getData(){
-      axios.get(`${process.env.VUE_APP_API}/feeds/${this.feedId}`)
+      axios.get(`${process.env.VUE_APP_API}/feeds/${this.feedId}/?offset=${(this.$route.params.page - 1) * 10}&max=${this.$route.params.page * 10}`)
         .then(response => {
           if(response.status === 200){
               this.feed = response.data;
@@ -74,6 +75,21 @@ export default {
             else
                 this.older.push(article);
         });
+    },
+    loadMoreArticles(event){
+      event.preventDefault();
+      const page = parseInt(this.$route.params.page) + 1;
+      this.$router.push({
+        name: 'Feed', 
+        params: {
+          page: page,
+          feedId: this.$route.params.feedId, 
+          feedName: this.$route.params.feedName,
+        }
+        });
+      this.older = [];
+      this.new = [];
+      this.getData();
     }
   },
   watch:{
@@ -115,5 +131,23 @@ section span
   font-weight: 100;
   font-size: 25px;
   font-style: italic;
+}
+button
+{
+      border: 1px solid rgba(0,0,0,0.1);
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8em;
+      width: 1024px;
+      background: none;
+      border-radius: 10px;
+      margin-top: 50px;
+      color: inherit;
+      background: #FC7C7C;
+      color: #FFF;
+      outline: none;
 }
 </style>
