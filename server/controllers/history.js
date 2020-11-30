@@ -26,8 +26,6 @@ module.exports.create = async (req,res) => {
         const maxHistoryRows = 25;
         const rowsInDB = await History.getHistoryItemsCount(userId);
 
-        console.log(rowsInDB);
-
         if(rowsInDB === maxHistoryRows)
             await History.destroyNextInLine(userId);
 
