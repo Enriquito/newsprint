@@ -13,9 +13,11 @@
         </div>
 
 
-        <ul v-if="feeds && isOpen">
-            <li draggable @dragstart="startDrag($event, feed, id)" v-for="feed in feeds" :key="feed.id" class="d-flex align-items-center">
-                <div class="d-flex align-content-center" style="padding-left: 20px">
+
+         <ul v-if="feeds && isOpen">
+             <NavigationFolderFeed v-for="feed in feeds" :key="feed.id" :feed="feed"  />
+         <!--   <li draggable @dragstart="startDrag($event, feed, id)" v-for="feed in feeds" :key="feed.id" class="d-flex align-items-center">
+                <div @mouseenter="hoverName" class="d-flex align-content-center" style="padding-left: 20px">
                     <img :src="feed.iconUrl" />
                     <router-link :to="{
                         name: 'Feed',
@@ -24,16 +26,20 @@
                             feedName: urlFriendlyTitle(feed.title),
                             page: 1
                         }
-                    }">{{feed.title}}</router-link>
+                    }">{{feedName(feed)}}</router-link>
                     <small>{{getNotificationCount(feed.unreadArticles)}}</small>
                 </div>
-            </li>
+            </li> -->
         </ul>
     </li>
 </template>
 <script>
+import NavigationFolderFeed from '@/components/NavigationFolderFeed.vue';
 export default {
     name: "NavigationFolder",
+    components:{
+        NavigationFolderFeed
+    },
     props:{
         name: String,
         feeds: Array,
@@ -64,6 +70,18 @@ export default {
             let res = name;
             res = res.replaceAll('-', '');
             return res.replaceAll(' ', '');
+        },
+        feedName(feed){
+            console.log(feed);
+            if(feed.displayName !== null){
+                console.log('oi');
+                return feed.displayName;
+            }
+            else{
+                console.log(true);
+                return feed.title;
+            }
+
         },
         startDrag(event, feed, currentFolderId){
             event.dataTransfer.dropEffect = 'move'

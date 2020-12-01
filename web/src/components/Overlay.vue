@@ -10,14 +10,17 @@
 
 export default {
   name: 'Overlay',
-
+    props:{
+        name: String
+    },
     mounted(){
-      this.$eventHub.$on('toggle-overlay', () => {
-            if(this.open)
-                this.open = false;
-            else
-                this.open = true;
-      })
+        console.log(`toggle-overlay-${this.name}`);
+        this.$eventHub.$on(`toggle-overlay-${this.name}`, () => {
+                if(this.open)
+                    this.open = false;
+                else
+                    this.open = true;
+        })
     },
     data(){
         return({

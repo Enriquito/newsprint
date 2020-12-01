@@ -16,7 +16,7 @@
       <div v-if="feed">
         <div  v-if="older.length > 0">
           <Article v-for="article in older" :key="article.id" :data="article"/>
-          
+
         </div>
         <div v-else>
           <h2 v-if="!loadingNewData">No Articles found</h2>
@@ -25,7 +25,7 @@
         <div v-if="older.length > 0 || newToday.length > 0">
           <button id="load-more-button" @click="nextPage">Load more articles</button>
         </div>
-      
+
       </div>
       <div v-else-if="!feed || loadingNewData">
           <ArticleSkeleton v-for="index in 4" :key="index" />
@@ -85,10 +85,10 @@ export default {
     loadMoreArticles(){
       const page = parseInt(this.$route.params.page) + 1;
       this.$router.push({
-        name: 'Feed', 
+        name: 'Feed',
         params: {
           page: page,
-          feedId: this.$route.params.feedId, 
+          feedId: this.$route.params.feedId,
           feedName: this.$route.params.feedName,
         }
         });

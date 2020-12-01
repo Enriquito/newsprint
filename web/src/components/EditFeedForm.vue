@@ -1,15 +1,25 @@
 <template>
-    <Overlay name="add-feed">
-        <h2>Add Feed</h2>
+    <Overlay :name="`edit-feed-${feed.id}`">
+        <h2>Edit Feed</h2>
         <div>
-            <label>Feed</label>
+            <label>Name</label>
             <br />
-            <input type="text" v-model="url" placeholder="Enter the feed url" />
-            </div>
+            <input type="text" disabled v-model="feed.title" placeholder="Enter the feed url" />
+        </div>
         <div>
-            <label>Display name</label>
+            <label>Display Name</label>
             <br />
-            <input type="text" max="30" v-model="displayName" placeholder="Enter a custom display name" />
+            <input type="text" v-model="feed.displayName" placeholder="Enter the feed url" />
+        </div>
+        <div>
+            <label>Icon adres</label>
+            <br />
+            <input type="text" v-model="feed.iconUrl" placeholder="Enter a custom display name" />
+        </div>
+        <div>
+            <label>Feed adres</label>
+            <br />
+            <input type="text" v-model="feed.feedUrl" placeholder="Enter a custom display name" />
         </div>
         <div>
             <label>Folder</label>
@@ -28,7 +38,6 @@
                         <path id="ic_chevron_right_24px" d="M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z" transform="translate(-8.59 -6)"/>
                     </svg>
                 </div>
-
             </div>
 
             <div style="margin-top: 10px" class="d-flex justify-content-center">
@@ -42,24 +51,27 @@ import Overlay from '@/components/Overlay.vue';
 import axios from 'axios';
 
 export default {
-    name: "AddFeedForm",
+    name: "EditFeedForm",
     components:{
         Overlay
     },
     mounted(){
-        this.folders = this.$store.state.folders;
+        this.getFolders();
+    },
+    updated(){
         this.folderId = this.folders[0].id;
     },
     data(){
       return({
-          url: null,
-          displayName: null,
-          folderId: null,
           buttonText: "Save",
+          folders: null,
           addingNewFolder: false,
-          newFolderName: null,
-          folders: null
+          folderId: null,
+          newFolderName: null
       });
+    },
+    props:{
+        feed: Object
     },
     methods:{
         async createFeed(){
@@ -123,6 +135,9 @@ export default {
         },
         async createFolder(){
             return axios.post('/folders',{name: this.newFolderName});
+        },
+        getFolders(){
+            this.folders = this.$store.state.folders;
         }
     }
 }

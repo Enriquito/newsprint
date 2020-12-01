@@ -39,7 +39,7 @@
                     <path id="ic_add_24px" d="M19,13H13v6H11V13H5V11h6V5h2v6h6Z" transform="translate(-5 -5)"/>
                 </svg>
                 <div class="d-flex align-items-center" style="cursor:default">
-                    <AddFeedForm :folders="data" />
+                    <AddFeedForm v-if="data" :folders="data" />
                 </div>
             </div>
             <ul class="feeds folder-holder">
@@ -78,7 +78,7 @@ export default {
     },
     methods:{
         openAddFeedPopUp(){
-            this.$eventHub.$emit('toggle-overlay');
+            this.$eventHub.$emit('toggle-overlay-add-feed');
         },
         getData(){
             axios.get(`${process.env.VUE_APP_API}/folders`)
