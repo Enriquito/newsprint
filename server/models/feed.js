@@ -5,7 +5,7 @@ class Feed{
       constructor(){
             this.id;
             this.user = 1;
-            this.displayname = "test";
+            this.displayname;
             this.iconUrl;
             this.title;
             this.description;
@@ -78,11 +78,11 @@ class Feed{
             })
       }
       // Change user
-      addToDefaultFolder(){
+      addToFolder(folderId){
             return new Promise((resolve,reject) => {
                   const toInsert = {
                         feed: this.id,
-                        folder: 1,
+                        folder: folderId,
                         user: 1
                   };
 
@@ -200,6 +200,7 @@ class Feed{
             return new Promise((resolve,reject) => {
 
                   const toInsert = {
+                        display_name: this.displayname,
                         user: this.user,
                         title: this.title,
                         description: this.description,
@@ -218,14 +219,6 @@ class Feed{
                         }
 
                         this.id = result.insertId
-
-                        try{
-                              await this.addToDefaultFolder();
-                        }
-                        catch(error){
-                              reject(error);
-                              return;
-                        }
 
                         resolve(this);
                   });
@@ -293,13 +286,13 @@ class Feed{
                   }
 
                   const query = `DELETE FROM feed_folder_assignments WHERE feed = ? AND folder = ? AND user = ?; INSERT INTO feed_folder_assignments SET ?`;
-      
+
                   database.query(query, [this.id, from, 1, toInsert], async (error, result) => {
                       if(error){
                               reject(error);
                               return;
                       }
-      
+
                       resolve();
                   });
               });
