@@ -35,7 +35,7 @@
         <div>
             <div style="padding-left: 60px; padding-top: 20px;" class="d-flex align-items-center">
                 <span>Feeds</span>
-                <svg style="cursor: pointer" @click="openAddFeedPopUp" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                <svg v-if="data" style="cursor: pointer" @click="openAddFeedPopUp" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
                     <path id="ic_add_24px" d="M19,13H13v6H11V13H5V11h6V5h2v6h6Z" transform="translate(-5 -5)"/>
                 </svg>
                 <div class="d-flex align-items-center" style="cursor:default">
