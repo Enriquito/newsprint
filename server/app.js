@@ -32,6 +32,7 @@ app.route('/folders/:id')
 
 app.route('/folders')
 .get(folderRoutes.findFoldersByUser)
+.post(folderRoutes.create)
 
 app.route('/articles/:id')
 .get(articleRoutes.findOne)
