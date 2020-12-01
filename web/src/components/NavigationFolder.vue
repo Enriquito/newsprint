@@ -18,9 +18,9 @@
                 <div class="d-flex align-content-center" style="padding-left: 20px">
                     <img :src="feed.iconUrl" />
                     <router-link :to="{
-                        name: 'Feed', 
+                        name: 'Feed',
                         params:{
-                            feedId: feed.id, 
+                            feedId: feed.id,
                             feedName: urlFriendlyTitle(feed.title),
                             page: 1
                         }
@@ -89,6 +89,10 @@ export default {
 }
 </script>
 <style scoped>
+    .router-link-active, .router-link-exact-active
+    {
+        color: #5867FC !important;
+    }
     nav ul li
     {
         margin-bottom: 10px;
