@@ -40,9 +40,17 @@ module.exports.create = async (req,res) => {
     try{
         const feed = new Feed();
 
+        if(req.body.displayName)
+            feed.displayName = req.body.displayName
+
         await feed.getData(req.body.feedUrl);
         await feed.create();
         await feed.createArticles();
+
+        if(req.body.folderId === undefined)
+            await feed.addToFolder(1);
+        else
+            await feed.addToFolder(req.body.folderId);
 
         res.status(201).json(feed);
     }
