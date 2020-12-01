@@ -1,7 +1,6 @@
 <template>
   <section>
     <h1>History</h1>
-
     <div>
       <span>Last 25 articles read</span>
         <div v-if="data">
