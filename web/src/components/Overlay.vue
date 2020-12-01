@@ -66,7 +66,7 @@ export default {
 }
 #overlay .content select
 {
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 5px;
     border: 1px solid rgba(0,0,0, 0.1);
     outline: none;
@@ -75,7 +75,7 @@ export default {
 #overlay .content button
 {
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 100px;
     background: #fff;
     border: 1px solid rgba(0,0,0, 0.1);
