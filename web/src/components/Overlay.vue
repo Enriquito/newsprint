@@ -14,7 +14,6 @@ export default {
         name: String
     },
     mounted(){
-        console.log(`toggle-overlay-${this.name}`);
         this.$eventHub.$on(`toggle-overlay-${this.name}`, () => {
                 if(this.open)
                     this.open = false;
