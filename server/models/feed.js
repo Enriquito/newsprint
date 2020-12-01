@@ -5,6 +5,7 @@ class Feed{
       constructor(){
             this.id;
             this.user = 1;
+            this.folderId;
             this.displayName;
             this.iconUrl;
             this.title;
@@ -20,7 +21,16 @@ class Feed{
 
       static findOne(id){
             return new Promise( async (resolve, reject) => {
-                  database.query('SELECT * FROM feeds WHERE id = ?', [id], async (error, result) => {
+                  const query = `SELECT
+                  f.id, f.user, fo.id as 'folder', f.display_name, f.title, f.description, f.icon_url, f.feed_url, f.link, f.language, f.last_build_date, f.last_scan_date
+                  FROM feeds f
+                  JOIN feed_folder_assignments ffa
+                  ON ffa.feed = f.id
+                  JOIN folders fo
+                  ON fo.id = ffa.folder
+                  WHERE f.id = ?
+                  `;
+                  database.query(query, [id], async (error, result) => {
                         if(error){
                               console.log(error);
                               reject(error);
@@ -36,6 +46,7 @@ class Feed{
                         const feed = new Feed();
 
                         feed.id = f.id;
+                        feed.folderId = f.folder;
                         feed.displayName = f.display_name;
                         feed.title = f.title;
                         feed.description = f.description;
