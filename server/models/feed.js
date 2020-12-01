@@ -5,7 +5,7 @@ class Feed{
       constructor(){
             this.id;
             this.user = 1;
-            this.displayname;
+            this.displayName;
             this.iconUrl;
             this.title;
             this.description;
@@ -36,6 +36,7 @@ class Feed{
                         const feed = new Feed();
 
                         feed.id = f.id;
+                        feed.displayName = f.display_name;
                         feed.title = f.title;
                         feed.description = f.description;
                         feed.iconUrl = f.icon_url;
@@ -200,7 +201,7 @@ class Feed{
             return new Promise((resolve,reject) => {
 
                   const toInsert = {
-                        display_name: this.displayname,
+                        display_name: this.displayName,
                         user: this.user,
                         title: this.title,
                         description: this.description,
