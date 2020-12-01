@@ -1,16 +1,44 @@
 <template>
   <section>
-        <h1>Test</h1>
-        <ArticleSkeleton />
+        <h1 @click="test">Test</h1>
+        <Overlay>
+          <h2>Test</h2>
+          <div>
+            <label>Feed</label>
+            <br />
+            <input type="text" placeholder="Enter the feed url" />
+          </div>
+          <div>
+            <label>Display name</label>
+            <br />
+            <input type="text" placeholder="Enter a custom display name" />
+          </div>
+          <div>
+            <label>Folder</label>
+            <br />
+            <select>
+              <option>News</option>
+              <option>Technology</option>
+            </select>
+            <div style="margin-top: 10px" class="d-flex justify-content-center">
+              <button>Save</button>
+            </div>
+          </div>
+        </Overlay>
   </section>
 </template>
 <script>
-import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
+import Overlay from '@/components/Overlay.vue';
 
 export default {
     name: "Test",
     components: {
-          ArticleSkeleton
+          Overlay
+    },
+    methods:{
+      test(){
+        this.$eventHub.$emit('toggle-overlay');
+      }
     }
 }
 </script>
@@ -31,5 +59,6 @@ section h1
     margin-top: 70px;
     margin-bottom: 60px;
 }
+
 
 </style>
