@@ -1,86 +1,109 @@
 <template>
-    <div id="add-feed">
-        <div style="height: 100%" class="d-flex">
-            <input id="feed-url" type="text" placeholder="Feed url" />
-            <button @click="createFeed" >Add</button>
+    <Overlay>
+        <h2>Add Feed</h2>
+        <div>
+            <label>Feed</label>
+            <br />
+            <input type="text" v-model="url" placeholder="Enter the feed url" />
+            </div>
+        <div>
+            <label>Display name</label>
+            <br />
+            <input type="text" max="30" v-model="displayName" placeholder="Enter a custom display name" />
         </div>
-    </div>
+        <div>
+            <label>Folder</label>
+            <br />
+            <div class="d-flex align-items-center">
+                <select v-if="!addingNewFolder" v-model="folderId">
+                    <option v-for="folder in folders" :key="folder.id" :value="folder.id">{{folder.name}}</option>
+                </select>
+                <input v-else style="height: 33px;" type="text" v-model="newFolderName" placeholder="Enter a name for your new folder"/>
+
+                <svg v-if="!addingNewFolder" @click="toggleNewFolderfield" style="cursor: pointer; margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                    <path id="ic_add_24px" d="M19,13H13v6H11V13H5V11h6V5h2v6h6Z" transform="translate(-5 -5)"/>
+                </svg>
+                <div v-else class="d-flex align-items-center">
+                    <button style="margin-left: 20px; padding: 0; width: 60px;">Add</button>
+                    <svg @click="toggleNewFolderfield" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 7.41 12">
+                        <path id="ic_chevron_right_24px" d="M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z" transform="translate(-8.59 -6)"/>
+                    </svg>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 10px" class="d-flex justify-content-center">
+                <button @click="createFeed">{{buttonText}}</button>
+            </div>
+        </div>
+    </Overlay>
 </template>
 <script>
-// import moment from 'moment-timezone';
+import Overlay from '@/components/Overlay.vue';
 import axios from 'axios';
 
 export default {
     name: "AddFeedForm",
+    components:{
+        Overlay
+    },
+    mounted(){
+        this.folderId = this.folders[0].id;
+    },
     data(){
       return({
-
+          url: null,
+          displayName: null,
+          folderId: null,
+          buttonText: "Save",
+          addingNewFolder: false,
+          newFolderName: null
       });
+    },
+    props:{
+        folders: Array
     },
     methods:{
         createFeed(){
-            const inpVal = document.getElementById('feed-url').value;
-
-            if(inpVal === ''){
+            if(this.url === '' || this.url === null){
                 alert('No url found');
+                return;
             }
 
+            this.buttonText = "Saving..."
+
             axios.post(`${process.env.VUE_APP_API}/feeds`,{
-                feedUrl: inpVal
+                feedUrl: this.url,
+                displayName: this.displayName,
+                folderId: this.folderId
             })
             .then(result => {
                 if(result.status === 201){
-                    console.log('Success!');
+                    this.$eventHub.$emit('updateNavigation');
+                    this.resetInputFields();
+                    this.$eventHub.$emit('toggle-overlay');
                 }
             })
             .catch(error => {
                 alert('error adding feed');
                 console.log(error);
             });
-        }
-    },
-    computed:{
+        },
+        resetInputFields(){
+            this.buttonText = "Save";
+            this.url = null;
+            this.displayName = null;
+            this.folderId = this.folders[0].id;
+            this.addingNewFolder = false;
+        },
+        toggleNewFolderfield(event){
+            event.preventDefault();
 
+            if(this.addingNewFolder)
+                this.addingNewFolder = false;
+            else
+                this.addingNewFolder = true;
+        }
     }
 }
 </script>
-<style scoped>
-#add-feed
-{
-    width: auto;
-    height: 35px;
-    background: #FFF;
-    border-radius: 10px;
-    position: absolute;
-    bottom: -5px;
-    z-index: 999;
-    box-shadow: 1px 1px 8px #0000001a;
-    display: flex;
-    align-items: center;
-    border-radius: 10px;
-    justify-content: center;
-    right: -150px;
-}
-#add-feed input[type='text']
-{
-    border-radius: 5px;
-    padding: 3px 10px;
-    width: 250px;
-    outline: none;
-    height: 100%;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border: none;
-}
-#add-feed button
-{
-    border: none;
-    border-radius: 5px;
-    padding: 5px 15px;
-    background: #56FC86;
-    color: white;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    outline: none;
-}
-</style>
