@@ -56,10 +56,11 @@ export default {
         Overlay
     },
     mounted(){
-        this.getFolders();
+        this.folders = this.$store.state.folders;
+        this.folderId = this.feed.folderId;
     },
     updated(){
-        this.folderId = this.folders[0].id;
+
     },
     data(){
       return({
@@ -136,9 +137,6 @@ export default {
         async createFolder(){
             return axios.post('/folders',{name: this.newFolderName});
         },
-        getFolders(){
-            this.folders = this.$store.state.folders;
-        }
     }
 }
 </script>
