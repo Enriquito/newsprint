@@ -39,7 +39,7 @@
                     <path id="ic_add_24px" d="M19,13H13v6H11V13H5V11h6V5h2v6h6Z" transform="translate(-5 -5)"/>
                 </svg>
                 <div class="d-flex align-items-center" style="cursor:default">
-                    <AddFeedForm v-if="IsOpenAddFeed" />
+                    <AddFeedForm :folders="data" />
                 </div>
             </div>
             <ul class="feeds folder-holder">
@@ -72,22 +72,16 @@ export default {
     },
     data(){
         return({
-            IsOpenAddFeed: false,
             data: null,
             unreadArticles: 0
         });
     },
     methods:{
         openAddFeedPopUp(){
-            if(this.IsOpenAddFeed){
-                this.IsOpenAddFeed = false;
-            }
-            else{
-                this.IsOpenAddFeed = true;
-            }
+            this.$eventHub.$emit('toggle-overlay');
         },
         getData(){
-            axios.get(`${process.env.VUE_APP_API}/folders/user/1`)
+            axios.get(`${process.env.VUE_APP_API}/folders`)
             .then(response => {
                 if(response.status === 200){
                     this.$store.commit('setFolders', response.data);
@@ -121,6 +115,9 @@ export default {
                 return num;
         },
         moveFeedToFolder(obj){
+            if(obj.currentFolderId === obj.folderId)
+                return;
+
             this.data.forEach(folder => {
                 if(folder.id === obj.folderId){
                     folder.feeds.push(obj.feed);
@@ -145,6 +142,7 @@ export default {
                 feedId: feedId
             })
             .catch(error => {
+                alert('Error moving feed to folder');
                 console.error(error);
             })
         }
