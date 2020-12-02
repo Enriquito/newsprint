@@ -109,7 +109,17 @@ class Folder{
 
       getFeeds(){
             return new Promise( async (resolve, reject) => {
-                  database.query("SELECT feed as 'id' FROM feed_folder_assignments WHERE folder = ?",[this.id], async (error, result) => {
+                  const query = `SELECT
+                  f.id, f.user, fo.id as 'folder', f.display_name, f.title, f.description, f.icon_url, f.feed_url, f.link, f.language, f.last_build_date, f.last_scan_date,
+                  (SELECT COUNT(*) FROM articles WHERE feed = f.id AND is_read = 0) as 'unread_articles'
+                  FROM feeds f
+                  JOIN feed_folder_assignments ffa
+                  ON ffa.feed = f.id
+                  JOIN folders fo
+                  ON fo.id = ffa.folder
+                  WHERE fo.id = ?`;
+
+                  database.query(query,[this.id], async (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -121,20 +131,23 @@ class Folder{
                         }
 
                         for(let i = 0; i < result.length; i++){
-                              const id = result[i].id;
-                              let feed = null;
+                              const f = result[i];
+                              const feed = new Feed();
 
-                              try{
-                                    feed = await Feed.findOne(id);
-                                    await feed.getUnreadArticles();
-                                    // await feed.getArticles();
+                              feed.id = f.id;
+                              feed.folderId = f.folder;
+                              feed.displayName = f.display_name;
+                              feed.title = f.title;
+                              feed.description = f.description;
+                              feed.iconUrl = f.icon_url;
+                              feed.feedUrl = f.feed_url;
+                              feed.link = f.link;
+                              feed.language = f.language;
+                              feed.lastBuildDate = f.last_build_date;
+                              feed.lastScanDate = f.last_scan_date;
+                              feed.unreadArticles = f.unread_articles;
 
-                                    this.feeds.push(feed);
-                              }
-                              catch(error){
-                                    console.log(error);
-                                    reject(error);
-                              }
+                              this.feeds.push(feed);
                         }
 
                         resolve();

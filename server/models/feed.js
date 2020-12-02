@@ -291,6 +291,7 @@ class Feed{
       // Change user id
       moveToFolder(from, to){
             return new Promise((resolve, reject) => {
+                  console.log('call');
                   const toInsert = {
                         feed: this.id,
                         folder: to,

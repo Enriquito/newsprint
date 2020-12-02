@@ -59,7 +59,6 @@ module.exports.create = async (req,res) => {
         res.sendStatus(500);
     }
 }
-
 module.exports.moveToFolder = async (req,res) => {
     console.log(`POST move/feeds/`);
     // const validator = Validator.NewBlockData(req.body);
@@ -81,9 +80,8 @@ module.exports.moveToFolder = async (req,res) => {
         res.sendStatus(500);
     }
 }
-
 module.exports.update = async (req,res) => {
-    console.log(`PUT move/feeds/`);
+    console.log(`PUT feeds/`);
     // const validator = Validator.NewBlockData(req.body);
 
     // if(validator.error){
@@ -99,8 +97,8 @@ module.exports.update = async (req,res) => {
             return;
         }
 
-
         for (const [property ,value] of Object.entries(req.body.feed)){
+            console.log(property);
             switch(property){
                 case "displayName" :
                     feed.displayName = value;
@@ -129,13 +127,10 @@ module.exports.update = async (req,res) => {
                 case "lastScanDate:" :
                     feed.lastScanDate = value;
                     break;
-                case "folderId:" :
-                        await feed.moveToFolder(feed.folderId, value);
-                        this.folderId = value;
-                        break;
-                default:
-                    console.log("Not found " + property);
-                    break;
+                case "folderId:" :{
+                    await feed.moveToFolder(feed.folderId, value);
+                    feed.folderId = value;
+                }
             }
         }
 
