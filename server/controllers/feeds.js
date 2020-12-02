@@ -59,6 +59,7 @@ module.exports.create = async (req,res) => {
         res.sendStatus(500);
     }
 }
+
 module.exports.moveToFolder = async (req,res) => {
     console.log(`POST move/feeds/`);
     // const validator = Validator.NewBlockData(req.body);
@@ -74,6 +75,78 @@ module.exports.moveToFolder = async (req,res) => {
         await feed.moveToFolder(req.body.from, req.body.to);
 
         res.status(201);
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
+module.exports.update = async (req,res) => {
+    console.log(`PUT move/feeds/`);
+    // const validator = Validator.NewBlockData(req.body);
+
+    // if(validator.error){
+    //     res.status(400).json({error: validator.error});
+    //     return;
+    // }
+
+    try{
+        const feed = await Feed.findOne(req.body.feed.id);
+
+        if(feed === null){
+            res.sendStatus(404);
+            return;
+        }
+
+
+        for (const [property ,value] of Object.entries(req.body.feed)){
+            switch(property){
+                case "displayName" :
+                    feed.displayName = value;
+                    break;
+                case "title" :
+                    feed.title = value;
+                    break;
+                case "description" :
+                    feed.description = value;
+                    break;
+                case "iconUrl" :
+                    feed.iconUrl = value;
+                    break;
+                case "feedUrl" :
+                    feed.feedUrl = value;
+                    break;
+                case "link" :
+                    feed.link = value;
+                    break;
+                case "language" :
+                    feed.language = value;
+                    break;
+                case "lastBuildDate" :
+                    feed.lastBuildDate = value;
+                    break;
+                case "lastScanDate:" :
+                    feed.lastScanDate = value;
+                    break;
+                case "folderId:" :
+                        await feed.moveToFolder(feed.folderId, value);
+                        this.folderId = value;
+                        break;
+                default:
+                    console.log("Not found " + property);
+                    break;
+            }
+        }
+
+        const result = await feed.update();
+
+        if(result === null){
+            res.sendStatus(400);
+            return;
+        }
+
+        res.json(result);
     }
     catch(error){
         console.log(error);

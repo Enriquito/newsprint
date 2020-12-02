@@ -309,6 +309,32 @@ class Feed{
                   });
               });
       }
+
+      update(){
+            return new Promise((resolve,reject) => {
+                  const toUpdate = {
+                        display_name: this.displayName,
+                        user: this.user,
+                        title: this.title,
+                        description: this.description,
+                        icon_url: this.iconUrl,
+                        feed_url: this.feedUrl,
+                        link: this.link,
+                        language: this.language,
+                        last_build_date: this.lastBuildDate
+                  };
+
+                  database.query('UPDATE feeds SET ? WHERE id = ?', [toUpdate, this.id], async (error, result) => {
+                        if(error){
+                              console.log(error);
+                              reject(error);
+                              return;
+                        }
+
+                        resolve(this);
+                  });
+            });
+      }
 }
 
 module.exports = Feed;

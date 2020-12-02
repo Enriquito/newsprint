@@ -26,6 +26,7 @@ app.route('/feeds/:id')
 
 app.route('/feeds')
 .post(feedRoutes.create)
+.put(feedRoutes.update)
 
 app.route('/folders/:id')
 .get(folderRoutes.findOne)
@@ -52,15 +53,16 @@ app.route('/history')
 
 
 app.listen(process.env.PORT, () => {
-      const Feed = require('./models/feed');
-      console.log(`listening on port ${process.env.PORT}`)
-      console.log(`scanning for new articles...`)
+      console.log(`listening on port ${process.env.PORT}`);
+
+      // const Feed = require('./models/feed');
+      // console.log(`scanning for new articles...`)
+      // // Feed.getNewItems()
       // Feed.getNewItems()
-      Feed.getNewItems()
-      .then(result => {
-            console.log('Scan complete.');
-      })
-      .catch(error => {
-            console.log(error);
-      });
+      // .then(result => {
+      //       console.log('Scan complete.');
+      // })
+      // .catch(error => {
+      //       console.log(error);
+      // });
 });

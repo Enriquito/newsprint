@@ -9,7 +9,7 @@
         <div>
             <label>Display Name</label>
             <br />
-            <input type="text" v-model="feed.displayName" placeholder="Enter the feed url" />
+            <input type="text" v-model="feed.displayName" placeholder="Enter a new display name for this feed" />
         </div>
         <div>
             <label>Icon adres</label>
@@ -100,13 +100,16 @@ export default {
                 }
             }
 
-            axios.post(`${process.env.VUE_APP_API}/feeds`,{
-                feedUrl: this.url,
-                displayName: this.displayName,
-                folderId: this.folderId
+            axios.put(`${process.env.VUE_APP_API}/feeds`,{
+                feed: {
+                    id: this.feed.id,
+                    feedUrl: this.feed.url,
+                    displayName: this.feed.displayName,
+                    folderId: this.folderId
+                }
             })
             .then(result => {
-                if(result.status === 201){
+                if(result.status === 200){
                     this.$eventHub.$emit('updateNavigation');
                     this.resetInputFields();
                     this.$eventHub.$emit('toggle-overlay');
@@ -122,7 +125,6 @@ export default {
             this.buttonText = "Save";
             this.url = null;
             this.displayName = null;
-            this.folderId = this.folders[0].id;
             this.addingNewFolder = false;
             this.newFolderName = null;
         },
