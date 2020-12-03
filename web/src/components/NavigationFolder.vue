@@ -12,33 +12,23 @@
             <small>{{getNotificationCount(totalNotifications)}}</small>
         </div>
 
-
-
          <ul v-if="feeds && isOpen">
-             <NavigationFolderFeed v-for="feed in feeds" :key="feed.id" :feed="feed"  />
-         <!--   <li draggable @dragstart="startDrag($event, feed, id)" v-for="feed in feeds" :key="feed.id" class="d-flex align-items-center">
-                <div @mouseenter="hoverName" class="d-flex align-content-center" style="padding-left: 20px">
-                    <img :src="feed.iconUrl" />
-                    <router-link :to="{
-                        name: 'Feed',
-                        params:{
-                            feedId: feed.id,
-                            feedName: urlFriendlyTitle(feed.title),
-                            page: 1
-                        }
-                    }">{{feedName(feed)}}</router-link>
-                    <small>{{getNotificationCount(feed.unreadArticles)}}</small>
-                </div>
-            </li> -->
+             <div  v-for="feed in feeds" :key="feed.id">
+                <NavigationFolderFeed :feed="feed"  />
+                <EditFeedForm :feed="feed" />
+             </div>
         </ul>
     </li>
 </template>
 <script>
 import NavigationFolderFeed from '@/components/NavigationFolderFeed.vue';
+import EditFeedForm from '@/components/EditFeedForm.vue';
+
 export default {
     name: "NavigationFolder",
     components:{
-        NavigationFolderFeed
+        NavigationFolderFeed,
+        EditFeedForm
     },
     props:{
         name: String,
