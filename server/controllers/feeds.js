@@ -128,8 +128,11 @@ module.exports.update = async (req,res) => {
                     feed.lastScanDate = value;
                     break;
                 case "folderId:" :{
-                    await feed.moveToFolder(feed.folderId, value);
-                    feed.folderId = value;
+                    if(feed.folderId !== value){
+                        await feed.moveToFolder(feed.folderId, value);
+                        feed.folderId = value;
+                    }
+                    break;                    
                 }
             }
         }
