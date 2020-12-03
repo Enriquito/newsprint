@@ -164,7 +164,6 @@ class Feed{
                   let parser = new Parser();
                   let f = null;
 
-
                   try{
                         f = await parser.parseURL(url);
                         const temp = f.link.match(/( |https:\/\/|http:\/\/)([A-Za-z0-9]{1,10}\.?[A-Za-z]{1,}\.?[A-Za-z]{1,})(?: |\/|$)/);
@@ -202,7 +201,6 @@ class Feed{
                         resolve(this);
                   }
                   catch(error){
-                        console.log(error);
                         resolve(this);
                   }
             });
@@ -279,8 +277,10 @@ class Feed{
 
                         for(let i = 0; i < result.length; i++){
                               const feed = await Feed.findOne(result[i].id);
-                              await feed.getData(result[i].feed_url);
-                              await feed.createArticles();
+                              if(feed !== null){
+                                    await feed.getData(result[i].feed_url);
+                                    await feed.createArticles();
+                              }
                         }
 
                         resolve();
