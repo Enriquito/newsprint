@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex" id="app">
-    <Navigation />
+    <Navigation v-if="!isLoginPage" />
     <router-view/>
   </div>
 </template>
@@ -9,8 +9,17 @@
 import Navigation from '@/components/Navigation.vue';
 
 export default {
+  name: "App",
   components:{
     Navigation
+  },
+  computed:{
+    isLoginPage(){
+      if(this.$route.name === 'Login')
+        return true;
+      else
+        return false;
+    }
   }
 }
 </script>
