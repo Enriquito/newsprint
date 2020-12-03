@@ -23,6 +23,9 @@
                                                       <router-link :to="{name: 'Register'}">Forgot password?</router-link>
                                                 </span>
                                           </div>
+                                          <div style="height: 25px; color: tomato;">
+                                                {{error}}
+                                          </div>
                                     </div>
                                     <div>
                                           <button @click="login">Login</button>
@@ -42,11 +45,9 @@ export default {
     data(){
           return({
                 password: null,
-                username: null
+                username: null,
+                error: ""
           });
-    },
-    components: {
-          
     },
     methods:{
       login(event){
@@ -63,7 +64,13 @@ export default {
                   }
             })
             .catch(error => {
-                  console.log(error);
+                  if(error.response.status === 401 || error.response.status === 400){
+                    this.error = "Password or username is incorrect";
+                    console.log("Password or username is incorrect");
+                  }
+                  else if(error.response.status === 500){
+                        this.error = "Internal server error";
+                  }
             })
       }
     }
