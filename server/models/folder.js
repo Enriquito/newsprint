@@ -89,7 +89,7 @@ class Folder{
       create(){
             return new Promise((resolve,reject) => {
                   const toInsert = {
-                        user: 1,
+                        user: this.user,
                         name: this.name,
                         show_order: 0,
                   };
