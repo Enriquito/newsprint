@@ -22,12 +22,11 @@
                     <path d="M24 40l8-4 28-28-4-4-28 28-4 8zM18.081 54.194c-1.977-4.17-4.104-6.298-8.275-8.275l6.193-17.049 8-4.869 24-24h-12l-24 24-12 40 40-12 24-24v-12l-24 24-4.87 8z" fill="#000000"></path>
                 </svg>
             </div>
-            <EditFeedForm :feed="feed" />
         </div>
     </li>
 </template>
 <script>
-import EditFeedForm from '@/components/EditFeedForm.vue';
+
 
 export default {
     name: "NavigationFolderFeed",
@@ -35,7 +34,7 @@ export default {
         feed: Object
     },
     components:{
-        EditFeedForm
+        
     },
     data(){
         return({
