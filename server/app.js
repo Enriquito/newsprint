@@ -54,15 +54,4 @@ app.route('/history')
 
 app.listen(process.env.PORT, () => {
       console.log(`listening on port ${process.env.PORT}`);
-
-      // const Feed = require('./models/feed');
-      // console.log(`scanning for new articles...`)
-      // // Feed.getNewItems()
-      // Feed.getNewItems()
-      // .then(result => {
-      //       console.log('Scan complete.');
-      // })
-      // .catch(error => {
-      //       console.log(error);
-      // });
 });
