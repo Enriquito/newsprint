@@ -315,7 +315,6 @@ class Feed{
             return new Promise((resolve,reject) => {
                   const toUpdate = {
                         display_name: this.displayName,
-                        user: this.user,
                         title: this.title,
                         description: this.description,
                         icon_url: this.iconUrl,
