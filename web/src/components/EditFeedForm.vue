@@ -104,6 +104,7 @@ export default {
                 feed: {
                     id: this.feed.id,
                     feedUrl: this.feed.url,
+                    iconUrl: this.feed.iconUrl,
                     displayName: this.feed.displayName,
                     folderId: this.folderId
                 }
