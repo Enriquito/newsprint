@@ -90,7 +90,7 @@ export default {
                 if(result.status === 201){
                     this.$eventHub.$emit('updateNavigation');
                     this.resetInputFields();
-                    this.$eventHub.$emit('toggle-overlay');
+                    this.$eventHub.$emit('toggle-overlay-add-feed');
                 }
             })
             .catch(error => {
