@@ -7,7 +7,7 @@
         </div>
         <div v-else>
           <h2>You dont have favorite articles yet.</h2>
-          <h5>Click the heart icon left of the article to favorite the article.</h5>
+          <h5>Click the heart icon right of the article to favorite the article.</h5>
         </div>
     </div>
     <div v-else>
