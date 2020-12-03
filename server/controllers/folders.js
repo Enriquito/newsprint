@@ -31,7 +31,7 @@ module.exports.findOne = async (req,res) => {
 // Change user
 module.exports.findFoldersByUser = async (req,res) => {
       try{
-          console.log(`GET /folders/user/${req.params.id}`);
+          console.log(`GET /folders/`);
 
       //     const validator = Validator.ValidateID(req.params.id);
 
