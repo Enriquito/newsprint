@@ -5,11 +5,6 @@
             <label>Feed</label>
             <br />
             <input type="text" v-model="url" placeholder="Enter the feed url" />
-            </div>
-        <div>
-            <label>Display name</label>
-            <br />
-            <input type="text" max="30" v-model="displayName" placeholder="Enter a custom display name" />
         </div>
         <div>
             <label>Folder</label>
@@ -89,7 +84,6 @@ export default {
 
             axios.post(`${process.env.VUE_APP_API}/feeds`,{
                 feedUrl: this.url,
-                displayName: this.displayName,
                 folderId: this.folderId
             })
             .then(result => {
