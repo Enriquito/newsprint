@@ -43,7 +43,7 @@ module.exports.findFoldersByUser = async (req,res) => {
           const folders = await Folder.findAllByUser(req.user.id);
 
           if(folders === null){
-              res.sendStatus(404);
+              res.json([]);
               return;
           }
 
