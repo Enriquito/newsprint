@@ -40,9 +40,6 @@ module.exports.create = async (req,res) => {
     try{
         const feed = new Feed();
 
-        if(req.body.displayName)
-            feed.displayName = req.body.displayName
-
         await feed.getData(req.body.feedUrl);
         await feed.create();
         await feed.createArticles();
@@ -98,7 +95,6 @@ module.exports.update = async (req,res) => {
         }
 
         for (const [property ,value] of Object.entries(req.body.feed)){
-            console.log(property);
             switch(property){
                 case "displayName" :
                     feed.displayName = value;
