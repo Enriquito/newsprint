@@ -277,6 +277,7 @@ class Feed{
 
                         for(let i = 0; i < result.length; i++){
                               const feed = await Feed.findOne(result[i].id);
+
                               if(feed !== null){
                                     await feed.getData(result[i].feed_url);
                                     await feed.createArticles();
