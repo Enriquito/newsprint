@@ -29,7 +29,7 @@ module.exports.unreadArticlesCount = async (req,res) => {
       try{
           console.log(`GET /articles/count/unread`);
 
-          const articleCount = await Article.getCountAllUnreadArticles();
+          const articleCount = await Article.getCountAllUnreadArticles(req.user.id);
 
           if(articleCount === null){
               res.sendStatus(500);
@@ -50,7 +50,7 @@ module.exports.unreadArticles = async (req,res) => {
         const offset = parseInt(req.query.offset);
         const max = parseInt(req.query.max);
 
-        const articleCount = await Article.getAllUnreadArticles(offset, max);
+        const articleCount = await Article.getAllUnreadArticles(req.user.id, offset, max);
 
         if(articleCount === null){
             res.sendStatus(500);
@@ -115,7 +115,7 @@ module.exports.addToFavorites = async (req,res) => {
             return;
         }
 
-        article.AddToFavorites();
+        article.AddToFavorites(req.user.id);
 
         res.json(article);
     }
@@ -135,7 +135,7 @@ module.exports.removeFromFavorites = async (req,res) => {
             return;
         }
 
-        article.removeFromFavorites();
+        article.removeFromFavorites(req.user.id);
 
         res.json(article);
     }
@@ -148,7 +148,7 @@ module.exports.getFavoriteArticles = async (req,res) => {
     try{
         console.log(`GET /favorites/articles`);
 
-        const articles = await Article.getFavorites();
+        const articles = await Article.getFavorites(req.user.id);
 
         if(articles === null){
             res.sendStatus(500);

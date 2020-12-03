@@ -6,12 +6,12 @@ module.exports.login = (username, password, done) => {
       User.findOneByUsername(username)
         .then(user => {
             if(user == null)
-                return done(null, false); //Incorrect username or password
+                return done(null, false); //Incorrect username
   
             user.validPassword(password)
             .then(result => {
                 if(!result)
-                    return done(null, false); //Incorrect username or password
+                    return done(null, false); //Incorrect password
                 else{
                   return done(null, user);
                 }

@@ -4,7 +4,7 @@ const database = require('../database');
 class Feed{
       constructor(){
             this.id;
-            this.user = 1;
+            this.user;
             this.folderId;
             this.displayName;
             this.iconUrl;

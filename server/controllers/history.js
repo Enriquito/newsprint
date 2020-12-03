@@ -4,7 +4,7 @@ module.exports.getAll = async (req,res) => {
     try{
         console.log(`GET /history`);
 
-        const arr = await History.getAll(1);
+        const arr = await History.getAll(req.user.id);
 
         if(arr === null){
             res.sendStatus(500);
@@ -22,14 +22,13 @@ module.exports.getAll = async (req,res) => {
 module.exports.create = async (req,res) => {
     try{
         console.log(`POST /history`);
-        const userId = 1;
         const maxHistoryRows = 25;
-        const rowsInDB = await History.getHistoryItemsCount(userId);
+        const rowsInDB = await History.getHistoryItemsCount(req.user.id);
 
         if(rowsInDB === maxHistoryRows)
-            await History.destroyNextInLine(userId);
+            await History.destroyNextInLine(req.user.id);
 
-        await History.create(1, req.body.article);
+        await History.create(req.user.id, req.body.article);
 
         res.sendStatus(201);
     }

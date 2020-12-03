@@ -28,7 +28,7 @@ module.exports.findOne = async (req,res) => {
           res.sendStatus(500);
       }
 }
-// Change user
+
 module.exports.findFoldersByUser = async (req,res) => {
       try{
           console.log(`GET /folders/`);
@@ -40,7 +40,7 @@ module.exports.findFoldersByUser = async (req,res) => {
       //         return;
       //     }
 
-          const folders = await Folder.findAllByUser(1);
+          const folders = await Folder.findAllByUser(req.user.id);
 
           if(folders === null){
               res.sendStatus(404);
@@ -70,7 +70,7 @@ module.exports.create = async (req,res) => {
         const folder = new Folder();
 
         folder.name = req.body.name;
-        folder.user = 1;
+        folder.user = req.user.id;
 
         await folder.create();
 

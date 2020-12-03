@@ -62,16 +62,15 @@ class Article{
             });
       }
 
-      // Change user
-      static getCountAllUnreadArticles(){
+      static getCountAllUnreadArticles(userId){
             return new Promise((resolve, reject) => {
                   const query = `
                         SELECT COUNT(a.id) as 'unread_articles' FROM articles a
                         JOIN feeds f
                         ON f.id = a.feed
-                        WHERE a.is_read = 0 AND f.user = 1
+                        WHERE a.is_read = 0 AND f.user = ?
                   `;
-                  database.query(query, (error, result) => {
+                  database.query(query,[userId], (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -88,8 +87,7 @@ class Article{
             });
       }
 
-      // Change user
-      static getAllUnreadArticles(min,max){
+      static getAllUnreadArticles(userId, min,max){
             return new Promise((resolve, reject) => {
                   const query = `SELECT DISTINCT
                                     a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read,
@@ -102,10 +100,10 @@ class Article{
                                     LEFT JOIN feeds fe
                                     ON fe.id = a.feed
                                     WHERE a.is_read = 0
-                                    AND fe.user = 1
+                                    AND fe.user = ?
                                     ORDER BY DATE(a.iso_date) DESC LIMIT ? OFFSET ?
                   `;
-                  database.query(query,[max,min], async (error, result) => {
+                  database.query(query,[userId,max,min], async (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -232,11 +230,10 @@ class Article{
             });
       }
 
-      // Change user
-      AddToFavorites(){
+      AddToFavorites(userId){
             return new Promise((resolve, reject) => {
                   const toInsert = {
-                        user: 1,
+                        user: userId,
                         article: this.id
                   };
 
@@ -252,9 +249,9 @@ class Article{
             });
       }
 
-      removeFromFavorites(){
+      removeFromFavorites(userId){
             return new Promise((resolve, reject) => {
-                  database.query(`DELETE FROM favorites WHERE article = ?`,[this.id], (error, result) => {
+                  database.query(`DELETE FROM favorites WHERE article = ? AND user = ?`,[this.id, userId], (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -291,8 +288,8 @@ class Article{
                   });
             });
       }
-      // Change user
-      static getFavorites(){
+      
+      static getFavorites(userId){
             return new Promise((resolve,reject) => {
                   const query = `
                         SELECT
@@ -301,11 +298,11 @@ class Article{
                         FROM articles a
                         LEFT JOIN favorites f
                         ON a.id = f.article
-                        WHERE f.user = 1
+                        WHERE f.user = ?
                         ORDER BY DATE(f.created) DESC
                         `;
 
-                  database.query(query, (error, result) => {
+                  database.query(query,[userId], (error, result) => {
                         if(error){
                               reject(error);
                               return;

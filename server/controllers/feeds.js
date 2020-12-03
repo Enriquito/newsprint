@@ -41,11 +41,12 @@ module.exports.create = async (req,res) => {
         const feed = new Feed();
 
         await feed.getData(req.body.feedUrl);
+        feed.user = req.user.id;
         await feed.create();
         await feed.createArticles();
 
         if(req.body.folderId === undefined)
-            await feed.addToFolder(1);
+            await feed.addToFolder(req.user.id);
         else
             await feed.addToFolder(req.body.folderId);
 
