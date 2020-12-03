@@ -6,10 +6,16 @@ import NewArticles from '../views/NewArticles.vue'
 import Favorites from '../views/Favorites.vue'
 import History from '../views/History.vue'
 import Test from '../views/Test.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
   {
     path: '/folder/:folder',
     name: 'FolderFeed',
