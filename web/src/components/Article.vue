@@ -78,14 +78,22 @@ export default {
         }
       },
       editLinkAttributes(){
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(this.data.content, "text/html");
+        if(this.data.content !== null){
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(this.data.content, "text/html");
 
-        doc.querySelectorAll('a').forEach(a => {
-          a.setAttribute('target', '_blank');
-        });
+          doc.querySelectorAll('a').forEach(a => {
+            a.setAttribute('target', '_blank');
+          });
 
-        this.content = doc.body.innerHTML;
+          this.content = doc.body.innerHTML;
+        }
+        else{
+          this.content = "No content found."
+        }
+        
+
+        
       },
       setArticleToRead(){
         this.data.isRead = true;
