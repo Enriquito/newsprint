@@ -12,8 +12,11 @@ import Login from '../views/Login.vue'
 const isAuthenticated = () => {
   return new Promise((resolve,reject) => {
     axios.get(`${process.env.VUE_APP_API}/user/current`,{withCredentials: true})
-      .then(() => {
-        resolve(true);
+      .then(result => {
+        if(result.data !== null)
+          resolve(true);
+        else
+          resolve(false);
       })
       .catch(() => {
         reject(false);
@@ -21,30 +24,24 @@ const isAuthenticated = () => {
   })
 };
 
-const Auth = async (to,from,next) => {
-  try{
-    const authenticated = await isAuthenticated();
+const Guard = async (to,from,next) => {
+  const loggedIn = await isAuthenticated();
 
-    if(to.name === 'Login' && authenticated)
-      next({name : '/'})
-    if(to.name !== 'Login' && authenticated)
-      next();
-    else if(to.name === 'Login')
-      next();
-    else
-      next();
-  }
-  catch{
-    if(to.name === 'Login')
-      next();
-    else
-      next({name: 'Login'});
-  }
+  if(loggedIn)
+    next();
+  else
+    next({name: 'Login'});
 }
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/',
+    name: 'Root',
+    component: NewArticles,
+    beforeEnter: Guard
+  },
   {
     path: '/login',
     name: 'Login',
@@ -53,37 +50,44 @@ const routes = [
   {
     path: '/folder/:folder',
     name: 'FolderFeed',
-    component: FolderFeed
+    component: FolderFeed,
+    beforeEnter: Guard
   },
   {
     path: '/folder/:folder',
     name: 'FolderView',
-    component: FolderFeed
+    component: FolderFeed,
+    beforeEnter: Guard
   },
   {
     path: '/feed/:feedId/:feedName/page/:page',
     name: 'Feed',
-    component: Feed
+    component: Feed,
+    beforeEnter: Guard
   },
   {
     path: '/new/page/:page',
     name: 'NewArticles',
     component: NewArticles,
+    beforeEnter: Guard
   },
   {
     path: '/favorites',
     name: 'Favorites',
     component: Favorites,
+    beforeEnter: Guard
   },
   {
     path: '/history',
     name: 'History',
     component: History,
+    beforeEnter: Guard
   },
   {
     path: '/test',
     name: 'Test',
     component: Test,
+    beforeEnter: Guard
   }
 ]
 
@@ -95,8 +99,8 @@ const router = new VueRouter({
   }
 })
 
-router.beforeEach((to,from,next) => {
-  Auth(to,from,next);
-})
+// router.beforeEach((to,from,next) => {
+//   Auth(to,from,next);
+// })
 
 export default router

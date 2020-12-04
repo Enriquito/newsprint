@@ -2,12 +2,12 @@ const User = require('../models/User');
 
 module.exports.login = (username, password, done) => {
       console.log(`POST /login`);
-  
+
       User.findOneByUsername(username)
         .then(user => {
             if(user == null)
                 return done(null, false); //Incorrect username
-  
+
             user.validPassword(password)
             .then(result => {
                 if(!result)
@@ -15,7 +15,7 @@ module.exports.login = (username, password, done) => {
                 else{
                   return done(null, user);
                 }
-  
+
             })
             .catch(error => {
                 console.log(error);
@@ -27,7 +27,7 @@ module.exports.login = (username, password, done) => {
             done(error);
         })
   }
-  
+
   module.exports.isLoggedIn = (req, res, next) => {
       if(req.user){
             next();
@@ -35,12 +35,12 @@ module.exports.login = (username, password, done) => {
       else{
           res.sendStatus(401);
       }
-  
+
   }
-  
+
   module.exports.current = (req,res) => {
       if(req.user)
           res.json(req.user);
       else
-          res.sendStatus(401);
+          res.json(null);
   }
