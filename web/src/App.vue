@@ -1,28 +1,8 @@
 <template>
   <div class="d-flex" id="app">
-    <Navigation v-if="!isLoginPage" />
     <router-view/>
   </div>
 </template>
-
-<script>
-import Navigation from '@/components/Navigation.vue';
-
-export default {
-  name: "App",
-  components:{
-    Navigation
-  },
-  computed:{
-    isLoginPage(){
-      if(this.$route.name === 'Login')
-        return true;
-      else
-        return false;
-    }
-  }
-}
-</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300;1,500;1,700&display=swap');
