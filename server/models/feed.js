@@ -47,6 +47,7 @@ class Feed{
 
                         feed.id = f.id;
                         feed.folderId = f.folder;
+                        feed.user = f.user;
                         feed.displayName = f.display_name;
                         feed.title = f.title;
                         feed.description = f.description;
@@ -89,13 +90,13 @@ class Feed{
                   });
             })
       }
-      // Change user
+
       addToFolder(folderId){
             return new Promise((resolve,reject) => {
                   const toInsert = {
                         feed: this.id,
                         folder: folderId,
-                        user: 1
+                        user: this.user
                   };
 
                   database.query('INSERT INTO feed_folder_assignments SET ?', [toInsert], (error, result) => {
@@ -289,10 +290,8 @@ class Feed{
             });
       }
 
-      // Change user id
       moveToFolder(from, to){
             return new Promise((resolve, reject) => {
-                  console.log('call');
                   const toInsert = {
                         feed: this.id,
                         folder: to,
@@ -309,7 +308,7 @@ class Feed{
 
                       resolve();
                   });
-              });
+            });
       }
 
       update(){
@@ -335,6 +334,19 @@ class Feed{
                         resolve(this);
                   });
             });
+      }
+
+      delete(){
+            return new Promise((resolve, reject) => {
+                  database.query(`DELETE FROM feeds WHERE id = ?`, [this.id], async (error, result) => {
+                      if(error){
+                              reject(error);
+                              return;
+                      }
+
+                      resolve(this);
+                  });
+              });
       }
 }
 
