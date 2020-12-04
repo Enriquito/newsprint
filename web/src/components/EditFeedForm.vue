@@ -40,8 +40,9 @@
                 </div>
             </div>
 
-            <div style="margin-top: 10px" class="d-flex justify-content-center">
-                <button style="width: 100% !important; background: #5867FC; color: #FFF; border: none;" @click="createFeed">{{buttonText}}</button>
+            <div style="margin-top: 10px">
+                <button style="width: 100% !important; background: #5867FC; color: #FFF; border: none;" @click="editFeed">{{buttonText}}</button>
+                <button style="width: 100% !important; margin-top: 5px; background: tomato; color: #FFF; border: none;" @click="deleteFeed">{{deleteText}}</button>
             </div>
         </div>
     </Overlay>
@@ -65,6 +66,7 @@ export default {
     data(){
       return({
           buttonText: "Save",
+          deleteText: "Delete",
           folders: null,
           addingNewFolder: false,
           folderId: null,
@@ -75,7 +77,7 @@ export default {
         feed: Object
     },
     methods:{
-        async createFeed(){
+        async editFeed(){
             this.buttonText = "Saving..."
 
             if(this.newFolderName !== null){
@@ -136,6 +138,24 @@ export default {
                 this.addingNewFolder = false;
             else
                 this.addingNewFolder = true;
+        },
+        deleteFeed(){
+            if(!confirm(`Are you sure you want to delete the feed '${this.feed.title}'?`))
+                return;
+
+            axios.delete(`/feeds/${this.feed.id}`)
+            .then(response => {
+                if(response.status === 200){
+                    this.$eventHub.$emit('updateNavigation');
+                    this.resetInputFields();
+                    this.$eventHub.$emit(`toggle-overlay-edit-feed-${this.feed.id}`);
+                }
+            })
+            .catch(error => {
+                alert('error deleting feed');
+                this.resetInputFields();
+                console.log(error);
+            });
         },
         async createFolder(){
             return axios.post('/folders',{name: this.newFolderName});
