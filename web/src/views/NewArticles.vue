@@ -1,33 +1,38 @@
 <template>
-  <section>
-    <h1>New Articles</h1>
+  <div>
+    <Navigation />
+    <section>
+      <h1>New Articles</h1>
 
-    <div style="padding-bottom: 50px">
-        <div v-if="articles">
-            <div>
-                <Article v-for="article in articles" :key="article.id" :data="article"/>
-            </div>
-            <button id="load-more-button" @click="loadMoreArticles">
-                  Load more articles
-            </button>
-        </div>
-        <div v-else>
-          <ArticleSkeleton v-for="index in 6" :key="index" />
-        </div>
-    </div>
-  </section>
+      <div style="padding-bottom: 50px">
+          <div v-if="articles">
+              <div>
+                  <Article v-for="article in articles" :key="article.id" :data="article"/>
+              </div>
+              <button id="load-more-button" @click="loadMoreArticles">
+                    Load more articles
+              </button>
+          </div>
+          <div v-else>
+            <ArticleSkeleton v-for="index in 6" :key="index" />
+          </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
 import Article from '@/components/Article.vue';
 import axios from 'axios';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
+import Navigation from '@/components/Navigation.vue';
 
 export default {
   name: 'NewArticles',
   components: {
     Article,
-    ArticleSkeleton
+    ArticleSkeleton,
+    Navigation
   },
   mounted(){
     this.getData();

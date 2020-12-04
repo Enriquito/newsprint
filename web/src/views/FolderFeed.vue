@@ -1,28 +1,33 @@
 <template>
-  <section>
-    <h1>{{folderName}}</h1>
-    <div style="padding-bottom: 50px">
-      <div v-if="feeds">
-        <div v-for="feed in feeds" :key="feed.id">
-          <Article v-for="article in feed.articles" :key="article.id" :data="article"/>
+  <div>
+    <Navigation />
+    <section>
+      <h1>{{folderName}}</h1>
+      <div style="padding-bottom: 50px">
+        <div v-if="feeds">
+          <div v-for="feed in feeds" :key="feed.id">
+            <Article v-for="article in feed.articles" :key="article.id" :data="article"/>
+          </div>
+        </div>
+        <div v-else>
+          <ArticleSkeleton v-for="index in 4" :key="index" />
         </div>
       </div>
-      <div v-else>
-        <ArticleSkeleton v-for="index in 4" :key="index" />
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
 import Article from '@/components/Article.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
+import Navigation from '@/components/Navigation.vue';
 
 export default {
   name: 'FolderFeed',
   components: {
     Article,
-    ArticleSkeleton
+    ArticleSkeleton,
+    Navigation
   },
   mounted(){
     this.getData();

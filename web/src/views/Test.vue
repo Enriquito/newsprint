@@ -1,5 +1,7 @@
 <template>
-  <section>
+  <div>
+    <Navigation />
+    <section>
         <h1 @click="test">Test</h1>
         <Overlay>
           <h2>Test</h2>
@@ -25,15 +27,18 @@
             </div>
           </div>
         </Overlay>
-  </section>
+    </section>
+  </div>
 </template>
 <script>
 import Overlay from '@/components/Overlay.vue';
+import Navigation from '@/components/Navigation.vue';
 
 export default {
     name: "Test",
     components: {
-          Overlay
+          Overlay,
+          Navigation
     },
     methods:{
       test(){

@@ -1,50 +1,55 @@
 <template>
-  <section>
-    <h1 v-if="feed">{{feed.title}}</h1>
-    <h1 v-else>Loading...</h1>
+  <div>
+    <Navigation />
+    <section>
+      <h1 v-if="feed">{{feed.title}}</h1>
+      <h1 v-else>Loading...</h1>
 
-    <div style="padding-bottom: 50px">
-        <div v-if="feed && newToday.length > 0">
-            <span>New today</span>
-            <div>
-                <Article v-for="article in newToday" :key="article.id" :data="article"/>
-            </div>
-            <div style="border: 1px solid rgba(0,0,0,0.1); margin-top: 60px;"></div>
+      <div style="padding-bottom: 50px">
+          <div v-if="feed && newToday.length > 0">
+              <span>New today</span>
+              <div>
+                  <Article v-for="article in newToday" :key="article.id" :data="article"/>
+              </div>
+              <div style="border: 1px solid rgba(0,0,0,0.1); margin-top: 60px;"></div>
+          </div>
+
+        <div style="margin-top:60px; display:block;"></div>
+        <div v-if="feed">
+          <div  v-if="older.length > 0">
+            <Article v-for="article in older" :key="article.id" :data="article"/>
+
+          </div>
+          <div v-else>
+            <h2 v-if="!loadingNewData">No Articles found</h2>
+          </div>
+
+          <div v-if="older.length > 0 || newToday.length > 0">
+            <button id="load-more-button" @click="nextPage">Load more articles</button>
+          </div>
+
         </div>
-
-      <div style="margin-top:60px; display:block;"></div>
-      <div v-if="feed">
-        <div  v-if="older.length > 0">
-          <Article v-for="article in older" :key="article.id" :data="article"/>
-
+        <div v-else-if="!feed || loadingNewData">
+            <ArticleSkeleton v-for="index in 4" :key="index" />
         </div>
-        <div v-else>
-          <h2 v-if="!loadingNewData">No Articles found</h2>
-        </div>
-
-        <div v-if="older.length > 0 || newToday.length > 0">
-          <button id="load-more-button" @click="nextPage">Load more articles</button>
-        </div>
-
       </div>
-      <div v-else-if="!feed || loadingNewData">
-          <ArticleSkeleton v-for="index in 4" :key="index" />
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
 import Article from '@/components/Article.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
 import moment from 'moment-timezone'
+import Navigation from '@/components/Navigation.vue';
 import axios from 'axios';
 
 export default {
   name: 'Feed',
   components: {
     Article,
-    ArticleSkeleton
+    ArticleSkeleton,
+    Navigation
   },
   mounted(){
     this.getData();

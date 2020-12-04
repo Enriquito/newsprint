@@ -62,7 +62,7 @@ export default {
         NavigationFolder,
         AddFeedForm
     },
-    created(){
+    mounted(){
         this.$eventHub.$on('updateNavigation', () => {
             this.getData();
             this.getNewArticles();
