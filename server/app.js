@@ -69,6 +69,7 @@ app.get('/user/current', userRoutes.current);
 
 app.route('/feeds/:id')
 .get(feedRoutes.findOne)
+.delete(feedRoutes.delete)
 
 app.route('/feeds')
 .post(feedRoutes.create)
