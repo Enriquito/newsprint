@@ -4,6 +4,7 @@ const Feed = require('./feed');
 class Article{
       constructor(){
             this.id;
+            this.user;
             this.creator;
             this.title;
             this.link;
@@ -20,7 +21,12 @@ class Article{
 
       static findOne(id){
             return new Promise( async (resolve, reject) => {
-                  database.query('SELECT * FROM articles WHERE id = ?', [id], async (error, result) => {
+                  const query = `SELECT a.id, a.feed, f.user ,a.creator, a.title,  a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read FROM articles a
+                  JOIN feeds f
+                  ON a.feed = f.id
+                  WHERE a.id = ?`;
+
+                  database.query(query, [id], async (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -35,6 +41,7 @@ class Article{
                         const article = new Article();
 
                         article.id = f.id;
+                        article.user = f.user;
                         article.creator = f.creator;
                         article.title = f.title;
                         article.link = f.link;
@@ -42,7 +49,7 @@ class Article{
                         article.content = f.content;
                         article.contentSnippet = f.content_snippet;
                         article.isoDate = f.iso_date;
-                        
+
 
                         try{
                               // article.feed = await Feed.findOne(f.feed);
@@ -288,7 +295,7 @@ class Article{
                   });
             });
       }
-      
+
       static getFavorites(userId){
             return new Promise((resolve,reject) => {
                   const query = `
