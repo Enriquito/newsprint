@@ -39,16 +39,12 @@ module.exports.create = async (req,res) => {
 
     try{
         const feed = new Feed();
+        feed.user = req.user.id;
 
         await feed.getData(req.body.feedUrl);
-        feed.user = req.user.id;
         await feed.create();
         await feed.createArticles();
-
-        if(req.body.folderId === undefined)
-            await feed.addToFolder(req.user.id);
-        else
-            await feed.addToFolder(req.body.folderId);
+        await feed.addToFolder(req.body.folderId);
 
         res.status(201).json(feed);
     }
@@ -68,6 +64,16 @@ module.exports.moveToFolder = async (req,res) => {
 
     try{
         const feed = await Feed.findOne(req.body.feedId);
+
+        if(feed === null){
+            res.sendStatus(404);
+            return;
+        }
+
+        if(req.user.id !== feed.user){
+            res.sendStatus(401);
+            return;
+        }
 
         await feed.moveToFolder(req.body.from, req.body.to);
 
@@ -92,6 +98,11 @@ module.exports.update = async (req,res) => {
 
         if(feed === null){
             res.sendStatus(404);
+            return;
+        }
+
+        if(req.user.id !== feed.user){
+            res.sendStatus(401);
             return;
         }
 
@@ -129,7 +140,7 @@ module.exports.update = async (req,res) => {
                         await feed.moveToFolder(feed.folderId, value);
                         feed.folderId = value;
                     }
-                    break;                    
+                    break;
                 }
             }
         }
@@ -142,6 +153,37 @@ module.exports.update = async (req,res) => {
         }
 
         res.json(result);
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+module.exports.delete = async (req,res) => {
+    console.log(`DELETE /delete`);
+    // const validator = Validator.NewBlockData(req.body);
+
+    // if(validator.error){
+    //     res.status(400).json({error: validator.error});
+    //     return;
+    // }
+
+    try{
+        const feed = await Feed.findOne(req.params.id);
+
+        if(feed === null){
+            res.sendStatus(404);
+            return;
+        }
+
+        if(req.user.id !== feed.user){
+            res.sendStatus(401);
+            return;
+        }
+
+        await feed.delete();
+
+        res.status(200).json(feed);
     }
     catch(error){
         console.log(error);

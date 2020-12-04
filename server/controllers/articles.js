@@ -11,19 +11,24 @@ module.exports.findOne = async (req,res) => {
       //         return;
       //     }
 
-          const article = await Article.findOne(req.params.id);
+            const article = await Article.findOne(req.params.id);
 
-          if(article === null){
-              res.sendStatus(404);
-              return;
-          }
+            if(article === null){
+                res.sendStatus(404);
+                return;
+            }
 
-          res.json(article);
-      }
-      catch(error){
-          console.log(error);
-          res.sendStatus(500);
-      }
+            if(req.user.id !== article.user){
+                res.sendStatus(401);
+                return;
+            }
+
+            res.json(article);
+        }
+        catch(error){
+            console.log(error);
+            res.sendStatus(500);
+        }
 }
 module.exports.unreadArticlesCount = async (req,res) => {
       try{
@@ -71,7 +76,12 @@ module.exports.setToRead = async (req,res) => {
         const article = await Article.findOne(req.body.id);
 
         if(article === null){
-            res.sendStatus(500);
+            res.sendStatus(404);
+            return;
+        }
+
+        if(req.user.id !== article.user){
+            res.sendStatus(401);
             return;
         }
 
@@ -91,7 +101,12 @@ module.exports.setToUnread = async (req,res) => {
         const article = await Article.findOne(req.body.id);
 
         if(article === null){
-            res.sendStatus(500);
+            res.sendStatus(404);
+            return;
+        }
+
+        if(req.user.id !== article.user){
+            res.sendStatus(401);
             return;
         }
 
@@ -111,7 +126,12 @@ module.exports.addToFavorites = async (req,res) => {
         const article = await Article.findOne(req.body.id);
 
         if(article === null){
-            res.sendStatus(500);
+            res.sendStatus(404);
+            return;
+        }
+
+        if(req.user.id !== article.user){
+            res.sendStatus(401);
             return;
         }
 
@@ -131,7 +151,12 @@ module.exports.removeFromFavorites = async (req,res) => {
         const article = await Article.findOne(req.body.id);
 
         if(article === null){
-            res.sendStatus(500);
+            res.sendStatus(404);
+            return;
+        }
+
+        if(req.user.id !== article.user){
+            res.sendStatus(401);
             return;
         }
 
