@@ -1,5 +1,6 @@
 <template>
   <div>
+    <MobileMenuIcon />
     <Navigation />
     <section>
       <h1>Favorites</h1>
@@ -22,6 +23,7 @@
 <script>
 import Article from '@/components/Article.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue'
+import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
 import Navigation from '@/components/Navigation.vue';
 import axios from 'axios';
 
@@ -30,7 +32,8 @@ export default {
   components: {
     Article,
     ArticleSkeleton,
-    Navigation
+    Navigation,
+    MobileMenuIcon
   },
   mounted(){
       this.getData();
@@ -55,27 +58,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-section
-{
-  width: 100%;
-  height: 100%;
-  text-align: start;
-  padding-left: 50px;
-  margin-left: 350px;
-}
-section h1
-{
-    font-size: 70px;
-    font-weight: 500;
-    font-style: italic;
-    margin-top: 70px;
-    margin-bottom: 60px;
-}
-section span
-{
-  font-weight: 100;
-  font-size: 25px;
-  font-style: italic;
-}
-</style>

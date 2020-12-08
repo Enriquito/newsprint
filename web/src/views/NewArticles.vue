@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div style="width: 100%">
+    <MobileMenuIcon />
     <Navigation />
     <section>
       <h1>New Articles</h1>
-
       <div style="padding-bottom: 50px">
           <div v-if="articles">
               <div>
@@ -25,6 +25,7 @@
 import Article from '@/components/Article.vue';
 import axios from 'axios';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
+import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
 import Navigation from '@/components/Navigation.vue';
 
 export default {
@@ -32,7 +33,8 @@ export default {
   components: {
     Article,
     ArticleSkeleton,
-    Navigation
+    Navigation,
+    MobileMenuIcon
   },
   mounted(){
     this.getData();
@@ -62,28 +64,6 @@ export default {
 }
 </script>
 <style scoped>
-section
-{
-  width: 100%;
-  height: 100%;
-  text-align: start;
-  padding-left: 50px;
-  margin-left: 350px;
-}
-section h1
-{
-    font-size: 70px;
-    font-weight: 500;
-    font-style: italic;
-    margin-top: 70px;
-    margin-bottom: 60px;
-}
-section span
-{
-  font-weight: 100;
-  font-size: 25px;
-  font-style: italic;
-}
 button
 {
       border: 1px solid rgba(0,0,0,0.1);

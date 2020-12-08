@@ -1,12 +1,12 @@
 <template>
       <section id="login" class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
-            <div class="d-flex" style="heigth: 500px">
+            <div class="d-flex" style="heigth: 500px; box-shadow: rgba(0, 0, 0, 0.2) -4px 0 20px 1px; border-radius: 5px;">
                   <div id="whats-new">
                   <h1>What is new</h1>
                   </div>
                   <div id="form" class="d-flex align-items-center justify-content-center">
                         <div style="width: 100%;">
-                              <h1 class="welcome">Welcome to</h1>
+                              <h5 class="welcome">Welcome to</h5>
                               <h1 class="app-name">Readster</h1>
                               <div>
                                     <div style="text-align: left;">
@@ -30,7 +30,7 @@
                                     <div>
                                           <button @click="login">Login</button>
                                     </div>
-                              
+
                               </div>
                         </div>
                   </div>
@@ -56,7 +56,7 @@ export default {
             axios.post(`${process.env.VUE_APP_API}/login`, {
                   username: this.username,
                   password: this.password
-            }, 
+            },
             {withCredentials: true})
             .then(response => {
                   if(response.status === 200){
@@ -77,6 +77,21 @@ export default {
 }
 </script>
 <style scoped>
+section{
+      border: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+}
+section h1{
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
+}
+section span
+{
+  font-weight: inherit !important;
+  font-size: inherit !important;
+  font-style: inherit !important;
+}
 #login
 {
       height: 500px;
@@ -116,11 +131,13 @@ export default {
 {
       color: #5867FC !important;
       font-weight: 900;
-      margin-top: -20px;
+      margin-top: -15px !important;
+      font-size: 2em !important;
 }
-#login #form h1.welcome
+#login #form h5.welcome
 {
       font-size: 1.5em;
+      text-align: center;
 }
 #login #form label
 {
