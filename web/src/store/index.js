@@ -7,8 +7,11 @@ export default new Vuex.Store({
   state: {
   },
   mutations: {
-    setFolders(state, folder) {
+    setFolders(state, folder){
       state.folders = folder;
+    },
+    setUnreadArticles(state, count){
+      state.unreadArticles = count;
     }
   },
   actions: {
