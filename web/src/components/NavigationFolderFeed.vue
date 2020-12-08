@@ -33,9 +33,6 @@ export default {
     props:{
         feed: Object
     },
-    components:{
-        
-    },
     data(){
         return({
             showEditIcon: false
