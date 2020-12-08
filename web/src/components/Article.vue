@@ -91,9 +91,9 @@ export default {
         else{
           this.content = "No content found."
         }
-        
 
-        
+
+
       },
       setArticleToRead(){
         this.data.isRead = true;
@@ -216,5 +216,10 @@ article .spacer
 #article-content * > a
 {
   color: #5867FC !important;
+}
+@media (max-width: 1000px) {
+    article{
+        width: auto !important;
+    }
 }
 </style>

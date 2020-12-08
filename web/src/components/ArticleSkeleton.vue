@@ -11,9 +11,9 @@
                <div class="circle block"></div>
             </div>
         </div>
-        
+
     </div>
-    
+
     <div class="main-text block"></div>
   </article>
 </template>
@@ -57,7 +57,6 @@ article .heading
 {
     width: 500px;
     height: 30px;
-
 }
 article div .small-text
 {
@@ -75,5 +74,14 @@ article .main-text
     height: 20px;
     border-radius: 50px;
     margin: 0 2px;
+}
+@media (max-width: 1000px) {
+    article{
+        width: auto !important;
+        padding: 0;
+    }
+    article .heading{
+        width: 100%;
+    }
 }
 </style>
