@@ -8,6 +8,7 @@ import Favorites from '../views/Favorites.vue'
 import History from '../views/History.vue'
 import Test from '../views/Test.vue'
 import Login from '../views/Login.vue'
+import Settings from '../views/Settings.vue'
 
 const isAuthenticated = () => {
   return new Promise((resolve,reject) => {
@@ -39,7 +40,7 @@ const routes = [
   {
     path: '/',
     name: 'Root',
-    component: NewArticles,
+    component: Favorites,
     beforeEnter: Guard
   },
   {
@@ -51,6 +52,12 @@ const routes = [
     path: '/folder/:folder',
     name: 'FolderFeed',
     component: FolderFeed,
+    beforeEnter: Guard
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings,
     beforeEnter: Guard
   },
   {
