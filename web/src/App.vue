@@ -1,8 +1,51 @@
 <template>
   <div class="d-flex" id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  mounted(){
+    this.getData();
+    this.getNewArticles();
+
+    this.$eventHub.$on('updateNavigation', () => {
+      this.getData();
+      this.getNewArticles();
+    })
+  },
+  methods:{
+    getData(){
+      axios.get(`${process.env.VUE_APP_API}/folders`)
+      .then(response => {
+          if(response.status === 200){
+              this.$store.commit('setFolders', response.data);
+          }
+      })
+      .catch(error => {
+          alert('Error fetching folders');
+          console.log(error);
+      })
+    },
+    getNewArticles(){
+        axios.get(`${process.env.VUE_APP_API}/articles/count/unread`)
+        .then(response => {
+            if(response.status === 200){
+                this.unreadArticles = response.data.unreadArticles;
+                this.$store.commit('setUnreadArticles', response.data.unreadArticles);
+            }
+        })
+        .catch(error => {
+            alert('Error fetching new articles');
+            console.log(error);
+        })
+    },
+  }
+}
+</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300;1,500;1,700&display=swap');
@@ -20,5 +63,34 @@ html,body, #app
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #707070;
+}
+section
+{
+  width: 100%;
+  height: 100%;
+  text-align: start;
+  padding-left: 50px;
+  margin-left: 350px;
+}
+section h1
+{
+    font-size: 70px;
+    font-weight: 500;
+    font-style: italic;
+    margin-top: 70px;
+    margin-bottom: 60px;
+}
+section span
+{
+  font-weight: 100;
+  font-size: 25px;
+  font-style: italic;
+}
+@media (max-width: 720px) {
+    section{
+        padding: 10px !important;
+        padding-left: none;
+        margin: 0 !important;
+    }
 }
 </style>
