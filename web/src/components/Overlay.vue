@@ -44,6 +44,7 @@ export default {
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.3);
+    z-index: 999;
 }
 #overlay .content
 {
@@ -82,5 +83,10 @@ export default {
     background: #fff;
     border: 1px solid rgba(0,0,0, 0.1);
     outline: none;
+}
+@media (max-width: 720px) {
+    #overlay .content{
+        width: 100% !important;
+    }
 }
 </style>
