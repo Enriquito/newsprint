@@ -63,6 +63,7 @@ html,body, #app
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #707070;
+  overflow: hidden;
 }
 section
 {
@@ -85,6 +86,11 @@ section span
   font-weight: 100;
   font-size: 25px;
   font-style: italic;
+}
+.content-wrapper
+{
+  overflow: scroll;
+  width: 100%;
 }
 @media (max-width: 720px) {
     section{
