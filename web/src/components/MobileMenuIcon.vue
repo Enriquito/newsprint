@@ -33,7 +33,10 @@ export default {
 </script>
 <style scoped>
 #menu-icon{
-    display: none;
+    display: none !important;
+}
+#menu-icon svg path{
+    fill: #5867FC;
 }
 @media (max-width: 720px) {
     #menu-icon{
