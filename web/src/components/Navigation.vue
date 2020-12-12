@@ -162,6 +162,8 @@ nav
     background: #F6F7F8;
     position: fixed;
     box-shadow: 1px 0px 9px -7px #000;
+    height: 100%;
+    overflow-y: scroll;
 }
 nav ul
 {
@@ -213,7 +215,6 @@ nav div span
 }
 .folder-holder
 {
-    overflow: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
     max-height: 600px !important;
