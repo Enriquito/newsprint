@@ -68,31 +68,31 @@ app.post('/login',passport.authenticate('local'), (req, res) => {
 app.get('/user/current', userRoutes.current);
 
 app.route('/feeds/:id')
-.get(feedRoutes.findOne)
-.delete(feedRoutes.delete)
+.get(userRoutes.isLoggedIn,feedRoutes.findOne)
+.delete(userRoutes.isLoggedIn,feedRoutes.delete)
 
 app.route('/feeds')
-.post(feedRoutes.create)
-.put(feedRoutes.update)
+.post(userRoutes.isLoggedIn,feedRoutes.create)
+.put(userRoutes.isLoggedIn,feedRoutes.update)
 
 app.route('/folders/:id')
-.get(folderRoutes.findOne)
+.get(userRoutes.isLoggedIn,folderRoutes.findOne)
 
 app.route('/folders')
-.get(folderRoutes.findFoldersByUser)
-.post(folderRoutes.create)
+.get(userRoutes.isLoggedIn,folderRoutes.findFoldersByUser)
+.post(userRoutes.isLoggedIn,folderRoutes.create)
 
 app.route('/articles/:id')
-.get(articleRoutes.findOne)
+.get(userRoutes.isLoggedIn,articleRoutes.findOne)
 
-app.get('/articles/count/unread', articleRoutes.unreadArticlesCount)
-app.get('/unread/articles', articleRoutes.unreadArticles)
-app.put('/articles/set/read', articleRoutes.setToRead)
-app.put('/articles/set/unread', articleRoutes.setToUnread)
-app.post('/articles/save/favorite', articleRoutes.addToFavorites)
-app.post('/articles/remove/favorite', articleRoutes.removeFromFavorites)
-app.get('/favorite/articles', articleRoutes.getFavoriteArticles)
-app.post('/move/feeds', feedRoutes.moveToFolder)
+app.get('/articles/count/unread',userRoutes.isLoggedIn, articleRoutes.unreadArticlesCount)
+app.get('/unread/articles',userRoutes.isLoggedIn, articleRoutes.unreadArticles)
+app.put('/articles/set/read', userRoutes.isLoggedIn,articleRoutes.setToRead)
+app.put('/articles/set/unread',userRoutes.isLoggedIn, articleRoutes.setToUnread)
+app.post('/articles/save/favorite',userRoutes.isLoggedIn, articleRoutes.addToFavorites)
+app.post('/articles/remove/favorite',userRoutes.isLoggedIn, articleRoutes.removeFromFavorites)
+app.get('/favorite/articles',userRoutes.isLoggedIn, articleRoutes.getFavoriteArticles)
+app.post('/move/feeds',userRoutes.isLoggedIn, feedRoutes.moveToFolder)
 
 app.route('/history')
 .get(userRoutes.isLoggedIn, historyRoutes.getAll)
@@ -102,7 +102,6 @@ app.use(async (req, res, next) => {
       res.sendStatus(404);
       next();
 });
-
 
 app.listen(process.env.PORT, () => {
       console.log(`listening on port ${process.env.PORT}`);
