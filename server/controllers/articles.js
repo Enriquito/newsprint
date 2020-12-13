@@ -96,7 +96,7 @@ module.exports.setToRead = async (req,res) => {
 }
 module.exports.setToUnread = async (req,res) => {
     try{
-        console.log(`PUT /articles/set/read`);
+        console.log(`PUT /articles/set/unread`);
 
         const article = await Article.findOne(req.body.id);
 
@@ -110,7 +110,7 @@ module.exports.setToUnread = async (req,res) => {
             return;
         }
 
-        article.setToUnread();
+        await article.setToUnread();
 
         res.json(article);
     }
