@@ -4,8 +4,21 @@
     <a v-else :href="data.link" target="_blank"><h2>{{data.title}}</h2></a>
 
     <div class="d-flex">
-      <div>
-        <span class="date-time">{{date}}</span>
+      <div class="d-flex align-items-center">
+        <div v-if="data.feed" class="d-flex align-items-center">
+          <img style="width: 20px;" :src="data.feed.iconUrl" />
+          <router-link style="margin-left: 5px"  class="feed_link date-time"
+          :to="{
+            name: 'Feed',
+                params:{
+                    feedId: data.feed.id,
+                    feedName: urlFriendlyTitle(data.feed.displayName),
+                    page: 1
+                }
+          }">{{data.feed.displayName}}</router-link>
+          <span class="date-time" style="margin: 0 5px" >-</span>
+        </div>
+        <span class="date-time"> {{date}}</span>
         <span v-if="data.creator" class="spacer">by</span>
         <strong v-if="data.creator" class="author">{{data.creator}}</strong>
       </div>
@@ -91,9 +104,17 @@ export default {
         else{
           this.content = "No content found."
         }
+      },
+      urlFriendlyTitle(name){
+        if(name === null){
+          console.log(this.data);
+          return;
+        }
 
 
-
+        let res = name;
+        res = res.replaceAll('-', '');
+        return res.replaceAll(' ', '');
       },
       setArticleToRead(){
         this.data.isRead = true;
@@ -216,6 +237,14 @@ article .spacer
 #article-content * > a
 {
   color: #5867FC !important;
+}
+.feed_link
+{
+  color: inherit;
+}
+.feed_link:hover
+{
+  color: inherit;
 }
 @media (max-width: 1000px) {
     article{
