@@ -1,5 +1,4 @@
 const database = require('../database');
-const Feed = require('./feed');
 
 class Article{
       constructor(){
@@ -97,8 +96,9 @@ class Article{
       static getAllUnreadArticles(userId, min,max){
             return new Promise((resolve, reject) => {
                   const query = `SELECT DISTINCT
-                                    a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read,
-                                    CASE WHEN f.article IS NOT NULL THEN 1 ELSE 0 END as 'favorite'
+                                    a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read, fe.icon_url,
+                                    CASE WHEN fe.display_name IS NOT NULL THEN fe.display_name ELSE fe.title END as 'display_name',
+                                    fe.id as 'feed_id', CASE WHEN f.article IS NOT NULL THEN 1 ELSE 0 END as 'favorite'
                                     FROM articles a
                                     LEFT JOIN favorites f
                                     ON a.id = f.article
@@ -122,11 +122,17 @@ class Article{
                         }
 
                         const articles = [];
+                        const Feed = require('./feed');
 
                         for(let i = 0; i < result.length; i++){
                               const f = result[i];
 
                               const article = new Article();
+                              const feed = new Feed();
+
+                              feed.iconUrl = f.icon_url;
+                              feed.displayName = f.display_name;
+                              feed.id = f.feed;
 
                               article.id = f.id;
                               article.creator = f.creator;
@@ -137,6 +143,8 @@ class Article{
                               article.contentSnippet = f.content_snippet;
                               article.isoDate = f.iso_date
                               article.favorite = f.favorite;
+                              article.feed = feed;
+
 
                               try{
                                     // article.feed = await Feed.findOne(f.feed);
@@ -226,7 +234,7 @@ class Article{
             return new Promise((resolve, reject) => {
                   const query = `UPDATE articles SET is_read = 0 WHERE id = ?`;
 
-                  database.query(query,[this.id], (error, result) => {
+                  database.query(query,[this.id, this.id, this.user], (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -342,6 +350,21 @@ class Article{
                         }
 
                         resolve(articles);
+                  });
+            });
+      }
+
+      static deleteOldArticles(months){
+            return new Promise((resolve, reject) => {
+                  const query = `DELETE FROM articles WHERE iso_date <= NOW() - INTERVAL ${months} MONTH`;
+
+                  database.query(query, (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
+
+                        resolve(result);
                   });
             });
       }
