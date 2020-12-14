@@ -170,7 +170,7 @@ export default {
     },
     computed:{
       date(){
-        return moment(this.data.isoDate).format('LL')
+        return moment(this.data.isoDate).format('LL - HH:MM')
       }
     }
 }
