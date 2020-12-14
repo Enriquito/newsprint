@@ -74,6 +74,11 @@ export default {
               this.sortArticles();
               this.loadingNewData = false;
           }
+      })
+      .catch(error => {
+        if(error.response.status === 404){
+          this.$router.push({name: "NotFound"});
+        }
       });
     },
     sortArticles(){
