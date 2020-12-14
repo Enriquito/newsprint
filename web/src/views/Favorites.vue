@@ -36,7 +36,7 @@ export default {
     MobileMenuIcon
   },
   mounted(){
-      this.getData();
+    this.getData();
   },
   data(){
     return({
