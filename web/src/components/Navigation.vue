@@ -32,6 +32,13 @@
                 </svg>
                 <router-link :to="{name: 'Settings'}">Settings</router-link>
             </li>
+
+            <li class="d-flex align-items-center">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="18" viewBox="0 0 64 64">
+                    <path d="M48 40v-8h-20v-8h20v-8l12 12zM44 36v16h-20v12l-24-12v-52h44v20h-4v-16h-32l16 8v36h16v-12z" fill="#000000"></path>
+                </svg>
+                <strong @click="logout">Logout</strong>
+            </li>
         </ul>
         <div>
             <div style="padding-left: 60px; padding-top: 20px;" class="d-flex align-items-center">
@@ -86,6 +93,14 @@ export default {
         });
     },
     methods:{
+        logout(){
+            axios.get(`${process.env.VUE_APP_API}/logout`)
+            .then(response => {
+                if(response.status === 200){
+                    this.$router.push({name: 'Login'});
+                }
+            })
+        },
         openAddFeedPopUp(){
             this.$eventHub.$emit('toggle-overlay-add-feed');
         },
@@ -190,7 +205,7 @@ nav ul li small
     position: absolute;
     right: 10px;
 }
-nav ul li a
+nav ul li a, nav ul li strong
 {
     text-decoration: none;
     color: inherit;
