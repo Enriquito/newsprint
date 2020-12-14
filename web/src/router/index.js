@@ -7,6 +7,7 @@ import NewArticles from '../views/NewArticles.vue'
 import Favorites from '../views/Favorites.vue'
 import History from '../views/History.vue'
 import Test from '../views/Test.vue'
+import NotFound from '../views/404.vue'
 import Login from '../views/Login.vue'
 import Settings from '../views/Settings.vue'
 
@@ -44,6 +45,12 @@ const routes = [
     beforeEnter: Guard
   },
   {
+    path: '/404',
+    name: '404',
+    component: NotFound,
+    beforeEnter: Guard
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login
@@ -58,12 +65,6 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings,
-    beforeEnter: Guard
-  },
-  {
-    path: '/folder/:folder',
-    name: 'FolderView',
-    component: FolderFeed,
     beforeEnter: Guard
   },
   {
@@ -95,6 +96,12 @@ const routes = [
     name: 'Test',
     component: Test,
     beforeEnter: Guard
+  },
+  {
+    path: '*',
+    name: 'NotFound',
+    component: NotFound,
+    beforeEnter: Guard
   }
 ]
 
@@ -105,9 +112,5 @@ const router = new VueRouter({
     return { x: 0, y: 0 };
   }
 })
-
-// router.beforeEach((to,from,next) => {
-//   Auth(to,from,next);
-// })
 
 export default router
