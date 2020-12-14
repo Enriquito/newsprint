@@ -14,6 +14,12 @@ module.exports.findOne = async (req,res) => {
     //     }
 
         const feed = await Feed.findOne(req.params.id);
+
+        if(feed === null){
+            res.sendStatus(404);
+            return;
+        }
+
         await feed.getArticles(max, offset);
 
         if(feed === null){
