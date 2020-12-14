@@ -9,6 +9,9 @@ import axios from 'axios';
 
 export default {
   mounted(){
+    if(this.$route.name === 'Login')
+      return;
+
     this.getData();
     this.getNewArticles();
 
