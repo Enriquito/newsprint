@@ -30,7 +30,6 @@
                                     <div>
                                           <button @click="login">Login</button>
                                     </div>
-
                               </div>
                         </div>
                   </div>
@@ -60,6 +59,9 @@ export default {
             {withCredentials: true})
             .then(response => {
                   if(response.status === 200){
+                        this.$store.commit('setFolders', null);
+                        this.$store.commit('setUnreadArticles', null);
+                        this.$eventHub.$emit('updateNavigation');
                         this.$router.push({path: '/'});
                   }
             })
