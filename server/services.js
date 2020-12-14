@@ -1,6 +1,8 @@
 const Feed = require('./models/feed');
 const Article = require('./models/article');
 const cron = require('node-cron');
+const dotenv = require('dotenv');
+dotenv.config();
 
 
 function articleScan(){
@@ -8,7 +10,7 @@ function articleScan(){
 
       Feed.getNewItems()
       .then(result => {
-            console.log('Scan complete.');
+            console.log(`Scan complete. ${result.affectedRows} new rows added`);
       })
       .catch(error => {
             console.log(error);
@@ -24,6 +26,12 @@ function deleteOldArticles(){
       });
 }
 
-// Every hour
-cron.schedule('0 * * * *', articleScan);
-cron.schedule('0 * * * *', deleteOldArticles);
+if(process.env.NODE_ENV === 'production'){
+      // Every hour
+      cron.schedule('0 * * * *', articleScan);
+      cron.schedule('0 * * * *', deleteOldArticles);
+}
+else{
+      articleScan();
+}
+
