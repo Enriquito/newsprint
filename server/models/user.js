@@ -12,7 +12,7 @@ class User{
         }
 
         static findOne(id){
-            return new Promise((resolve, reject) => {  
+            return new Promise((resolve, reject) => {
                   database.query("SELECT * FROM users WHERE id = ?",[id],(error, result) => {
                         if(error){
                               reject(error);
@@ -22,7 +22,7 @@ class User{
                         if(result === null){
                               reject(null)
                         }
-                        
+
                         result = result[0];
                         const user = new User();
 
@@ -38,17 +38,18 @@ class User{
         }
 
         static findOneByUsername(username){
-            return new Promise((resolve, reject) => { 
+            return new Promise((resolve, reject) => {
                   database.query("SELECT * FROM users WHERE username = ?",[username],(error, result) => {
                         if(error){
                               reject(error);
                               console.log(param)
                         }
 
-                        if(result === null){
-                              reject(null)
+                        if(result === null || result === undefined || result.length === 0){
+                              reject(null);
+                              return;
                         }
-                        
+
                         result = result[0];
                         const user = new User();
 
@@ -62,19 +63,19 @@ class User{
                   });
             });
         }
-    
+
         static async createPassword(password){
             return new Promise((resolve, reject) => {
                 const saltRounds = 10;
                 bcrypt.hash(password, saltRounds, function(error, hash) {
                     if(error)
                         reject(error);
-    
+
                     resolve(hash);
                 });
             })
         }
-    
+
         create(hash){
             return new Promise((resolve, reject) => {
                 const data = {
@@ -82,24 +83,24 @@ class User{
                     email : this.email,
                     password : hash
                 };
-    
+
                 database.query("INSERT INTO users SET ?", data, (error, result) => {
                     if(error)
                         reject({success : false, error : error});
-    
+
                     this.id = result.insertId;
 
                     resolve({success : true});
                 });
             });
         }
-    
+
         delete(){
             return new Promise((resolve, reject) => {
                 database.query(`DELETE FROM users WHERE id = ?`,[this.id], (error, result) => {
                     if(error)
                         reject(error);
-    
+
                     resolve(this);
                 });
             })
@@ -110,7 +111,7 @@ class User{
                 database.query(`SELECT password FROM users WHERE id = ${this.id}`, (error, result) => {
                     if(error)
                         reject(null);
-    
+
                     if(result.length === 1)
                         resolve(result[0].password);
                     else
@@ -121,14 +122,14 @@ class User{
             try{
                   const hash = await getPassword;
                   const result =  await bcrypt.compareSync(password, hash);
-          
+
                   return result;
             }
             catch(error){
                   console.log(error);
             }
-    
-            
+
+
         }
 }
 
