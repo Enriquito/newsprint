@@ -77,10 +77,12 @@ app.route('/feeds')
 
 app.route('/folders/:id')
 .get(userRoutes.isLoggedIn,folderRoutes.findOne)
+.delete(userRoutes.isLoggedIn, folderRoutes.delete);
 
 app.route('/folders')
 .get(userRoutes.isLoggedIn,folderRoutes.findFoldersByUser)
 .post(userRoutes.isLoggedIn,folderRoutes.create)
+.put(folderRoutes.update)
 
 app.route('/articles/:id')
 .get(userRoutes.isLoggedIn,articleRoutes.findOne)

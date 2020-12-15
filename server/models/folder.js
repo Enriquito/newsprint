@@ -43,6 +43,7 @@ class Folder{
                               JOIN users u
                               ON u.id = fo.user
                               WHERE u.id = ?
+                              ORDER BY show_order ASC
                         `;
 
                   database.query(q, [userId], async (error, result) => {
@@ -151,6 +152,37 @@ class Folder{
                         }
 
                         resolve();
+                  });
+            });
+      }
+
+      update(){
+            return new Promise((resolve,reject) => {
+                  const toInsert = {
+                        name: this.name,
+                        show_order: this.showOrder,
+                  };
+
+                  database.query('UPDATE folders SET ? WHERE id = ?', [toInsert, this.id], (error, result) => {
+                        if(error){
+                              console.log(error);
+                              reject(error);
+                        }
+
+                        resolve(this);
+                  });
+            });
+      }
+
+      delete(){
+            return new Promise((resolve,reject) => {
+                  database.query('DELETE FROM folders WHERE id = ?', [this.id], (error, result) => {
+                        if(error){
+                              console.log(error);
+                              reject(error);
+                        }
+
+                        resolve(this);
                   });
             });
       }
