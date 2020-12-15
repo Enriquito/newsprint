@@ -28,7 +28,7 @@
                                           </div>
                                     </div>
                                     <div>
-                                          <button @click="login">Login</button>
+                                          <button @click="login">{{loginButtonText}}</button>
                                     </div>
                               </div>
                         </div>
@@ -45,12 +45,14 @@ export default {
           return({
                 password: null,
                 username: null,
-                error: ""
+                error: "",
+                loginButtonText: "Login"
           });
     },
     methods:{
       login(event){
             event.preventDefault();
+            this.loginButtonText = "Loading...";
 
             axios.post(`${process.env.VUE_APP_API}/login`, {
                   username: this.username,
@@ -59,13 +61,16 @@ export default {
             {withCredentials: true})
             .then(response => {
                   if(response.status === 200){
-                        this.$store.commit('setFolders', null);
-                        this.$store.commit('setUnreadArticles', null);
                         this.$eventHub.$emit('updateNavigation');
-                        this.$router.push({path: '/'});
+
+                        setTimeout(() => {
+                              this.$router.push({path: '/'});
+                        }, 1000)
                   }
             })
             .catch(error => {
+                  this.loginButtonText = "Login";
+
                   if(error.response.status === 401 || error.response.status === 400){
                     this.error = "Password or username is incorrect";
                     console.log("Password or username is incorrect");
