@@ -239,6 +239,7 @@ class Feed{
       createArticles(){
             return new Promise(async (resolve,reject) => {
                   const failedInserts = [];
+                  let createdArticles = 0;
 
                   for(let i = 0; i < this.articles.length; i++){
                         let article = this.articles[i];
@@ -249,6 +250,7 @@ class Feed{
                               this.articles[i].id = a.id;
 
                               await article.createCategories();
+                              createdArticles++;
                         }
                         catch(error){
                               if(error.errno !== 1062){
@@ -261,7 +263,7 @@ class Feed{
                   // console.log('Failed inserts:');
                   // console.log(failedInserts);
 
-                  resolve();
+                  resolve(createdArticles);
             });
       }
 
@@ -276,16 +278,18 @@ class Feed{
                               return;
                         }
 
+                        let createdArticles = 0;
+
                         for(let i = 0; i < result.length; i++){
                               const feed = await Feed.findOne(result[i].id);
 
                               if(feed !== null){
-                                    await feed.getData(result[i].feed_url);
+                                    createdArticles = await feed.getData(result[i].feed_url);
                                     await feed.createArticles();
                               }
                         }
 
-                        resolve();
+                        resolve(createdArticles);
                   });
             });
       }
