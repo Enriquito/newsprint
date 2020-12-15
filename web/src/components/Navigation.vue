@@ -97,6 +97,8 @@ export default {
             axios.get(`${process.env.VUE_APP_API}/logout`)
             .then(response => {
                 if(response.status === 200){
+                    this.$store.commit('setFolders', null);
+                    this.$store.commit('setUnreadArticles', null);
                     this.$router.push({name: 'Login'});
                 }
             })
