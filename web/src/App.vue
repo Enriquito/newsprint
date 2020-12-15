@@ -92,7 +92,8 @@ section span
 }
 .content-wrapper
 {
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   width: 100%;
 }
 @media (max-width: 720px) {
