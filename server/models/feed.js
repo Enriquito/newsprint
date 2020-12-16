@@ -1,5 +1,6 @@
 const Article = require('./article');
 const database = require('../database');
+const moment = require('moment-timezone');
 
 class Feed{
       constructor(){
@@ -185,6 +186,9 @@ class Feed{
                         this.lastBuildDate = f.lastBuildDate;
 
                         f.items.forEach(item => {
+                              if(moment().isAfter(moment(item.pubDate)))
+                                    return;
+
                               const article = new Article();
 
                               article.creator = item.creator;
