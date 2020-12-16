@@ -71,6 +71,12 @@ export default {
         AddFeedForm
     },
     mounted(){
+        this.$eventHub.$on('updateNavigation', () => {
+            setTimeout(() =>{
+                this.data = this.$store.state.folders;
+            }, 1000)
+        });
+
         let a = null;
         if(this.$store.state.folders === undefined || this.$store.state.unreadArticles === undefined){
             a = setInterval(() => {
