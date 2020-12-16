@@ -1,5 +1,6 @@
 const Feed = require('./models/feed');
 const Article = require('./models/article');
+const moment = require('moment-timezone');
 const cron = require('node-cron');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -27,6 +28,8 @@ function deleteOldArticles(){
 }
 
 if(process.env.NODE_ENV === 'production'){
+      console.log('--------------------------------');
+      console.log(moment().format('LL HH:MM'))
       // Every hour
       cron.schedule('0 * * * *', articleScan);
       cron.schedule('0 * * * *', deleteOldArticles);
