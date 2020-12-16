@@ -42,7 +42,7 @@
                   <span>{{folder.feeds.length}}</span>
                 </div>
                 <div class="folder-actions">
-                  <svg style="cursor: pointer;" @click="deleteFolder(folder.id, folder.name)" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="18" viewBox="0 0 64 64">
+                  <svg v-if="folder.name != 'No folder'" style="cursor: pointer;" @click="deleteFolder(folder.id, folder.name)" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="18" viewBox="0 0 64 64">
                     <path d="M12 64h40l4-44h-48zM40 8v-8h-16v8h-20v12l4-4h48l4 4v-12h-20zM36 8h-8v-4h8v4z" fill="#000000"></path>
                   </svg>
                 </div>
@@ -82,17 +82,21 @@ export default {
         folders: null
       });
     },
-    mounted(){
+    beforeMount(){
       let a = null;
 
       if(this.$store.state.folders === undefined){
             a = setInterval(() => {
+                console.log("a");
                 if(this.$store.state.folders !== undefined){
                     this.folders = this.$store.state.folders;
                     clearInterval(a);
                 }
             }, 50);
-        }
+      }
+      else{
+        this.folders = this.$store.state.folders;
+      }
     },
     methods:{
       changeOrder(event, folder){
