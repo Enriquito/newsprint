@@ -3,8 +3,13 @@
     <MobileMenuIcon />
     <Navigation />
     <section>
-      <h1 v-if="feed">{{feed.title}}</h1>
-      <h1 v-else>Loading...</h1>
+      <div v-if="feed">
+        <h1 v-if="feed.displayName != null">{{feed.displayName}}</h1>
+        <h1 v-else>{{feed.title}}</h1>
+      </div>
+      <div v-else>
+        <h1>Loading...</h1>
+      </div>
 
       <div style="padding-bottom: 50px">
           <div v-if="feed && newToday.length > 0">
