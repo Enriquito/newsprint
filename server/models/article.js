@@ -357,7 +357,13 @@ class Article{
 
       static deleteOldArticles(months){
             return new Promise((resolve, reject) => {
-                  const query = `DELETE FROM articles WHERE iso_date <= NOW() - INTERVAL ${months} MONTH`;
+                  const query = `
+                                    DELETE FROM articles a
+                                    LEFT JOIN favorites f
+                                    ON a.id = f.article
+                                    WHERE iso_date <= NOW() - INTERVAL ${months} MONTH
+                                    AND f.article IS NULL
+                              `;
 
                   database.query(query, (error, result) => {
                         if(error){
