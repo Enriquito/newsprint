@@ -170,9 +170,6 @@ class Feed{
                   try{
                         f = await parser.parseURL(url);
                         const temp = f.link.match(/( |https:\/\/|http:\/\/)([A-Za-z0-9]{1,10}\.?[A-Za-z]{1,}\.?[A-Za-z]{1,})(?: |\/|$)/);
-                        // console.log(url);
-                        // console.log(temp);
-                        // console.log('----')
 
                         if(temp === null)
                               this.iconUrl = null;
@@ -187,13 +184,11 @@ class Feed{
                         this.lastBuildDate = f.lastBuildDate;
 
                         f.items.forEach(item => {
-                              console.log(item.pubDate);
                               if(moment().subtract(3, 'M').isAfter(moment(item.pubDate)))
                                     return;
 
-                              console.log('add');
-
                               const article = new Article();
+
 
                               article.creator = item.creator;
                               article.title = item.title;
