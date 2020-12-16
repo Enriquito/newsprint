@@ -19,13 +19,12 @@
         <div v-if="feed">
           <div  v-if="older.length > 0">
             <Article v-for="article in older" :key="article.id" :data="article"/>
-
           </div>
-          <div v-else>
+          <div v-else-if="newToday.length != 10">
             <h2 v-if="!loadingNewData">No Articles found</h2>
           </div>
 
-          <div v-if="older.length > 0 || newToday.length > 0">
+          <div v-if="(older.length + newToday.length) == 10">
             <button id="load-more-button" @click="nextPage">Load more articles</button>
           </div>
 
