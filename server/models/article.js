@@ -108,7 +108,7 @@ class Article{
                         ON fe.id = a.feed
                         WHERE a.is_read = 0
                         AND fe.user = ?
-                        ORDER BY DATE(a.pub_date) DESC LIMIT ? OFFSET ?
+                        ORDER BY DATE(a.iso_date) DESC LIMIT ? OFFSET ?
                   `;
 
                   database.query(query,[userId,max,min], async (error, result) => {
