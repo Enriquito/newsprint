@@ -358,7 +358,8 @@ class Article{
       static deleteOldArticles(months){
             return new Promise((resolve, reject) => {
                   const query = `
-                                    DELETE FROM articles a
+                                    DELETE a.*
+                                    FROM articles a
                                     LEFT JOIN favorites f
                                     ON a.id = f.article
                                     WHERE iso_date <= NOW() - INTERVAL ${months} MONTH
