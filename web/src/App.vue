@@ -83,6 +83,7 @@ section h1
     font-style: italic;
     margin-top: 70px;
     margin-bottom: 60px;
+    width: 1024px;
 }
 section span
 {
@@ -101,6 +102,9 @@ section span
         padding: 10px !important;
         padding-left: none;
         margin: 0 !important;
+    }
+    section h1{
+      width: auto !important;
     }
 }
 </style>
