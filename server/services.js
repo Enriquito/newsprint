@@ -18,7 +18,7 @@ function articleScan(){
       });
 }
 function deleteOldArticles(){
-      Article.deleteOldArticles(2)
+      Article.deleteOldArticles(4)
       .then(result => {
             console.log(`Rows deleted: ${result.affectedRows}`)
       })
@@ -35,6 +35,8 @@ if(process.env.NODE_ENV === 'production'){
       cron.schedule('0 * * * *', deleteOldArticles);
 }
 else{
+      console.log('--------------------------------');
+      console.log(moment().format('LL HH:MM'))
       articleScan();
       deleteOldArticles();
 }

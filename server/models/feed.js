@@ -1,6 +1,7 @@
 const Article = require('./article');
 const database = require('../database');
 const moment = require('moment-timezone');
+const Log = require('./log');
 
 class Feed{
       constructor(){
@@ -186,8 +187,11 @@ class Feed{
                         this.lastBuildDate = f.lastBuildDate;
 
                         f.items.forEach(item => {
-                              if(moment().isAfter(moment(item.pubDate)))
+                              console.log(item.pubDate);
+                              if(moment().subtract(3, 'M').isAfter(moment(item.pubDate)))
                                     return;
+
+                              console.log('add');
 
                               const article = new Article();
 
@@ -228,6 +232,12 @@ class Feed{
 
                   database.query('INSERT INTO feeds SET ?', [toInsert], async (error, result) => {
                         if(error){
+                              const log = new Log('exceptions');
+                              log.content = error;
+                              log.user = this.user;
+                              log.method = 'Feed.Create';
+                              log.write();
+
                               console.log(error);
                               reject(error);
                               return;
@@ -278,6 +288,12 @@ class Feed{
             return new Promise( async (resolve, reject) => {
                   database.query('SELECT id,feed_url FROM feeds', async (error, result) => {
                         if(error){
+                              const log = new Log('exceptions');
+                              log.content = error;
+                              log.user = this.user;
+                              log.method = 'Feed.getNewItems';
+                              log.write();
+
                               reject(error);
                               return;
                         }
@@ -288,8 +304,20 @@ class Feed{
                               const feed = await Feed.findOne(result[i].id);
 
                               if(feed !== null){
-                                    createdArticles = await feed.getData(result[i].feed_url);
-                                    await feed.createArticles();
+                                    try{
+                                          createdArticles = await feed.getData(result[i].feed_url);
+                                          await feed.createArticles();
+                                    }
+                                    catch(error){
+                                          const log = new Log('exceptions');
+                                          log.content = error;
+                                          log.user = this.user;
+                                          log.method = 'Feed.getNewItems';
+                                          log.write();
+
+                                          console.log(error);
+                                    }
+
                               }
                         }
 
