@@ -105,6 +105,7 @@ section span
     }
     section h1{
       width: auto !important;
+      font-size: 40px !important;
     }
 }
 </style>

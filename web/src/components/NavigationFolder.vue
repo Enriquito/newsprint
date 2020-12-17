@@ -168,4 +168,13 @@ export default {
             transform: rotate(0deg);
         }
     }
+    @media (max-width: 350px) {
+    nav ul{
+        padding: 20px;
+    }
+    nav ul li small
+    {
+        right: 20px !important;
+    }
+}
 </style>
