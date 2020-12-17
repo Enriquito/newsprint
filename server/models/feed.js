@@ -189,7 +189,6 @@ class Feed{
 
                               const article = new Article();
 
-
                               article.creator = item.creator;
                               article.title = item.title;
                               article.link = item.link;
@@ -268,9 +267,6 @@ class Feed{
                               failedInserts.push(article);
                         }
                   }
-
-                  // console.log('Failed inserts:');
-                  // console.log(failedInserts);
 
                   resolve(createdArticles);
             });

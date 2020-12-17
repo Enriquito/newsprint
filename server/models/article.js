@@ -188,6 +188,10 @@ class Article{
 
       create(){
             return new Promise((resolve,reject) => {
+                  if(this.isoDate === null){
+                        reject();
+                        return;
+                  }
                   const toInsert = {
                         feed: this.feedId,
                         creator: this.creator,
