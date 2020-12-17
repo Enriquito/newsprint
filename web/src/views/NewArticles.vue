@@ -43,7 +43,7 @@ export default {
   },
   data(){
     return({
-      articles: null,
+      articles: null
     });
   },
   methods:{
@@ -53,7 +53,13 @@ export default {
           if(response.status === 200){
               this.articles = response.data;
           }
-      });
+      })
+      .catch(error => {
+        if(error.response.status === 500)
+          this.$router.push({name: "500"});
+        else if(error.response.status === 404)
+          this.$router.push({name: "404"});
+      })
     },
     loadMoreArticles(event){
       event.preventDefault();
