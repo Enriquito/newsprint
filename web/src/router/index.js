@@ -8,6 +8,7 @@ import Favorites from '../views/Favorites.vue'
 import History from '../views/History.vue'
 import Test from '../views/Test.vue'
 import NotFound from '../views/404.vue'
+import ServerError from '../views/500.vue'
 import Login from '../views/Login.vue'
 import Settings from '../views/Settings.vue'
 
@@ -48,6 +49,12 @@ const routes = [
     path: '/404',
     name: '404',
     component: NotFound,
+    beforeEnter: Guard
+  },
+  {
+    path: '/500',
+    name: '500',
+    component: ServerError,
     beforeEnter: Guard
   },
   {
