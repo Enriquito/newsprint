@@ -95,4 +95,9 @@ button
       color: #FFF;
       outline: none;
 }
+@media (max-width: 720px) {
+  button{
+    width: 100% !important;
+  }
+}
 </style>

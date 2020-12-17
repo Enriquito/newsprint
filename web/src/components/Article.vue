@@ -4,7 +4,7 @@
     <a v-else :href="data.link" target="_blank"><h2>{{data.title}}</h2></a>
 
     <div class="d-flex">
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center mobile-block">
         <div v-if="data.feed" class="d-flex align-items-center">
           <img style="width: 20px;" :src="data.feed.iconUrl" />
           <router-link style="margin-left: 5px"  class="feed_link date-time"
@@ -249,6 +249,12 @@ article .spacer
 @media (max-width: 1000px) {
     article{
         width: auto !important;
+    }
+    .mobile-block{
+      display: block !important;
+    }
+    .mobile-block span{
+      margin-left: 25px;
     }
 }
 </style>
