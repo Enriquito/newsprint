@@ -1,10 +1,10 @@
 <template>
   <article v-if="data">
-    <h2 v-if="!isOpen">{{data.title}}</h2>
-    <a v-else :href="data.link" target="_blank"><h2>{{data.title}}</h2></a>
+    <h2 @click="open" v-if="!isOpen">{{data.title}}</h2>
+    <a v-else @click="open" :href="data.link" target="_blank"><h2>{{data.title}}</h2></a>
 
     <div class="d-flex">
-      <div class="d-flex align-items-center mobile-block">
+      <div style="padding: 10px 0;" class="d-flex align-items-center mobile-block">
         <div v-if="data.feed" class="d-flex align-items-center">
           <img style="width: 20px;" :src="data.feed.iconUrl" />
           <router-link style="margin-left: 5px"  class="feed_link date-time"
@@ -16,14 +16,13 @@
                     page: 1
                 }
           }">{{data.feed.displayName}}</router-link>
-          <span class="date-time" style="margin: 0 5px" >-</span>
         </div>
-        <span class="date-time"> {{date}}</span>
+        <span class="date-time">{{date}}</span>
         <span v-if="data.creator" class="spacer">by</span>
         <strong v-if="data.creator" class="author">{{data.creator}}</strong>
       </div>
 
-      <div class="d-flex justify-content-end" style="flex-grow: 1;">
+      <div class="d-flex justify-content-end align-items-center" style="flex-grow: 1;">
         <svg @click="setArticleToRead" v-if="!data.isRead" class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
           <path id="ic_visibility_24px" d="M12,4.5A11.827,11.827,0,0,0,1,12a11.817,11.817,0,0,0,22,0A11.827,11.827,0,0,0,12,4.5ZM12,17a5,5,0,1,1,5-5A5,5,0,0,1,12,17Zm0-8a3,3,0,1,0,3,3A3,3,0,0,0,12,9Z" transform="translate(-1 -4.5)"/>
         </svg>
@@ -82,7 +81,7 @@ export default {
           if(!this.data.isRead){
             this.setToRead = setTimeout(() => {
               this.setArticleToRead();
-            }, 6000);
+            }, 3000);
           }
         }
         else{
@@ -110,7 +109,6 @@ export default {
           console.log(this.data);
           return;
         }
-
 
         let res = name;
         res = res.replaceAll('-', '');
@@ -170,7 +168,10 @@ export default {
     },
     computed:{
       date(){
-        return moment(this.data.isoDate).format('LL - HH:MM')
+        if(moment(this.data.isoDate).format('D-MM-YYYY') === moment().format('D-MM-YYYY'))
+          return `Today ${moment(this.data.isoDate).format('HH:MM')}`
+        else
+          return moment(this.data.isoDate).format('LL')
       }
     }
 }
@@ -213,11 +214,13 @@ article h2
 {
   margin-bottom: 0px;
   font-weight: 700;
+  cursor: pointer;
 }
 article .date-time
 {
   font-weight: 100;
   font-size: 13px;
+  margin-left: 10px;
 }
 article .spacer
 {
@@ -247,14 +250,24 @@ article .spacer
   color: inherit;
 }
 @media (max-width: 1000px) {
-    article{
+    article
+    {
         width: auto !important;
     }
-    .mobile-block{
-      display: block !important;
+    .date-time
+    {
+      max-width: 120px !important;
     }
-    .mobile-block span{
-      margin-left: 25px;
+    .mobile-block a, .date-time
+    {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 80px;
+    }
+    article h2
+    {
+      font-size: 20px !important;
     }
 }
 </style>
