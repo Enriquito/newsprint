@@ -51,7 +51,7 @@ export default {
       axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.$route.params.page * 10}`)
         .then(response => {
           if(response.status === 200){
-              this.articles = this.shuffleArticles(response.data);
+              this.articles = response.data;
           }
       });
     },
@@ -61,19 +61,6 @@ export default {
       this.$router.push({name: 'NewArticles', params: {page: page}});
       this.articles = [];
       this.getData();
-    },
-    shuffleArticles(array){
-    let currentIndex = array.length, temporaryValue, randomIndex;
-
-      while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-      }
-
-      return array;
     }
   }
 }
