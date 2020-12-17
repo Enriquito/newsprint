@@ -115,7 +115,7 @@ class Feed{
 
       getArticles(max, offset){
             return new Promise( async (resolve, reject) => {
-                  database.query('SELECT * FROM articles WHERE feed = ? ORDER BY DATE(iso_date) DESC LIMIT ? OFFSET ?', [this.id, max, offset], async (error, result) => {
+                  database.query('SELECT * FROM articles WHERE feed = ? ORDER BY iso_date DESC LIMIT ? OFFSET ?', [this.id, max, offset], async (error, result) => {
                         if(error){
                               console.log(error);
                               reject(error);
