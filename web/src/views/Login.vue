@@ -2,22 +2,22 @@
       <section id="login" class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
             <div class="d-flex" style="heigth: 500px; box-shadow: rgba(0, 0, 0, 0.2) -4px 0 20px 1px; border-radius: 5px;">
                   <div id="whats-new">
-                  <h1>What is new</h1>
+                  <h1></h1>
                   </div>
                   <div id="form" class="d-flex align-items-center justify-content-center">
                         <div style="width: 100%;">
                               <h5 class="welcome">Welcome to</h5>
-                              <h1 class="app-name">Readster</h1>
+                              <h1 class="app-name">Newsprint</h1>
                               <div>
                                     <div style="text-align: left;">
                                           <label for="username">Username</label>
                                           <br />
-                                          <input type="text" id="username" v-model="username" placeholder="Username" />
+                                          <input v-on:keyup.enter="login" type="text" id="username" v-model="username" placeholder="Username" />
                                     </div>
                                     <div style="text-align: left; margin-top: 15px;">
                                           <label for="password">Password</label>
                                           <br />
-                                          <input type="password" id="password" v-model="password" placeholder="Password" />
+                                          <input v-on:keyup.enter="login" type="password" id="password" v-model="password" placeholder="Password" />
                                           <div style="text-align: right; margin: 5px;">
                                                 <span>
                                                       <router-link :to="{name: 'Register'}">Forgot password?</router-link>
@@ -64,7 +64,7 @@ export default {
                         this.$eventHub.$emit('updateNavigation');
 
                         setTimeout(() => {
-                              this.$router.push({path: '/'});
+                              this.$router.push({name: 'NewArticles', params:{page: 1}});
                         }, 1000)
                   }
             })
@@ -140,6 +140,7 @@ section span
       font-weight: 900;
       margin-top: -15px !important;
       font-size: 2em !important;
+      width: auto;
 }
 #login #form h5.welcome
 {
@@ -158,6 +159,7 @@ section span
       width: 100%;
       padding: 10px;
       outline-color: #5867FC;
+      color: inherit;
 }
 #login #form button
 {
@@ -167,5 +169,22 @@ section span
       color: #FFF;
       font-weight: 900;
 }
-
+@media (max-width: 720px) {
+  #login div
+  {
+    display: block !important;
+    width: 100%;
+    box-shadow: none !important;
+  }
+  #login #form
+  {
+        width: 100% !important;
+        padding: 10px;
+  }
+  #login #whats-new
+  {
+        width: 100% !important;
+        border-radius: 0px !important;
+  }
+}
 </style>
