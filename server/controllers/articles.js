@@ -58,7 +58,7 @@ module.exports.unreadArticles = async (req,res) => {
         const articleCount = await Article.getAllUnreadArticles(req.user.id, offset, max);
 
         if(articleCount === null){
-            res.sendStatus(500);
+            res.sendStatus(404);
             return;
         }
 
