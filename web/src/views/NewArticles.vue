@@ -2,22 +2,24 @@
   <div class="content-wrapper">
     <MobileMenuIcon />
     <Navigation />
-    <section>
-      <h1>New Articles</h1>
-      <div style="padding-bottom: 50px">
-          <div v-if="articles">
-              <div>
-                  <Article v-for="article in articles" :key="article.id" :data="article"/>
-              </div>
-              <button id="load-more-button" @click="loadMoreArticles">
-                    Load more articles
-              </button>
-          </div>
-          <div v-else>
-            <ArticleSkeleton v-for="index in 6" :key="index" />
-          </div>
-      </div>
-    </section>
+    <div class="d-flex justify-content-center">
+      <section>
+        <h1>New Articles</h1>
+        <div style="padding-bottom: 50px">
+            <div v-if="articles">
+                <div>
+                    <Article v-for="article in articles" :key="article.id" :data="article"/>
+                </div>
+                <button id="load-more-button" @click="loadMoreArticles">
+                      Load more articles
+                </button>
+            </div>
+            <div v-else>
+              <ArticleSkeleton v-for="index in 6" :key="index" />
+            </div>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -63,16 +65,16 @@ export default {
     shuffleArticles(array){
     let currentIndex = array.length, temporaryValue, randomIndex;
 
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
+      while (0 !== currentIndex) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
 
-    return array;
-  }
+      return array;
+    }
   }
 }
 </script>

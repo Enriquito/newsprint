@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <h3>Readster</h3>
+        <h3>Newsprint</h3>
         <ul>
             <li class="d-flex align-items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 18 18">
@@ -41,7 +41,7 @@
             </li>
         </ul>
         <div>
-            <div style="padding-left: 60px; padding-top: 20px;" class="d-flex align-items-center">
+            <div style="" class="d-flex align-items-center feed-spacer">
                 <span>Feeds</span>
                 <svg v-if="data" style="cursor: pointer" @click="openAddFeedPopUp" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
                     <path id="ic_add_24px" d="M19,13H13v6H11V13H5V11h6V5h2v6h6Z" transform="translate(-5 -5)"/>
@@ -242,6 +242,11 @@ nav div span
     scrollbar-width: none;
     max-height: 600px !important;
 }
+.feed-spacer
+{
+    padding-left: 60px;
+    padding-top: 20px;
+}
 .folder-holder::-webkit-scrollbar {
   display: none;
 }
@@ -249,6 +254,19 @@ nav div span
     nav{
         display: none;
         width: 100%;
+    }
+}
+@media (max-width: 350px) {
+    nav ul{
+        padding: 20px;
+    }
+    nav ul li small
+    {
+        right: 20px !important;
+    }
+    .feed-spacer
+    {
+        padding-left: 20px !important;
     }
 }
 </style>
