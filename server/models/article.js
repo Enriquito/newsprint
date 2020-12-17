@@ -146,14 +146,6 @@ class Article{
                               article.favorite = f.favorite;
                               article.feed = feed;
 
-
-                              try{
-                                    // article.feed = await Feed.findOne(f.feed);
-                              }
-                              catch(error){
-                                    console.log(error);
-                              }
-
                               if(f.is_read == 1)
                                     article.isRead = true;
                               else
