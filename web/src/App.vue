@@ -8,7 +8,7 @@
 import axios from 'axios';
 
 export default {
-  mounted(){
+  updated(){
     if(this.$route.name === 'Login')
       return;
 
