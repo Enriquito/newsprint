@@ -220,7 +220,7 @@ article .date-time
 {
   font-weight: 100;
   font-size: 13px;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 article .spacer
 {
