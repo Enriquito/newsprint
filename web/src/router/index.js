@@ -69,8 +69,8 @@ const routes = [
     beforeEnter: Guard
   },
   {
-    path: '/settings',
-    name: 'Settings',
+    path: '/preferences',
+    name: 'Preferences',
     component: Settings,
     beforeEnter: Guard
   },

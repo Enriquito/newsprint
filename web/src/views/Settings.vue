@@ -3,7 +3,7 @@
     <MobileMenuIcon />
     <Navigation />
     <section>
-        <h1>Settings</h1>
+        <h1>Preferences</h1>
         <div>
           <label>Folders</label>
           <br />
