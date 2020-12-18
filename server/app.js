@@ -65,6 +65,8 @@ app.post('/login',passport.authenticate('local'), (req, res) => {
       res.sendStatus(200);
 });
 
+app.post('/users', userRoutes.create);
+
 app.get('/user/current', userRoutes.current);
 
 app.route('/feeds/:id')
