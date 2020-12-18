@@ -65,13 +65,29 @@ module.exports.create = async (req,res) => {
 module.exports.updatePreference = async (req, res) => {
     try{
         const user = new User();
-        user.id = req.body.id;
+        user.id = req.user.id;
 
         await user.updatePreference(req.body.articleDeleteInterval, req.body.articleScanInterval, req.body.darkmode);
 
         res.sendStatus(200);
     }
     catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
+module.exports.getPreference = async (req,res) => {
+    try{
+        const user = new User();
+        user.id = req.user.id;
+
+        const result = await user.getPreference();
+
+        res.json(result);
+    }
+    catch(error){
+        console.log(error);
         res.sendStatus(500);
     }
 }
