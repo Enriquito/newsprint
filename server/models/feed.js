@@ -272,12 +272,12 @@ class Feed{
             });
       }
 
-      static async getNewItems(){
+      static async getNewItems(userId){
             // const feed = await Feed.findOne(1);
             // await feed.getData('https://developer.apple.com/news/rss/news.rss');
             // await feed.createArticles();
             return new Promise( async (resolve, reject) => {
-                  database.query('SELECT id,feed_url FROM feeds', async (error, result) => {
+                  database.query('SELECT id,feed_url FROM feeds WHERE user = ?',[userId], async (error, result) => {
                         if(error){
                               const log = new Log('exceptions');
                               log.content = error;
@@ -289,14 +289,12 @@ class Feed{
                               return;
                         }
 
-                        let createdArticles = 0;
-
                         for(let i = 0; i < result.length; i++){
                               const feed = await Feed.findOne(result[i].id);
 
                               if(feed !== null){
                                     try{
-                                          createdArticles = await feed.getData(result[i].feed_url);
+                                          await feed.getData(result[i].feed_url);
                                           await feed.createArticles();
                                     }
                                     catch(error){
@@ -312,7 +310,7 @@ class Feed{
                               }
                         }
 
-                        resolve(createdArticles);
+                        resolve(feed.articles);
                   });
             });
       }
