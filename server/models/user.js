@@ -6,7 +6,6 @@ class User{
             this.id = null;
             this.username = null;
             this.email = null;
-            this.image = null;
             this.lastLogin = null;
             this.created = null;
         }
@@ -76,23 +75,74 @@ class User{
             })
         }
 
-        create(hash){
-            return new Promise((resolve, reject) => {
-                const data = {
-                    username : this.username,
-                    email : this.email,
-                    password : hash
-                };
+        create(){
+            const createUser = () => {
+                return new Promise((resolve, reject) => {
+                    const data = {
+                        username : this.username,
+                        email : this.email,
+                        password : this.password
+                    };
 
-                database.query("INSERT INTO users SET ?", data, (error, result) => {
-                    if(error)
-                        reject({success : false, error : error});
+                    database.query("INSERT INTO users SET ?", data, (error, result) => {
+                        if(error)
+                            reject(error);
 
-                    this.id = result.insertId;
+                        this.id = result.insertId;
 
-                    resolve({success : true});
+                        resolve();
+                    });
                 });
-            });
+            }
+
+            const createPreferenceRow = () => {
+                return new Promise((resolve, reject) => {
+                    const data = {
+                        user : this.id
+                    };
+
+                    database.query("INSERT INTO user_preferences SET ?", data, (error, result) => {
+                        if(error){
+                            // console.log(error);
+                            reject();
+                            return;
+                        }
+
+                        resolve();
+                    });
+                });
+            }
+
+            const createDefaultFolder = () => {
+                return new Promise((resolve, reject) => {
+                    const data = {
+                        user : this.id,
+                        name: "No folder",
+                        show_order: 0
+                    };
+
+                    database.query("INSERT INTO folders SET ?", data, (error, result) => {
+                        if(error)
+                            reject();
+
+                        resolve();
+                    });
+                });
+            }
+
+            return new Promise(async (resolve, reject) => {
+                try{
+                    await createUser();
+                    await createPreferenceRow();
+                    await createDefaultFolder();
+
+                    resolve();
+                }
+                catch(error){
+                    console.log(error);
+                    reject();
+                }
+            })
         }
 
         delete(){
@@ -121,15 +171,13 @@ class User{
 
             try{
                   const hash = await getPassword;
-                  const result =  await bcrypt.compareSync(password, hash);
+                  const result = bcrypt.compareSync(password, hash);
 
                   return result;
             }
             catch(error){
                   console.log(error);
             }
-
-
         }
 }
 
