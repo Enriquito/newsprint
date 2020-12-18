@@ -83,7 +83,7 @@ class User{
                     darkmode: darkmode
                 }
 
-                database.query(`UPDATE user_preference SET ? WHERE user = ?`,[data,this.id], (error, result) => {
+                database.query(`UPDATE user_preferences SET ? WHERE user = ?`,[data,this.id], (error, result) => {
                     if(error){
                         reject(error);
                         return;
@@ -92,6 +92,31 @@ class User{
                     resolve();
                 });
             })
+        }
+
+        getPreference(){
+            return new Promise((resolve, reject) => {
+                database.query("SELECT * FROM user_preferences WHERE user = ?",[this.id],(error, result) => {
+                      if(error){
+                            reject(error);
+                            console.log(param)
+                      }
+
+                      if(result === null || result.length === 0){
+                            reject(null)
+                      }
+
+                      result = result[0];
+
+                      const data = {
+                        articleDeleteInterval: result.article_delete_interval,
+                        articleScanInterval: result.article_scan_interval,
+                        darkmode: result.darkmode
+                      }
+
+                      resolve(data);
+                });
+          });
         }
 
         create(){
