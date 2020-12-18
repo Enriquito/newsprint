@@ -44,3 +44,20 @@ module.exports.login = (username, password, done) => {
       else
           res.json(null);
   }
+
+  module.exports.create = async (req,res) => {
+    try{
+        const user = new User();
+        user.username = req.body.username;
+        user.email = req.body.email;
+        user.password = await User.createPassword(req.body.password);
+
+        await user.create();
+
+        res.sendStatus(201);
+    }
+    catch(error){
+        res.sendStatus(500);
+        console.log(error);
+    }
+}
