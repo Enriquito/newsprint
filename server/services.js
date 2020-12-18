@@ -33,6 +33,7 @@ async function startJobs (){
 
                   setInterval(async () => {
                         console.log('Getting new data..');
+                        console.log(moment().format('LL HH:MM'))
                         data = await getData();
                   }, (1000  * 60 * 30))
 
@@ -79,8 +80,6 @@ async function startJobs (){
                         one.forEach(async el => {
                               await Feed.getNewItems(el.user);
                         });
-
-                        console.log(`runned: ${one.length} jobs`)
                   });
 
                   cron.schedule('0 */2 * * *', () => {
@@ -92,8 +91,6 @@ async function startJobs (){
                         two.forEach(async el => {
                               await Feed.getNewItems(el.user);
                         });
-
-                        console.log(`runned: ${two.length} jobs`)
                   });
 
                   cron.schedule('0 */3 * * *', () => {
@@ -105,8 +102,6 @@ async function startJobs (){
                         three.forEach(async el => {
                               await Feed.getNewItems(el.user);
                         })
-
-                        console.log(`runned: ${three.length} jobs`)
                   });
 
                   cron.schedule('0 */4 * * *', () => {
@@ -118,8 +113,6 @@ async function startJobs (){
                         four.forEach(async el => {
                               await Feed.getNewItems(el.user);
                         })
-
-                        console.log(`runned: ${four.length} jobs`)
                   });
             }
             catch(error){
@@ -143,6 +136,7 @@ async function startJobs (){
                   }
 
                   result.forEach(el => {
+                        console.log(`running for userId: ${el.user}`);
                         articleScan(el.user);
                         deleteOldArticles(el.article_delete_interval, el.user);
                   })
