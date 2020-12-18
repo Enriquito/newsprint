@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <MobileMenuIcon />
     <Navigation />
-    <section>
+    <section v-if="data">
         <h1>Preferences</h1>
         <div>
           <label>Folders</label>
@@ -51,16 +51,31 @@
           </ul>
         </div>
         <div>
-          <label>Article removal</label>
+          <label>Article removal internval</label>
           <br />
-          <small>Delete all articles that are older then {{deleteTime}} month(s)</small>
+          <small>Delete all articles that are older then {{data.articleDeleteInterval}} month(s).</small>
           <br />
-          <select v-model="deleteTime" disabled>
+          <select v-model="data.articleDeleteInterval">
             <option value="1">1 month</option>
             <option value="2">2 months</option>
             <option value="3">3 months</option>
             <option value="4">4 months</option>
           </select>
+        </div>
+        <div>
+          <label>Article scan internval</label>
+          <br />
+          <small>Scan every {{data.articleScanInterval}} hour(s) for new articles.</small>
+          <br />
+          <select v-model="data.articleScanInterval">
+            <option value="1">1 hour</option>
+            <option value="2">2 hours</option>
+            <option value="3">3 hours</option>
+            <option value="4">4 hours</option>
+          </select>
+        </div>
+        <div>
+          <button @click="updateUserPreferences">Save</button>
         </div>
     </section>
   </div>
@@ -78,11 +93,14 @@ export default {
     },
     data(){
       return({
+        data: null,
         deleteTime: 1,
+        scanTime: 1,
         folders: null
       });
     },
     beforeMount(){
+      this.getPreferences();
       let a = null;
 
       if(this.$store.state.folders === undefined){
@@ -151,6 +169,27 @@ export default {
           alert('error while deleting folder');
           console.log(error);
         })
+      },
+      updateUserPreferences(){
+        axios.put('/preferences',{
+          articleDeleteInterval: this.data.articleDeleteInterval,
+          articleScanInterval: this.data.articleScanInterval,
+          darkmode: 0
+        })
+        .catch(error => {
+          alert('Error updating user preferences');
+          console.log(error);
+        })
+      },
+      getPreferences(){
+        axios.get('/preferences')
+        .then(response => {
+          this.data = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+          alert('Error updating user preferences');
+        })
       }
     }
 }
@@ -158,6 +197,7 @@ export default {
 <style scoped>
 label{
   margin: 0;
+  margin-top: 10px;
 }
 small{
   margin-bottom: 10px;
@@ -196,6 +236,24 @@ ul li:first-child
   width: 40px;
   border: none;
   outline-color: #5867FC;
+}
+select
+{
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid rgba(0,0,0, 0.1);
+  outline-color: #5867FC;
+  width: 250px;
+}
+button
+{
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid rgba(0,0,0, 0.1);
+    background: #5867FC;
+    color: #FFF;
+    width: 100px;
+    margin-top: 10px;
 }
 .folder-name
 {
