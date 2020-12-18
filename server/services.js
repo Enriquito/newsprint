@@ -135,10 +135,10 @@ async function startJobs (){
                         return;
                   }
 
-                  result.forEach(el => {
+                  result.forEach(async el => {
                         console.log(`running for userId: ${el.user}`);
-                        articleScan(el.user);
-                        deleteOldArticles(el.article_delete_interval, el.user);
+                        await Feed.getNewItems(el.user);
+                        await Article.deleteOldArticles(el.article_delete_interval, el.user);
                   })
             });
       }

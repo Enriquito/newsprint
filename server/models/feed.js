@@ -310,7 +310,7 @@ class Feed{
                               }
                         }
 
-                        resolve(feed.articles);
+                        resolve();
                   });
             });
       }
