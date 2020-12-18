@@ -10,7 +10,7 @@ import Test from '../views/Test.vue'
 import NotFound from '../views/404.vue'
 import ServerError from '../views/500.vue'
 import Login from '../views/Login.vue'
-import Settings from '../views/Settings.vue'
+import Preferences from '../views/Preferences.vue'
 
 const isAuthenticated = () => {
   return new Promise((resolve,reject) => {
@@ -71,7 +71,7 @@ const routes = [
   {
     path: '/preferences',
     name: 'Preferences',
-    component: Settings,
+    component: Preferences,
     beforeEnter: Guard
   },
   {
