@@ -66,6 +66,9 @@ app.post('/login',passport.authenticate('local'), (req, res) => {
 });
 
 app.post('/users', userRoutes.create);
+app.route('/preferences')
+.put(userRoutes.isLoggedIn,userRoutes.updatePreference)
+.get(userRoutes.isLoggedIn,userRoutes.getPreference)
 
 app.get('/user/current', userRoutes.current);
 
