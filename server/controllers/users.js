@@ -26,9 +26,9 @@ module.exports.login = (username, password, done) => {
             console.log(error);
             done(error);
         })
-  }
+}
 
-  module.exports.isLoggedIn = (req, res, next) => {
+module.exports.isLoggedIn = (req, res, next) => {
       if(req.user){
             next();
       }
@@ -36,16 +36,16 @@ module.exports.login = (username, password, done) => {
           res.sendStatus(401);
       }
 
-  }
+}
 
-  module.exports.current = (req,res) => {
+module.exports.current = (req,res) => {
       if(req.user)
           res.json(req.user);
       else
           res.json(null);
-  }
+}
 
-  module.exports.create = async (req,res) => {
+module.exports.create = async (req,res) => {
     try{
         const user = new User();
         user.username = req.body.username;
@@ -59,5 +59,19 @@ module.exports.login = (username, password, done) => {
     catch(error){
         res.sendStatus(500);
         console.log(error);
+    }
+}
+
+module.exports.updatePreference = async (req, res) => {
+    try{
+        const user = new User();
+        user.id = req.body.id;
+
+        await user.updatePreference(req.body.articleDeleteInterval, req.body.articleScanInterval, req.body.darkmode);
+
+        res.sendStatus(200);
+    }
+    catch(error){
+        res.sendStatus(500);
     }
 }

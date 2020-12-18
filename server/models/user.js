@@ -75,6 +75,25 @@ class User{
             })
         }
 
+        updatePreference(articleDeleteInterval,articleScanInterval,darkmode){
+            return new Promise((resolve, reject) => {
+                const data = {
+                    article_delete_interval: articleDeleteInterval,
+                    article_scan_interval: articleScanInterval,
+                    darkmode: darkmode
+                }
+
+                database.query(`UPDATE user_preference SET ? WHERE user = ?`,[data,this.id], (error, result) => {
+                    if(error){
+                        reject(error);
+                        return;
+                    }
+
+                    resolve();
+                });
+            })
+        }
+
         create(){
             const createUser = () => {
                 return new Promise((resolve, reject) => {
