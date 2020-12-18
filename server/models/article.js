@@ -351,18 +351,21 @@ class Article{
             });
       }
 
-      static deleteOldArticles(months){
+      static deleteOldArticles(months,userID){
             return new Promise((resolve, reject) => {
                   const query = `
                                     DELETE a.*
-                                    FROM articles a
+                                    FROM feeds fe
+                                    JOIN articles a
+                                    ON a.feed = fe.id
                                     LEFT JOIN favorites f
                                     ON a.id = f.article
-                                    WHERE iso_date <= NOW() - INTERVAL ${months} MONTH
+                                    WHERE iso_date <= NOW() - INTERVAL ? MONTH
                                     AND f.article IS NULL
+                                    AND fe.user = ?
                               `;
 
-                  database.query(query, (error, result) => {
+                  database.query(query,[months,userID], (error, result) => {
                         if(error){
                               reject(error);
                               return;
