@@ -15,7 +15,6 @@ class User{
                   database.query("SELECT * FROM users WHERE id = ?",[id],(error, result) => {
                         if(error){
                               reject(error);
-                              console.log(param)
                         }
 
                         if(result === null){
