@@ -46,7 +46,15 @@ export default {
             console.log(error);
         })
     },
-  }
+  },
+  watch: {
+        $route: {
+            immediate: true,
+            handler(to, from) {
+              document.title = to.meta.title || process.env.VUE_APP_NAME;
+            }
+        },
+    }
 }
 </script>
 
@@ -83,7 +91,6 @@ section h1
     font-style: italic;
     margin-top: 70px;
     margin-bottom: 60px;
-    width: 1024px;
 }
 section span
 {
