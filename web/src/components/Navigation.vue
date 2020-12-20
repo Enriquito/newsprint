@@ -183,7 +183,6 @@ nav
     min-width: 350px;
     margin: 0;
     background: #F6F7F8;
-    position: fixed;
     box-shadow: 1px 0px 9px -7px #000;
     height: 100%;
     overflow-y: scroll;
@@ -254,6 +253,7 @@ nav div span
     nav{
         display: none;
         width: 100%;
+        position: fixed;
     }
 }
 @media (max-width: 350px) {
