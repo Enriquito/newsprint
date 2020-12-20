@@ -1,8 +1,6 @@
 <template>
-  <div class="content-wrapper">
-    <MobileMenuIcon />
-    <Navigation />
-    <div class="d-flex justify-content-center">
+<DefaultTemplate>
+  <div class="d-flex justify-content-center">
       <section>
         <h1>New Articles</h1>
         <div style="padding-bottom: 50px">
@@ -20,23 +18,21 @@
         </div>
       </section>
     </div>
-  </div>
+</DefaultTemplate>
 </template>
 
 <script>
 import Article from '@/components/Article.vue';
 import axios from 'axios';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
-import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
-import Navigation from '@/components/Navigation.vue';
+import DefaultTemplate from '@/components/DefaultTemplate.vue';
 
 export default {
   name: 'NewArticles',
   components: {
     Article,
     ArticleSkeleton,
-    Navigation,
-    MobileMenuIcon
+    DefaultTemplate
   },
   mounted(){
     this.getData();

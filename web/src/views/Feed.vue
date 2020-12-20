@@ -1,8 +1,6 @@
 <template>
-  <div class="content-wrapper">
-    <MobileMenuIcon />
-    <Navigation />
-    <section>
+<DefaultTemplate>
+  <section>
       <div v-if="feed">
         <h1 v-if="feed.displayName != null">{{feed.displayName}}</h1>
         <h1 v-else>{{feed.title}}</h1>
@@ -39,15 +37,14 @@
         </div>
       </div>
     </section>
-  </div>
+</DefaultTemplate>
 </template>
 
 <script>
 import Article from '@/components/Article.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
-import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
+import DefaultTemplate from '@/components/DefaultTemplate.vue';
 import moment from 'moment-timezone'
-import Navigation from '@/components/Navigation.vue';
 import axios from 'axios';
 
 export default {
@@ -55,8 +52,7 @@ export default {
   components: {
     Article,
     ArticleSkeleton,
-    Navigation,
-    MobileMenuIcon
+    DefaultTemplate
   },
   mounted(){
     this.getData();

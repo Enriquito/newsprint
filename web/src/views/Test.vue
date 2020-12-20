@@ -1,24 +1,20 @@
 <template>
-  <div class="content-wrapper">
-    <MobileMenuIcon />
-    <Navigation />
-    <section>
-        <h1 @click="test">Test</h1>
-        <ArticleSkeleton />
-    </section>
-  </div>
+<DefaultTemplate>
+  <section>
+    <h1 @click="test">Test</h1>
+    <ArticleSkeleton />
+  </section>
+</DefaultTemplate>
 </template>
 <script>
-import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
-import Navigation from '@/components/Navigation.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
+import DefaultTemplate from '@/components/DefaultTemplate.vue';
 
 export default {
     name: "Test",
     components: {
-          MobileMenuIcon,
-          Navigation,
-          ArticleSkeleton
+          ArticleSkeleton,
+          DefaultTemplate
     },
     methods:{
       test(){

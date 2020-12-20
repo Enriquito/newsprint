@@ -1,7 +1,5 @@
 <template>
-  <div class="content-wrapper">
-    <MobileMenuIcon />
-    <Navigation />
+  <DefaultTemplate>
     <section>
       <h1>History</h1>
       <div>
@@ -14,14 +12,13 @@
           </div>
       </div>
     </section>
-  </div>
+  </DefaultTemplate>
 </template>
 
 <script>
 import Article from '@/components/Article.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
-import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
-import Navigation from '@/components/Navigation.vue';
+import DefaultTemplate from '@/components/DefaultTemplate.vue';
 import axios from 'axios';
 
 export default {
@@ -29,8 +26,7 @@ export default {
   components: {
     Article,
     ArticleSkeleton,
-    Navigation,
-    MobileMenuIcon
+    DefaultTemplate
   },
   mounted(){
       this.getData();

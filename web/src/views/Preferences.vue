@@ -1,8 +1,6 @@
 <template>
-  <div class="content-wrapper">
-    <MobileMenuIcon />
-    <Navigation />
-    <section v-if="data">
+<DefaultTemplate>
+  <section v-if="data">
         <h1>Preferences</h1>
         <div>
           <label>Folders</label>
@@ -78,18 +76,16 @@
           <button @click="updateUserPreferences">Save</button>
         </div>
     </section>
-  </div>
+</DefaultTemplate>
 </template>
 <script>
-import Navigation from '@/components/Navigation.vue';
-import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
+import DefaultTemplate from '@/components/DefaultTemplate.vue';
 import axios from 'axios';
 
 export default {
     name: "Settings",
     components: {
-          Navigation,
-          MobileMenuIcon
+          DefaultTemplate
     },
     data(){
       return({

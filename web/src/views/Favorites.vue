@@ -1,7 +1,5 @@
 <template>
-  <div class="content-wrapper">
-    <MobileMenuIcon />
-    <Navigation />
+  <DefaultTemplate>
     <section>
       <h1>Favorites</h1>
       <div v-if="data">
@@ -17,14 +15,13 @@
         <ArticleSkeleton v-for="index in 2" :key="index" />
       </div>
     </section>
-  </div>
+  </DefaultTemplate>
 </template>
 
 <script>
 import Article from '@/components/Article.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue'
-import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
-import Navigation from '@/components/Navigation.vue';
+import DefaultTemplate from '@/components/DefaultTemplate.vue';
 import axios from 'axios';
 
 export default {
@@ -32,8 +29,7 @@ export default {
   components: {
     Article,
     ArticleSkeleton,
-    Navigation,
-    MobileMenuIcon
+    DefaultTemplate
   },
   mounted(){
     this.getData();

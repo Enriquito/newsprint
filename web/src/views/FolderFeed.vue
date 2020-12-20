@@ -1,8 +1,6 @@
 <template>
-  <div class="content-wrapper">
-    <MobileMenuIcon />
-    <Navigation />
-    <section>
+<DefaultTemplate>
+  <section>
       <h1>{{folderName}}</h1>
       <div style="padding-bottom: 50px">
         <div v-if="feeds">
@@ -15,22 +13,20 @@
         </div>
       </div>
     </section>
-  </div>
+</DefaultTemplate>
 </template>
 
 <script>
 import Article from '@/components/Article.vue';
-import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
-import Navigation from '@/components/Navigation.vue';
+import DefaultTemplate from '@/components/DefaultTemplate.vue';
 
 export default {
   name: 'FolderFeed',
   components: {
     Article,
     ArticleSkeleton,
-    Navigation,
-    MobileMenuIcon
+    DefaultTemplate
   },
   mounted(){
     this.getData();
