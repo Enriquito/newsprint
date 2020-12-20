@@ -32,8 +32,9 @@ async function startJobs (){
                   data = await getData();
 
                   setInterval(async () => {
-                        console.log('Getting new data..');
+                        console.log('--------------------------------');
                         console.log(moment().format('LL HH:MM'))
+                        console.log('Getting new data..');
                         data = await getData();
                   }, (1000  * 60 * 30))
 
