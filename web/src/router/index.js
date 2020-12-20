@@ -78,37 +78,43 @@ const routes = [
     path: '/feed/:feedId/:feedName/page/:page',
     name: 'Feed',
     component: Feed,
-    beforeEnter: Guard
+    beforeEnter: Guard,
+    meta: { title: `Feed - ${process.env.VUE_APP_NAME}` }
   },
   {
     path: '/new/page/:page',
     name: 'NewArticles',
     component: NewArticles,
-    beforeEnter: Guard
+    beforeEnter: Guard,
+    meta: { title: `New articles - ${process.env.VUE_APP_NAME}` }
   },
   {
     path: '/favorites',
     name: 'Favorites',
     component: Favorites,
-    beforeEnter: Guard
+    beforeEnter: Guard,
+    meta: { title: `Favorites - ${process.env.VUE_APP_NAME}` }
   },
   {
     path: '/history',
     name: 'History',
     component: History,
-    beforeEnter: Guard
+    beforeEnter: Guard,
+    meta: { title: `History - ${process.env.VUE_APP_NAME}` }
   },
   {
     path: '/test',
     name: 'Test',
     component: Test,
-    beforeEnter: Guard
+    beforeEnter: Guard,
+    meta: { title: `Test - ${process.env.VUE_APP_NAME}` }
   },
   {
     path: '*',
     name: 'NotFound',
     component: NotFound,
-    beforeEnter: Guard
+    beforeEnter: Guard,
+    meta: { title: `Page not found - ${process.env.VUE_APP_NAME}` }
   }
 ]
 
