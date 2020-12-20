@@ -73,8 +73,8 @@ section
   width: 100%;
   height: 100%;
   text-align: start;
-  padding-left: 50px;
-  margin-left: 350px;
+  padding: 0 50px;
+  overflow-y: scroll;
 }
 section h1
 {
@@ -93,8 +93,7 @@ section span
 }
 .content-wrapper
 {
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
 }
 @media (max-width: 720px) {
@@ -107,5 +106,11 @@ section span
       width: auto !important;
       font-size: 40px !important;
     }
+}
+@media (max-width: 1500px) {
+  .small-screen-div
+  {
+    width: 100%;
+  }
 }
 </style>

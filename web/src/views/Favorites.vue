@@ -1,18 +1,22 @@
 <template>
   <DefaultTemplate>
     <section>
-      <h1>Favorites</h1>
-      <div v-if="data">
-          <div v-if="data.length > 0">
-            <Article v-for="article in data" :key="article.id" :data="article" />
-          </div>
-          <div v-else>
-            <h2>You dont have favorite articles yet.</h2>
-            <h5>Click the heart icon right of the article to favorite the article.</h5>
-          </div>
-      </div>
-      <div v-else>
-        <ArticleSkeleton v-for="index in 2" :key="index" />
+      <div class="d-flex justify-content-center">
+        <div class="small-screen-div">
+            <h1>Favorites</h1>
+            <div v-if="data">
+                <div v-if="data.length > 0">
+                  <Article v-for="article in data" :key="article.id" :data="article" />
+                </div>
+                <div v-else>
+                  <h2>You dont have favorite articles yet.</h2>
+                  <h5>Click the heart icon right of the article to favorite the article.</h5>
+                </div>
+            </div>
+            <div v-else>
+              <ArticleSkeleton v-for="index in 2" :key="index" />
+            </div>
+        </div>
       </div>
     </section>
   </DefaultTemplate>

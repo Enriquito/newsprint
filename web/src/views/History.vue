@@ -1,15 +1,17 @@
 <template>
   <DefaultTemplate>
     <section>
-      <h1>History</h1>
-      <div>
-        <span>Last 25 articles read</span>
-          <div v-if="data">
-            <Article v-for="article in data" :key="article.id" :data="article" />
-          </div>
-          <div v-else>
-            <ArticleSkeleton v-for="index in 4" :key="index" />
-          </div>
+      <div class="d-flex justify-content-center">
+        <div class="small-screen-div">
+          <h1>History</h1>
+          <span>Last 25 articles read</span>
+            <div v-if="data">
+              <Article v-for="article in data" :key="article.id" :data="article" />
+            </div>
+            <div v-else>
+              <ArticleSkeleton v-for="index in 4" :key="index" />
+            </div>
+        </div>
       </div>
     </section>
   </DefaultTemplate>

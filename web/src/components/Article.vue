@@ -26,14 +26,14 @@
         <svg @click="setArticleToRead" v-if="!data.isRead" class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
           <path id="ic_visibility_24px" d="M12,4.5A11.827,11.827,0,0,0,1,12a11.817,11.817,0,0,0,22,0A11.827,11.827,0,0,0,12,4.5ZM12,17a5,5,0,1,1,5-5A5,5,0,0,1,12,17Zm0-8a3,3,0,1,0,3,3A3,3,0,0,0,12,9Z" transform="translate(-1 -4.5)"/>
         </svg>
-        <svg @click="setToUnread" v-else-if="data.isRead" class="icon-buttons" style="fill: #FC7C7C !important;" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
+        <svg @click="setToUnread" v-else-if="data.isRead" class="icon-buttons" style="fill: #5867FC !important;" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 22 15">
           <path id="ic_visibility_24px" d="M12,4.5A11.827,11.827,0,0,0,1,12a11.817,11.817,0,0,0,22,0A11.827,11.827,0,0,0,12,4.5ZM12,17a5,5,0,1,1,5-5A5,5,0,0,1,12,17Zm0-8a3,3,0,1,0,3,3A3,3,0,0,0,12,9Z" transform="translate(-1 -4.5)"/>
         </svg>
 
         <svg @click="saveToFavorites" v-if="!data.favorite" class="icon-buttons" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 20 18.35">
           <path id="ic_favorite_border_24px" d="M16.5,3A5.988,5.988,0,0,0,12,5.09,5.988,5.988,0,0,0,7.5,3,5.447,5.447,0,0,0,2,8.5c0,3.78,3.4,6.86,8.55,11.54L12,21.35l1.45-1.32C18.6,15.36,22,12.28,22,8.5A5.447,5.447,0,0,0,16.5,3ZM12.1,18.55l-.1.1-.1-.1C7.14,14.24,4,11.39,4,8.5A3.418,3.418,0,0,1,7.5,5a3.909,3.909,0,0,1,3.57,2.36h1.87A3.885,3.885,0,0,1,16.5,5,3.418,3.418,0,0,1,20,8.5C20,11.39,16.86,14.24,12.1,18.55Z" transform="translate(-2 -3)"/>
         </svg>
-        <svg @click="RemoveFromFavorites" v-else class="icon-buttons" style="fill: #FC7C7C !important;" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 20 18.35">
+        <svg @click="RemoveFromFavorites" v-else class="icon-buttons" style="fill: #5867FC !important;" xmlns="http://www.w3.org/2000/svg" width="21" height="18" viewBox="0 0 20 18.35">
           <path id="ic_favorite_border_24px" d="M16.5,3A5.988,5.988,0,0,0,12,5.09,5.988,5.988,0,0,0,7.5,3,5.447,5.447,0,0,0,2,8.5c0,3.78,3.4,6.86,8.55,11.54L12,21.35l1.45-1.32C18.6,15.36,22,12.28,22,8.5A5.447,5.447,0,0,0,16.5,3ZM12.1,18.55l-.1.1-.1-.1C7.14,14.24,4,11.39,4,8.5A3.418,3.418,0,0,1,7.5,5a3.909,3.909,0,0,1,3.57,2.36h1.87A3.885,3.885,0,0,1,16.5,5,3.418,3.418,0,0,1,20,8.5C20,11.39,16.86,14.24,12.1,18.55Z" transform="translate(-2 -3)"/>
         </svg>
 
@@ -182,17 +182,21 @@ export default {
   margin-right: 5px;
   cursor: pointer;
   transition: fill 0.2s;
+  fill: #707070;
 }
 .icon-buttons:hover
 {
-  fill: #FC7C7C;
+  fill: #5867FC;
 }
 article
 {
   width: 1024px;
   margin: 0;
-  padding: 0;
   margin-top: 30px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
 }
 article a h2
 {
@@ -249,7 +253,7 @@ article .spacer
 {
   color: inherit;
 }
-@media (max-width: 1000px) {
+@media (max-width: 1500px) {
     article
     {
         width: auto !important;

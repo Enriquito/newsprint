@@ -1,41 +1,45 @@
 <template>
 <DefaultTemplate>
   <section>
-      <div v-if="feed">
-        <h1 v-if="feed.displayName != null">{{feed.displayName}}</h1>
-        <h1 v-else>{{feed.title}}</h1>
-      </div>
-      <div v-else>
-        <h1>Loading...</h1>
-      </div>
-
-      <div style="padding-bottom: 50px">
-          <div v-if="feed && newToday.length > 0">
-              <span>New today</span>
-              <div>
-                  <Article v-for="article in newToday" :key="article.id" :data="article"/>
-              </div>
-              <div style="border: 1px solid rgba(0,0,0,0.1); margin-top: 60px;"></div>
-          </div>
-
-        <div style="margin-top:60px; display:block;"></div>
+    <div class="d-flex justify-content-center">
+      <div class="small-screen-div">
         <div v-if="feed">
-          <div  v-if="older.length > 0">
-            <Article v-for="article in older" :key="article.id" :data="article"/>
-          </div>
-          <div v-else-if="newToday.length != 10">
-            <h2 v-if="!loadingNewData">No Articles found</h2>
-          </div>
-
-          <div v-if="(older.length + newToday.length) == 10">
-            <button id="load-more-button" @click="nextPage">Load more articles</button>
-          </div>
-
+          <h1 v-if="feed.displayName != null">{{feed.displayName}}</h1>
+          <h1 v-else>{{feed.title}}</h1>
         </div>
-        <div v-else-if="!feed || loadingNewData">
-            <ArticleSkeleton v-for="index in 4" :key="index" />
+        <div v-else>
+          <h1>Loading...</h1>
+        </div>
+
+        <div style="padding-bottom: 50px">
+            <div v-if="feed && newToday.length > 0">
+                <span>New today</span>
+                <div>
+                    <Article v-for="article in newToday" :key="article.id" :data="article"/>
+                </div>
+                <div style="border: 1px solid rgba(0,0,0,0.1); margin-top: 60px;"></div>
+            </div>
+
+          <div style="margin-top:60px; display:block;"></div>
+          <div v-if="feed">
+            <div  v-if="older.length > 0">
+              <Article v-for="article in older" :key="article.id" :data="article"/>
+            </div>
+            <div v-else-if="newToday.length != 10">
+              <h2 v-if="!loadingNewData">No Articles found</h2>
+            </div>
+
+            <div v-if="(older.length + newToday.length) == 10">
+              <button id="load-more-button" @click="nextPage">Load more articles</button>
+            </div>
+
+          </div>
+          <div v-else-if="!feed || loadingNewData">
+              <ArticleSkeleton v-for="index in 4" :key="index" />
+          </div>
         </div>
       </div>
+    </div>
     </section>
 </DefaultTemplate>
 </template>
@@ -159,7 +163,7 @@ button
       border-radius: 10px;
       margin-top: 50px;
       color: inherit;
-      background: #FC7C7C;
+      background: #5867FC;
       color: #FFF;
       outline: none;
 }

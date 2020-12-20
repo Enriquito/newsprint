@@ -1,7 +1,8 @@
 <template>
 <DefaultTemplate>
-  <div class="d-flex justify-content-center">
-      <section>
+  <section>
+    <div class="d-flex justify-content-center">
+      <div class="small-screen-div">
         <h1>New Articles</h1>
         <div style="padding-bottom: 50px">
             <div v-if="articles">
@@ -16,8 +17,9 @@
               <ArticleSkeleton v-for="index in 6" :key="index" />
             </div>
         </div>
-      </section>
+      </div>
     </div>
+    </section>
 </DefaultTemplate>
 </template>
 
@@ -82,7 +84,7 @@ button
       border-radius: 10px;
       margin-top: 50px;
       color: inherit;
-      background: #FC7C7C;
+      background: #5867FC;
       color: #FFF;
       outline: none;
 }
