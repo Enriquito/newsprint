@@ -62,6 +62,77 @@ class User{
             });
         }
 
+        static findOneByEmail(email){
+            return new Promise((resolve, reject) => {
+                  database.query("SELECT * FROM users WHERE email = ?",[email],(error, result) => {
+                        if(error){
+                              reject(error);
+                              console.log(param)
+                        }
+
+                        if(result === null || result === undefined || result.length === 0){
+                              reject(null);
+                              return;
+                        }
+
+                        result = result[0];
+                        const user = new User();
+
+                        user.id = result.id;
+                        user.username = result.username;
+                        user.email = result.email;
+                        user.lastLogin = result.last_login;
+                        user.created = result.created;
+
+                        resolve(user);
+                  });
+            });
+        }
+
+        update(){
+            return new Promise((resolve,reject) => {
+                const toInsert = {
+                      username: this.username,
+                      email: this.showOrder
+                };
+
+                database.query('UPDATE users SET ? WHERE id = ?', [toInsert, this.id], (error, result) => {
+                      if(error){
+                            console.log(error);
+                            reject(error);
+                      }
+
+                      resolve(this);
+                });
+          });
+        }
+
+        updatePassword(newPassword){
+            return new Promise(async (resolve,reject) => {
+                try{
+                    const encryptedPassword = await User.createPassword(newPassword);
+
+                    const toInsert = {
+                        password: encryptedPassword,
+                    };
+
+                    database.query('UPDATE users SET ? WHERE id = ?', [toInsert, this.id], (error, result) => {
+                        if(error){
+                            console.log(error);
+                            reject(error);
+                            return;
+                        }
+
+                        resolve();
+                    });
+                }
+                catch(error){
+                    console.log(error);
+                    reject(error);
+                }
+            });
+        }
+
         static async createPassword(password){
             return new Promise((resolve, reject) => {
                 const saltRounds = 10;
@@ -221,6 +292,64 @@ class User{
             catch(error){
                   console.log(error);
             }
+        }
+
+        static generatePasswordResetToken(length) {
+            let result           = '';
+            const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const charactersLength = characters.length;
+
+            for (let i = 0; i < length; i++) {
+               result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+
+        registerPasswordReset(){
+            const moment = require('moment-timezone');
+
+            return new Promise((resolve, reject) => {
+                const data = {
+                    user : this.id,
+                    token : User.generatePasswordResetToken(255),
+                    expires : moment().add(30,'m').format('YYYY-MM-DD HH:mm:ss')
+                };
+
+                database.query("INSERT INTO password_reset_links SET ?", data, (error, result) => {
+                    if(error){
+                        reject(error);
+                        return;
+                    }
+
+                    resolve();
+                });
+            });
+        }
+
+        checkToken(token){
+            return new Promise((resolve, reject) => {
+                const query = `SELECT prl.id 
+                                FROM password_reset_links prl
+                                JOIN users u
+                                ON u.id = prl.user
+                                WHERE token = ?
+                                AND prl.user = ?
+                                AND prl.expires > NOW()`;
+
+                database.query(query,[token, this.id],(error, result) => {
+                      if(error){
+                            reject(error);
+                            return;
+                      }
+
+                      if(result.length === 0){
+                            resolve(null);
+                            return;
+                      }
+
+                      resolve();
+                });
+          });
         }
 }
 

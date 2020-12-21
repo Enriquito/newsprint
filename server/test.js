@@ -4,9 +4,11 @@ const User = require('./models/User')
 
 async function test(){
   try{
-    const pw = await User.createPassword('Test1234');
+    const user = await User.findOneByEmail('test@test.com');
 
-    console.log(pw);
+    // await user.updatePassword('hoi1234');
+    // user.registerPasswordReset();
+    console.log(true);
   }
   catch(error){
     console.log(error);
