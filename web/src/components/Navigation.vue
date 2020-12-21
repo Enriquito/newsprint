@@ -246,7 +246,12 @@ nav div span
     padding-left: 60px;
     padding-top: 20px;
 }
-.folder-holder::-webkit-scrollbar {
+.folder-holder::-webkit-scrollbar 
+{
+  display: none;
+}
+nav::-webkit-scrollbar
+{
   display: none;
 }
 @media (max-width: 720px) {
