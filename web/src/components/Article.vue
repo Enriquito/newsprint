@@ -185,7 +185,7 @@ article
   width: 1024px;
   margin: 0;
   margin-top: 30px;
-  border: 1px solid rgba(0,0,0,0.1);
+  /* border: 1px solid rgba(0,0,0,0.1); */
   border-radius: 15px;
   padding: 20px;
   box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
