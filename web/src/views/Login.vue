@@ -17,7 +17,7 @@
                                           <input v-on:keyup.enter="login" type="password" id="password" v-model="password" placeholder="Password" />
                                           <div style="text-align: right; margin: 5px;">
                                                 <span>
-                                                      <router-link :to="{name: 'Register'}">Forgot password?</router-link>
+                                                      <router-link :to="{name: 'PasswordReset'}">Forgot password?</router-link>
                                                 </span>
                                           </div>
                                           <div style="height: 25px; color: tomato;">
@@ -29,9 +29,9 @@
                                     </div>
                                     <div style="text-align: center; padding-top: 30px">
                                           <span>
-                                                New here?
+                                                Dont have an account?
                                           </span>
-                                          <router-link :to="{name: 'SignUp'}">Singup now!</router-link>
+                                          <router-link :to="{name: 'SignUp'}">Sing up here</router-link>
                                     </div>
                               </div>
                         </div>
