@@ -1,9 +1,6 @@
 <template>
-      <section id="login" class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
-            <div class="d-flex" style="heigth: 500px; box-shadow: rgba(0, 0, 0, 0.2) -4px 0 20px 1px; border-radius: 5px;">
-                  <div id="whats-new">
-                  <h1></h1>
-                  </div>
+      <section id="login" class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%; background: #5867FC;">
+            <div id="login-container" class="d-flex" style="heigth: 500px;">
                   <div id="form" class="d-flex align-items-center justify-content-center">
                         <div style="width: 100%;">
                               <h5 class="welcome">Welcome to</h5>
@@ -29,6 +26,11 @@
                                     </div>
                                     <div>
                                           <button @click="login">{{loginButtonText}}</button>
+                                    </div>
+                                    <div style="text-align: center; padding-top: 30px">
+                                          <span>
+                                                New here? <router-link :to="{name: 'Register'}">Singup now!</router-link>
+                                          </span>
                                     </div>
                               </div>
                         </div>
@@ -76,7 +78,7 @@ export default {
                     console.log("Password or username is incorrect");
                   }
                   else if(error.response.status === 500){
-                        this.error = "Internal server error";
+                        this.error = "Error while loging in try again later.";
                   }
             })
       }
@@ -104,26 +106,11 @@ section span
       height: 500px;
       border: 1px solid rgba(0,0,0,1);
 }
-#login #whats-new
-{
-      background: #5867FC;
-      color: #FFF;
-      padding: 20px;
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
-      width: 500px;
-      padding: 50px;
-}
-#login #whats-new h1
-{
-      text-align: center;
-}
 #login #form
 {
       padding: 50px;
       background: #F6F7F8;
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
+      border-radius: 15px;
       width: 500px;
 }
 #login #form span a
@@ -170,21 +157,16 @@ section span
       font-weight: 900;
 }
 @media (max-width: 720px) {
-  #login div
-  {
-    display: block !important;
-    width: 100%;
-    box-shadow: none !important;
-  }
-  #login #form
-  {
-        width: 100% !important;
-        padding: 10px;
-  }
-  #login #whats-new
-  {
-        width: 100% !important;
-        border-radius: 0px !important;
-  }
+      #login div
+      {
+            width: 100%;
+            padding: 10px;
+      }
+      #login #form
+      {
+            width: 100% !important;
+            padding: 10px;
+            padding: 30px 0px;
+      }
 }
 </style>
