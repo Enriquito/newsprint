@@ -118,7 +118,7 @@ class Article{
                         }
 
                         if(result.length === 0){
-                              resolve(null);
+                              resolve([]);
                               return;
                         }
 
