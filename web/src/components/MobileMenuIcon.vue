@@ -19,11 +19,11 @@ export default {
     methods:{
         open(){
             if(this.isOpen){
-                document.querySelector('nav').style.display = "none";
+                document.querySelector('nav').style.left = "-350px";
                 this.isOpen = false;
             }
             else{
-                document.querySelector('nav').style.display = "block";
+                document.querySelector('nav').style.left = "0";
                 this.isOpen = true;
             }
 

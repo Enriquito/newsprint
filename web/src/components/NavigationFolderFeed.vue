@@ -118,4 +118,17 @@ export default {
         height: 20px;
         margin-top: 7px;
     }
+    @media (max-width: 720px)
+    {
+        nav ul li div strong
+        {
+            font-size: 15px;
+            padding-left: 30px;
+        }
+        nav ul li a
+        {
+            max-width: 120px;
+            font-size: 12px !important;
+        }
+    }
 </style>

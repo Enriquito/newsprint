@@ -251,9 +251,28 @@ nav div span
 }
 @media (max-width: 720px) {
     nav{
-        display: none;
-        width: 100%;
+        /* display: none; */
+        width: 250px !important;
+        min-width: auto;
         position: fixed;
+        transition: all 0.3s;
+        left: -350px;
+        box-shadow: 10px 0px 20px 0px #0000002b !important;
+    }
+    nav h3
+    {
+        font-size: 30px;
+    }
+    nav ul{
+        padding-left: 20px !important;
+    }
+    nav ul li a, nav ul li strong
+    {
+        font-size: 15px !important;
+    }
+    nav div span
+    {
+        font-size: 15px;
     }
 }
 @media (max-width: 350px) {

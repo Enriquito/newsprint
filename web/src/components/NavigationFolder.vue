@@ -97,84 +97,90 @@ export default {
 }
 </script>
 <style scoped>
-    .router-link-active, .router-link-exact-active
-    {
-        color: #5867FC !important;
-    }
-    nav ul li
-    {
-        margin-bottom: 10px;
-        position: relative;
-        list-style-type: none;
-        cursor: pointer;
-    }
-    nav ul li small
-    {
-        position: absolute;
-        right: 10px;
-        top: 7px;
-    }
-    nav ul li div strong
-    {
-        font-size: 25px;
-        padding-left: 30px;
-    }
-    nav ul li a
-    {
-        text-decoration: none;
-        color: inherit;
-        font-weight: 700;
-        font-size: 25px;
-        padding-left: 30px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 190px;
-        display: inline-block;
-    }
-    nav ul li ul li a
-    {
-        font-size: 15px;
-        padding: 5px !important;
-    }
-    nav ul li ul li img
-    {
-        width: 20px;
-        height: 20px;
-        margin-top: 7px;
-    }
-    .open
-    {
-        animation: openAnimation 0.15s forwards;
-    }
-    .close
-    {
-        animation: closeAnimation 0.15s forwards;
-    }
+.router-link-active, .router-link-exact-active
+{
+    color: #5867FC !important;
+}
+nav ul li
+{
+    margin-bottom: 10px;
+    position: relative;
+    list-style-type: none;
+    cursor: pointer;
+}
+nav ul li small
+{
+    position: absolute;
+    right: 10px;
+    top: 7px;
+}
+nav ul li div strong
+{
+    font-size: 25px;
+    padding-left: 30px;
+}
+nav ul li a
+{
+    text-decoration: none;
+    color: inherit;
+    font-weight: 700;
+    font-size: 25px;
+    padding-left: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 190px;
+    display: inline-block;
+}
+nav ul li ul li a
+{
+    font-size: 15px;
+    padding: 5px !important;
+}
+nav ul li ul li img
+{
+    width: 20px;
+    height: 20px;
+    margin-top: 7px;
+}
+.open
+{
+    animation: openAnimation 0.15s forwards;
+}
+.close
+{
+    animation: closeAnimation 0.15s forwards;
+}
 
-    @keyframes openAnimation {
-        0%{
-            transform: rotate(0deg);
-        }
-        100%{
-            transform: rotate(90deg);
-        }
+@keyframes openAnimation {
+    0%{
+        transform: rotate(0deg);
     }
-    @keyframes closeAnimation {
-        0%{
-            transform: rotate(90deg);
-        }
-        100%{
-            transform: rotate(0deg);
-        }
+    100%{
+        transform: rotate(90deg);
     }
-    @media (max-width: 350px) {
+}
+@keyframes closeAnimation {
+    0%{
+        transform: rotate(90deg);
+    }
+    100%{
+        transform: rotate(0deg);
+    }
+}
+@media (max-width: 350px) {
     nav ul{
         padding: 20px;
     }
     nav ul li small
     {
         right: 20px !important;
+    }
+}
+@media (max-width: 720px) {
+    nav ul li div strong
+    {
+        font-size: 15px;
     }
 }
 </style>
