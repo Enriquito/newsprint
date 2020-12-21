@@ -11,6 +11,7 @@ import NotFound from '../views/404.vue'
 import ServerError from '../views/500.vue'
 import Login from '../views/Login.vue'
 import Preferences from '../views/Preferences.vue'
+import SignUp from '../views/SignUp.vue'
 
 const isAuthenticated = () => {
   return new Promise((resolve,reject) => {
@@ -61,6 +62,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: SignUp
   },
   {
     path: '/folder/:folder',
