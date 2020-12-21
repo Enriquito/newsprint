@@ -6,10 +6,13 @@
         <h1>New Articles</h1>
         <div style="padding-bottom: 50px">
             <div v-if="articles">
-                <div>
+                <div v-if="articles.length > 0">
                     <Article v-for="article in articles" :key="article.id" :data="article"/>
                 </div>
-                <button id="load-more-button" @click="loadMoreArticles">
+                <div v-else>
+                  <h2>No articles found.</h2>
+                </div>
+                <button v-if="articles.length > 0" id="load-more-button" @click="loadMoreArticles">
                       Load more articles
                 </button>
             </div>
@@ -55,8 +58,6 @@ export default {
       .catch(error => {
         if(error.response.status === 500)
           this.$router.push({name: "500"});
-        else if(error.response.status === 404)
-          this.$router.push({name: "404"});
       })
     },
     loadMoreArticles(event){
