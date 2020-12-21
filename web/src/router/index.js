@@ -12,6 +12,7 @@ import ServerError from '../views/500.vue'
 import Login from '../views/Login.vue'
 import Preferences from '../views/Preferences.vue'
 import SignUp from '../views/SignUp.vue'
+import PasswordReset from '../views/PasswordReset.vue'
 
 const isAuthenticated = () => {
   return new Promise((resolve,reject) => {
@@ -62,6 +63,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/passwordreset',
+    name: 'PasswordReset',
+    component: PasswordReset
   },
   {
     path: '/signup',
