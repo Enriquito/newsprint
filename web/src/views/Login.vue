@@ -3,7 +3,7 @@
             <div id="login-container" class="d-flex" style="heigth: 500px;">
                   <div id="form" class="d-flex align-items-center justify-content-center">
                         <div style="width: 100%;">
-                              <h5 class="welcome">Welcome to</h5>
+                              <h5 class="welcome">Sign in to</h5>
                               <h1 class="app-name">Newsprint</h1>
                               <div>
                                     <div style="text-align: left;">
@@ -29,8 +29,9 @@
                                     </div>
                                     <div style="text-align: center; padding-top: 30px">
                                           <span>
-                                                New here? <router-link :to="{name: 'Register'}">Singup now!</router-link>
+                                                New here?
                                           </span>
+                                          <router-link :to="{name: 'SignUp'}">Singup now!</router-link>
                                     </div>
                               </div>
                         </div>
@@ -48,7 +49,7 @@ export default {
                 password: null,
                 username: null,
                 error: "",
-                loginButtonText: "Login"
+                loginButtonText: "Sign in"
           });
     },
     methods:{
@@ -71,7 +72,7 @@ export default {
                   }
             })
             .catch(error => {
-                  this.loginButtonText = "Login";
+                  this.loginButtonText = "Sign in";
 
                   if(error.response.status === 401 || error.response.status === 400){
                     this.error = "Password or username is incorrect";
@@ -160,7 +161,7 @@ section span
       #login div
       {
             width: 100%;
-            padding: 10px;
+            padding: 0 10px;
       }
       #login #form
       {
