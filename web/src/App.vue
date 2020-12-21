@@ -61,6 +61,10 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300;1,500;1,700&display=swap');
 
+body
+{
+  background-color: #fbf8f8;
+}
 html,body, #app
 {
   margin: 0;
@@ -68,7 +72,8 @@ html,body, #app
   height: 100%;
   width: 100%;
 }
-#app {
+#app
+{
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
