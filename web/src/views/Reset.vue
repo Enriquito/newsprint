@@ -20,7 +20,7 @@
                                           {{error}}
                                     </div>
                                     <div>
-                                          <button @click="reset">{{loginButtonText}}</button>
+                                          <button @click="validate">{{loginButtonText}}</button>
                                     </div>
                                     <div style="text-align: center; padding-top: 30px">
                                           <span>
@@ -47,8 +47,8 @@
                                     </div>
                               </div>
                               <div style="margin-top: 30px; text-align: center;" v-else>
-                                    <h4>Your password reset link has been send if the email address exists.</h4>
-                                    <router-link :to="{name: 'Login'}">Login</router-link>
+                                    <h4>Your password has been reset.</h4>
+                                    <span>Please return to the <router-link :to="{name: 'Login'}">Login</router-link> page.</span>
                               </div>
                         </div>
                   </div>
@@ -72,11 +72,11 @@ export default {
                 password: null,
                 reTypePassword: null,
                 error: "",
-                loginButtonText: "Reset Password"
+                loginButtonText: "Validate Token"
           });
     },
     methods:{
-      reset(event){
+      validate(event){
             event.preventDefault();
             this.loginButtonText = "Checking...";
 
@@ -89,10 +89,11 @@ export default {
                   if(response.status === 200){
                         this.validateScreen = false;
                         this.error = "";
+                        this.loginButtonText = "Change Password";
                   }
             })
             .catch(error => {
-                  this.loginButtonText = "Reset Password";
+                  this.loginButtonText = "Validate Token";
                   switch(error.response.status){
                         case 404:
                               this.error = "Email and/or token combination not valid.";
@@ -107,6 +108,8 @@ export default {
             })
       },
       changePassword(){
+            this.loginButtonText = "Updating password...";
+
             if(this.password === this.reTypePassword){
                   axios.put(`${process.env.VUE_APP_API}/account/password-reset/`, {
                         email: this.email,
