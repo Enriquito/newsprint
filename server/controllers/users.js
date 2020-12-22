@@ -92,7 +92,7 @@ module.exports.getPreference = async (req,res) => {
     }
 }
 
-module.exports.passwordReset = async (req,res) => {
+module.exports.passwordResetRequest = async (req,res) => {
     try{
         const user = await User.findOneByEmail(req.body.email);
 
@@ -124,6 +124,34 @@ module.exports.passwordReset = async (req,res) => {
     }
 }
 
+module.exports.passwordReset = async (req,res) => {
+    try{
+        const user = await User.findOneByEmail(req.body.email);
+
+        if(user == null){
+            res.sendStatus(404);
+            return;
+        }
+
+        const result = await user.checkToken(req.body.token);
+
+        if(result !== null){
+            await user.updatePassword(req.body.password);
+            await user.setTokenToUsed(req.body.token);
+            res.sendStatus(200);
+        }
+        else{
+            res.sendStatus(401)
+        }
+            
+
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
 module.exports.validatePasswordResetToken = async (req,res) => {
     try{
         const user = await User.findOneByEmail(req.body.email);
@@ -135,8 +163,7 @@ module.exports.validatePasswordResetToken = async (req,res) => {
 
         const result = await user.checkToken(req.body.token);
 
-        if(result !== null){
-            await user.setTokenToUsed(req.body.token);
+        if(result){
             res.sendStatus(200);
         }
         else
