@@ -11,8 +11,11 @@
                                           <br />
                                           <input type="email" id="email" v-model="email" placeholder="example@domain.com" />
                                     </div>
+                                    <div style="height: 25px; color: tomato;">
+                                          {{error}}
+                                    </div>
                                     <div>
-                                          <button @click="SendEmail">{{loginButtonText}}</button>
+                                          <button @click="requestPasswordReset">{{loginButtonText}}</button>
                                     </div>
                                     <div style="text-align: center; padding-top: 30px">
                                           <span>
@@ -21,7 +24,7 @@
                                     </div>
                               </div>
                               <div style="margin-top: 30px; text-align: center;" v-else>
-                                    <h4>Your password reset link has been send if the email address excist.</h4>
+                                    <h4>Your password reset link has been send if the email address exists.</h4>
                                     <router-link :to="{name: 'Login'}">Login</router-link>
                               </div>
                         </div>
@@ -40,11 +43,31 @@ export default {
                 email: null,
                 error: "",
                 emailHasBeenSend: false,
-                loginButtonText: "Reset password"
+                loginButtonText: "Request Password Reset"
           });
     },
     methods:{
+          requestPasswordReset(event){
+                  event.preventDefault();
+                  this.loginButtonText = "Requesting...";
 
+                  axios.post(`${process.env.VUE_APP_API}/account/request/password-reset`, {
+                        email: this.email
+                  },
+                  {withCredentials: true})
+                  .then(response => {
+                        if(response.status === 200){
+                              this.emailHasBeenSend = true;
+                        }
+                  })
+                  .catch(error => {
+                        this.loginButtonText = "Request Password Reset";
+
+                        if(error.response.status === 500){
+                              this.error = "Error while checking reset request. Please try again later.";
+                        }
+                  })
+          }
     }
 }
 </script>
