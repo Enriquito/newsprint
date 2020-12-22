@@ -96,12 +96,25 @@ module.exports.passwordReset = async (req,res) => {
     try{
         const user = await User.findOneByEmail(req.body.email);
 
-        if(user === null){
+        if(user == null){
             res.sendStatus(404);
             return;
         }
 
-        await user.registerPasswordReset();
+        const token = await user.registerPasswordReset();
+        const Mailer = require('../models/Mailer');
+        const mailer = new Mailer();
+        const {passwordResetMail} = require('../mail/templates');
+
+        mailer.send({
+            to: user.email,
+            subject: "Test email",
+            plainText: `Hi, ${user.username}There was a requested to change your password. If you did not make this request, 
+                        just ignor this email. Otherwise please open the link to change your password.
+                        https://beta.newsprint.app/#/account/password-reset/token/${token}
+                        `,
+            html: passwordResetMail(user.username, `https://beta.newsprint.app/#/account/password-reset/token/${token}`)
+        }); 
 
         res.sendStatus(200);
     }
@@ -120,10 +133,12 @@ module.exports.validatePasswordResetToken = async (req,res) => {
             return;
         }
 
-        const result = await user.checkToken();
+        const result = await user.checkToken(req.body.token);
 
-        if(result !== null)
+        if(result !== null){
+            await user.setTokenToUsed(req.body.token);
             res.sendStatus(200);
+        }
         else
             res.sendStatus(401)
         
