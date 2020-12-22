@@ -51,6 +51,7 @@ app.use(function (req, res, next) {
       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
       res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
       res.setHeader('Access-Control-Allow-Credentials', true);
+      res.setHeader('Cache-Control', 'no-cache');
       next();
 });
 
@@ -66,9 +67,9 @@ app.post('/login',passport.authenticate('local'), (req, res) => {
 });
 
 app.post('/users', userRoutes.create);
-app.route('/account/password-reset')
-.post(userRoutes.passwordReset)
-.get(userRoutes.validatePasswordResetToken)
+app.post('/account/request/password-reset',userRoutes.passwordResetRequest)
+app.post('/account/password-reset/validate',userRoutes.validatePasswordResetToken)
+app.put('/account/password-reset/', userRoutes.passwordReset)
 app.route('/preferences')
 .put(userRoutes.isLoggedIn,userRoutes.updatePreference)
 .get(userRoutes.isLoggedIn,userRoutes.getPreference)
