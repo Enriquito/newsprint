@@ -13,6 +13,7 @@ import Login from '../views/Login.vue'
 import Preferences from '../views/Preferences.vue'
 import SignUp from '../views/SignUp.vue'
 import PasswordReset from '../views/PasswordReset.vue'
+import Reset from '../views/Reset.vue'
 
 const isAuthenticated = () => {
   return new Promise((resolve,reject) => {
@@ -63,6 +64,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/account/password-reset/token/:token',
+    name: 'Reset',
+    component: Reset
   },
   {
     path: '/passwordreset',
