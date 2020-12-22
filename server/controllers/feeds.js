@@ -1,26 +1,34 @@
-const Feed = require('../models/feed')
+const Feed = require('../models/feed');
+const Validator = require('../validators');
 
 module.exports.findOne = async (req,res) => {
     try{
         console.log(`GET /feeds/${req.params.id}`);
+        const Joi = require('@hapi/joi');
         const max = parseInt(req.query.max) || 10;
         const offset = parseInt(req.query.offset) || 0;
 
-    //     const validator = Validator.ValidateID(req.params.id);
+        const schema = Joi.object({
+            offset: Joi.number(),
+            max: Joi.number()
+        });
 
-    //     if(validator.error){
-    //         res.status(400).json({error: validator.error.details[0].message});
-    //         return;
-    //     }
+        const validatorOM = schema.validate({offset: offset,max: max});
+        const validator = Validator.id(req.params.id);
 
-        const feed = await Feed.findOne(req.params.id);
+        if(validator.error){
+            res.status(400).json({error: validator.error.details[0].message});
+            return;
+        }
+
+        const feed = await Feed.findOne(validator.value.id);
 
         if(feed === null){
             res.sendStatus(404);
             return;
         }
 
-        await feed.getArticles(max, offset);
+        await feed.getArticles(validatorOM.value.max, validatorOM.value.offset);
 
         if(feed === null){
             res.sendStatus(404);
@@ -36,21 +44,22 @@ module.exports.findOne = async (req,res) => {
 }
 module.exports.create = async (req,res) => {
     console.log(`POST feeds/`);
-    // const validator = Validator.NewBlockData(req.body);
 
-    // if(validator.error){
-    //     res.status(400).json({error: validator.error});
-    //     return;
-    // }
+    const validator = Validator.addFeed(req.body);
+
+    if(validator.error){
+        res.status(400).json({error: validator.error});
+        return;
+    }
 
     try{
         const feed = new Feed();
         feed.user = req.user.id;
 
-        await feed.getData(req.body.feedUrl);
+        await feed.getData(validator.value.feedUrl);
         await feed.create();
         await feed.createArticles();
-        await feed.addToFolder(req.body.folderId);
+        await feed.addToFolder(validator.value.folderId);
 
         res.status(201).json(feed);
     }
@@ -61,15 +70,27 @@ module.exports.create = async (req,res) => {
 }
 module.exports.moveToFolder = async (req,res) => {
     console.log(`POST move/feeds/`);
-    // const validator = Validator.NewBlockData(req.body);
+    const Joi = require('@hapi/joi');
 
-    // if(validator.error){
-    //     res.status(400).json({error: validator.error});
-    //     return;
-    // }
+    const schema = Joi.object({
+        feedId: Joi.number().required(),
+        from: Joi.number().required(),
+        to: Joi.number().required()
+    });
+
+    const validator = schema.validate({
+        feedId: req.body.feedId,
+        from: req.body.from,
+        to: req.body.to
+    });
+
+    if(validator.error){
+        res.status(400).json({error: validator.error});
+        return;
+    }
 
     try{
-        const feed = await Feed.findOne(req.body.feedId);
+        const feed = await Feed.findOne(validator.value.feedId);
 
         if(feed === null){
             res.sendStatus(404);
@@ -81,7 +102,7 @@ module.exports.moveToFolder = async (req,res) => {
             return;
         }
 
-        await feed.moveToFolder(req.body.from, req.body.to);
+        await feed.moveToFolder(validator.value.from, validator.value.to, req.user.id);
 
         res.status(201);
     }
@@ -92,15 +113,15 @@ module.exports.moveToFolder = async (req,res) => {
 }
 module.exports.update = async (req,res) => {
     console.log(`PUT feeds/`);
-    // const validator = Validator.NewBlockData(req.body);
+    const validator = Validator.updateFeed(req.body.feed);
 
-    // if(validator.error){
-    //     res.status(400).json({error: validator.error});
-    //     return;
-    // }
+    if(validator.error){
+        res.status(400).json({error: validator.error});
+        return;
+    }
 
     try{
-        const feed = await Feed.findOne(req.body.feed.id);
+        const feed = await Feed.findOne(validator.value.id);
 
         if(feed === null){
             res.sendStatus(404);
@@ -112,7 +133,7 @@ module.exports.update = async (req,res) => {
             return;
         }
 
-        for (const [property ,value] of Object.entries(req.body.feed)){
+        for (const [property ,value] of Object.entries(validator.value)){
             switch(property){
                 case "displayName" :
                     feed.displayName = value;
@@ -167,15 +188,16 @@ module.exports.update = async (req,res) => {
 }
 module.exports.delete = async (req,res) => {
     console.log(`DELETE /delete`);
-    // const validator = Validator.NewBlockData(req.body);
+    
+    const validator = Validator.id(req.params.id);
 
-    // if(validator.error){
-    //     res.status(400).json({error: validator.error});
-    //     return;
-    // }
+    if(validator.error){
+        res.status(400).json({error: validator.error.details[0].message});
+        return;
+    }
 
     try{
-        const feed = await Feed.findOne(req.params.id);
+        const feed = await Feed.findOne(validator.value.id);
 
         if(feed === null){
             res.sendStatus(404);

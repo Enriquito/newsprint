@@ -1,17 +1,19 @@
 const Article = require('../models/article');
+const Validator = require('../validators');
 
 module.exports.findOne = async (req,res) => {
       try{
-          console.log(`GET /articles/${req.params.id}`);
+            console.log(`GET /articles/${req.params.id}`);
 
-      //     const validator = Validator.ValidateID(req.params.id);
+            const validator = Validator.id(req.params.id);
 
-      //     if(validator.error){
-      //         res.status(400).json({error: validator.error.details[0].message});
-      //         return;
-      //     }
+            if(validator.error){
+                res.status(400).json({error: validator.error.details[0].message});
+                return;
+            }
+            //validator.value.id
 
-            const article = await Article.findOne(req.params.id);
+            const article = await Article.findOne(validator.value.id);
 
             if(article === null){
                 res.sendStatus(404);
@@ -32,16 +34,16 @@ module.exports.findOne = async (req,res) => {
 }
 module.exports.unreadArticlesCount = async (req,res) => {
       try{
-          console.log(`GET /articles/count/unread`);
+            console.log(`GET /articles/count/unread`);
 
-          const articleCount = await Article.getCountAllUnreadArticles(req.user.id);
+            const articleCount = await Article.getCountAllUnreadArticles(req.user.id);
 
-          if(articleCount === null){
-              res.sendStatus(500);
-              return;
-          }
+            if(articleCount === null){
+                res.sendStatus(500);
+                return;
+            }
 
-          res.json(articleCount);
+            res.json(articleCount);
       }
       catch(error){
           console.log(error);
@@ -51,11 +53,24 @@ module.exports.unreadArticlesCount = async (req,res) => {
 module.exports.unreadArticles = async (req,res) => {
     try{
         console.log(`GET /unread/articles`);
+        const Joi = require('@hapi/joi');
 
         const offset = parseInt(req.query.offset);
         const max = parseInt(req.query.max);
 
-        const articleCount = await Article.getAllUnreadArticles(req.user.id, offset, max);
+        const schema = Joi.object({
+            offset: Joi.number(),
+            max: Joi.number()
+        });
+
+        const validator = schema.validate({offset: offset,max: max});
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details[0].message});
+            return;
+        }
+
+        const articleCount = await Article.getAllUnreadArticles(req.user.id, validator.value.offset, validator.value.max);
 
         if(articleCount === null){
             res.sendStatus(404);
@@ -73,7 +88,14 @@ module.exports.setToRead = async (req,res) => {
     try{
         console.log(`GET /articles/set/read`);
 
-        const article = await Article.findOne(req.body.id);
+        const validator = Validator.id(req.body.id);
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details[0].message});
+            return;
+        }
+
+        const article = await Article.findOne(validator.value.id);
 
         if(article === null){
             res.sendStatus(404);
@@ -98,7 +120,14 @@ module.exports.setToUnread = async (req,res) => {
     try{
         console.log(`PUT /articles/set/unread`);
 
-        const article = await Article.findOne(req.body.id);
+        const validator = Validator.id(req.body.id);
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details[0].message});
+            return;
+        }
+
+        const article = await Article.findOne(validator.value.id);
 
         if(article === null){
             res.sendStatus(404);
@@ -123,7 +152,14 @@ module.exports.addToFavorites = async (req,res) => {
     try{
         console.log(`POST /articles/save/favorites`);
 
-        const article = await Article.findOne(req.body.id);
+        const validator = Validator.id(req.body.id);
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details[0].message});
+            return;
+        }
+
+        const article = await Article.findOne(validator.value.id);
 
         if(article === null){
             res.sendStatus(404);
@@ -148,7 +184,14 @@ module.exports.removeFromFavorites = async (req,res) => {
     try{
         console.log(`POST /articles/remove/favorites`);
 
-        const article = await Article.findOne(req.body.id);
+        const validator = Validator.id(req.body.id);
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details[0].message});
+            return;
+        }
+
+        const article = await Article.findOne(validator.value.id);
 
         if(article === null){
             res.sendStatus(404);

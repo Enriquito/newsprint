@@ -25,10 +25,23 @@ module.exports.create = async (req,res) => {
         const maxHistoryRows = 25;
         const rowsInDB = await History.getHistoryItemsCount(req.user.id);
 
+        const Joi = require('@hapi/joi');
+
+        const schema = Joi.object({
+            article: Joi.number().required()
+        });
+
+        const validator = schema.validate({article: req.body.article});
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details[0].message});
+            return;
+        }
+
         if(rowsInDB === maxHistoryRows)
             await History.destroyNextInLine(req.user.id);
 
-        await History.create(req.user.id, req.body.article);
+        await History.create(req.user.id, validator.value.article);
 
         res.sendStatus(201);
     }

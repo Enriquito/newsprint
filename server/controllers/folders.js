@@ -1,18 +1,19 @@
 const Feed = require('../models/feed')
 const Folder = require('../models/folder')
+const Validator = require('../validators');
 
 module.exports.findOne = async (req,res) => {
       try{
           console.log(`GET /feed/${req.params.id}`);
 
-      //     const validator = Validator.ValidateID(req.params.id);
+          const validator = Validator.id(req.params.id);
 
-      //     if(validator.error){
-      //         res.status(400).json({error: validator.error.details[0].message});
-      //         return;
-      //     }
+          if(validator.error){
+              res.status(400).json({error: validator.error.details[0].message});
+              return;
+          }
 
-          const folder = await Folder.findOne(req.params.id);
+          const folder = await Folder.findOne(validator.value.id);
 
           if(folder === null){
               res.sendStatus(404);
@@ -33,13 +34,6 @@ module.exports.findFoldersByUser = async (req,res) => {
       try{
           console.log(`GET /folders/`);
 
-      //     const validator = Validator.ValidateID(req.params.id);
-
-      //     if(validator.error){
-      //         res.status(400).json({error: validator.error.details[0].message});
-      //         return;
-      //     }
-
           const folders = await Folder.findAllByUser(req.user.id);
 
           if(folders === null){
@@ -59,17 +53,22 @@ module.exports.create = async (req,res) => {
     console.log(`POST /folders/`);
     try{
 
+        const Joi = require('@hapi/joi');
 
-    //     const validator = Validator.ValidateID(req.params.id);
+        const schema = Joi.object({
+            name: Joi.string().min(2).required(),
+        });
 
-    //     if(validator.error){
-    //         res.status(400).json({error: validator.error.details[0].message});
-    //         return;
-    //     }
+        const validator = schema.validate({name: req.body.name});
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details[0].message});
+            return;
+        }
 
         const folder = new Folder();
 
-        folder.name = req.body.name;
+        folder.name = validator.value.name;
         folder.user = req.user.id;
 
         await folder.create();
@@ -85,15 +84,22 @@ module.exports.create = async (req,res) => {
 module.exports.update = async (req,res) => {
     try{
         console.log(`PUT /folders/`);
+        const Joi = require('@hapi/joi');
 
-    //     const validator = Validator.ValidateID(req.params.id);
+        const schema = Joi.object({
+            id: Joi.number().required(),
+            name: Joi.string().min(2).required(),
+            showOrder: Joi.number().required()
+        });
 
-    //     if(validator.error){
-    //         res.status(400).json({error: validator.error.details[0].message});
-    //         return;
-    //     }
+        const validatorFolderData = schema.validate(req.body);
 
-        const folder = await Folder.findOne(req.body.id);
+        if(validatorFolderData.error){
+            res.status(400).json({error: validatorFolderData.error.details[0].message});
+            return;
+        }
+
+        const folder = await Folder.findOne(validatorFolderData.value.id);
 
         if(folder === null){
             res.sendStatus(404);
@@ -104,8 +110,8 @@ module.exports.update = async (req,res) => {
             res.sendStatus(400);
         }
 
-        folder.name = req.body.name;
-        folder.showOrder = req.body.showOrder;
+        folder.name = validatorFolderData.value.name;
+        folder.showOrder = validatorFolderData.value.showOrder;
 
         folder.update();
 
@@ -121,14 +127,14 @@ module.exports.delete = async (req,res) => {
     try{
         console.log(`DELETE /folders/${req.params.id}`);
 
-    //     const validator = Validator.ValidateID(req.params.id);
+        const validator = Validator.id(req.params.id);
 
-    //     if(validator.error){
-    //         res.status(400).json({error: validator.error.details[0].message});
-    //         return;
-    //     }
+        if(validator.error){
+            res.status(400).json({error: validator.error.details[0].message});
+            return;
+        }
 
-        const folder = await Folder.findOne(req.params.id);
+        const folder = await Folder.findOne(validator.value.id);
 
         if(folder === null){
             res.sendStatus(404);
