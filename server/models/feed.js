@@ -315,12 +315,12 @@ class Feed{
             });
       }
 
-      moveToFolder(from, to){
+      moveToFolder(from, to, user){
             return new Promise((resolve, reject) => {
                   const toInsert = {
                         feed: this.id,
                         folder: to,
-                        user : 1
+                        user : user
                   }
 
                   const query = `DELETE FROM feed_folder_assignments WHERE feed = ? AND folder = ? AND user = ?; INSERT INTO feed_folder_assignments SET ?`;
