@@ -352,6 +352,7 @@ class User{
                                 WHERE token = ?
                                 AND prl.user = ?
                                 AND prl.expires > NOW()
+                                AND prl.used = 0
                                 LIMIT 1`;
 
                 database.query(query,[token, this.id],(error, result) => {
