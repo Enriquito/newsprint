@@ -66,12 +66,12 @@ class User{
             return new Promise((resolve, reject) => {
                   database.query("SELECT * FROM users WHERE email = ?",[email],(error, result) => {
                         if(error){
-                              reject(error);
-                              console.log(param)
+                            reject(error);
+                            return
                         }
 
                         if(result === null || result === undefined || result.length === 0){
-                              reject(null);
+                              resolve(null);
                               return;
                         }
 
@@ -321,10 +321,27 @@ class User{
                         return;
                     }
 
-                    resolve();
+                    resolve(data.token);
                 });
             });
         }
+
+        setTokenToUsed(token){
+            return new Promise((resolve,reject) => {
+                const toInsert = {
+                      used: 1
+                };
+
+                database.query('UPDATE password_reset_links SET ? WHERE user = ? AND token = ?', [toInsert, this.id, token], (error, result) => {
+                      if(error){
+                            console.log(error);
+                            reject(error);
+                      }
+
+                      resolve(true);
+                });
+            });
+        };
 
         checkToken(token){
             return new Promise((resolve, reject) => {
@@ -334,7 +351,8 @@ class User{
                                 ON u.id = prl.user
                                 WHERE token = ?
                                 AND prl.user = ?
-                                AND prl.expires > NOW()`;
+                                AND prl.expires > NOW()
+                                LIMIT 1`;
 
                 database.query(query,[token, this.id],(error, result) => {
                       if(error){
@@ -343,13 +361,15 @@ class User{
                       }
 
                       if(result.length === 0){
-                            resolve(null);
+                            resolve(false);
                             return;
                       }
-
-                      resolve();
+                      else if(result.length === 1){
+                            resolve(true);
+                            return;
+                      }
                 });
-          });
+            });
         }
 }
 
