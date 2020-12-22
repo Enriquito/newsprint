@@ -9,7 +9,7 @@ import axios from 'axios';
 
 export default {
   updated(){
-    if(this.$route.name === 'Login' || this.$route.name === 'SignUp' || this.$route.name === 'PasswordReset')
+    if(this.$route.name === 'Login' || this.$route.name === 'SignUp' || this.$route.name === 'PasswordReset' || this.$route.name === 'Reset')
       return;
 
     this.getData();
