@@ -15,6 +15,14 @@ const historyRoutes = require('./controllers/history');
 const userRoutes = require('./controllers/users');
 
 dotenv.config();
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', `${process.env.ALLOW_ORGIN}`);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+});
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
@@ -44,15 +52,6 @@ passport.deserializeUser((id, done) => {
             console.log(error);
             done(null,null);
         })
-});
-
-app.use(function (req, res, next) {
-      res.setHeader('Access-Control-Allow-Origin', `${process.env.ALLOW_ORGIN}`);
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-      res.setHeader('Access-Control-Allow-Credentials', true);
-      res.setHeader('Cache-Control', 'no-cache');
-      next();
 });
 
 app.post('/login',passport.authenticate('local'), (req, res) => {
