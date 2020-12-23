@@ -2,45 +2,38 @@ const User = require('../models/User');
 const Validator = require('../validators');
 
 module.exports.login = (username, password, done) => {
-      console.log(`POST /login`);
+    console.log(`POST /login`);
+        
+    const validator = Validator.login(username, password);
 
-        const Joi = require('@hapi/joi');
+    if(validator.error){
+        res.status(400).json({error: validator.error});
+        return;
+    }
 
-        const schema = Joi.object({
-            username: Joi.string().min(2).required(),
-            password: Joi.string().min(8).required()
-        });
+    User.findOneByUsername(validator.value.username)
+    .then(user => {
+        if(user == null)
+            return done(null, false); //Incorrect username
 
-        const validator = schema.validate({username: username,password: password});
+        user.validPassword(validator.value.password)
+        .then(result => {
+            if(!result)
+                return done(null, false); //Incorrect password
+            else{
+                return done(null, user);
+            }
 
-        if(validator.error){
-            res.status(400).json({error: validator.error.details[0].message});
-            return;
-        }
-
-        User.findOneByUsername(validator.value.username)
-        .then(user => {
-            if(user == null)
-                return done(null, false); //Incorrect username
-
-            user.validPassword(validator.value.password)
-            .then(result => {
-                if(!result)
-                    return done(null, false); //Incorrect password
-                else{
-                    return done(null, user);
-                }
-
-            })
-            .catch(error => {
-                console.log(error);
-                return error;
-            })
         })
         .catch(error => {
             console.log(error);
-            done(error);
+            return error;
         })
+    })
+    .catch(error => {
+        console.log(error);
+        done(error);
+    })
 }
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -62,18 +55,10 @@ module.exports.current = (req,res) => {
 
 module.exports.create = async (req,res) => {
     try{
-        const Joi = require('@hapi/joi');
-
-        const schema = Joi.object({
-            username: Joi.string().min(2).required(),
-            email: Joi.string().email.required(),
-            password: Joi.string().min(8).required()
-        });
-
-        const validator = schema.validate({username: username,password: password});
+        const validator = Validator.createUser(req.body);
 
         if(validator.error){
-            res.status(400).json({error: validator.error.details[0].message});
+            res.status(400).json({error: validator.error});
             return;
         }
 
@@ -97,19 +82,7 @@ module.exports.updatePreference = async (req, res) => {
         const user = new User();
         user.id = req.user.id;
 
-        const Joi = require('@hapi/joi');
-
-        const schema = Joi.object({
-            articleDeleteInterval: Joi.number().required(),
-            articleScanInterval: Joi.number().required(),
-            darkmode: Joi.number().required()
-        });
-
-        const validator = schema.validate({
-            articleDeleteInterval: req.body.articleDeleteInterval,
-            articleScanInterval: req.body.articleScanInterval,
-            darkmode: req.body.darkmode
-        });
+        const validator = Validator.updateUserPreferences(req.body);
 
         if(validator.error){
             res.status(400).json({error: validator.error});
@@ -146,7 +119,7 @@ module.exports.passwordResetRequest = async (req,res) => {
         const validator = Validator.email(req.body.email);
 
         if(validator.error){
-            res.status(400).json({error: validator.error[0].message});
+            res.status(400).json({error: validator.error[0]});
             return;
         }
 
@@ -185,7 +158,7 @@ module.exports.passwordReset = async (req,res) => {
         const validator = Validator.email(req.body.email);
 
         if(validator.error){
-            res.status(400).json({error: validator.error[0].message});
+            res.status(400).json({error: validator.error[0]});
             return;
         }
 
@@ -220,7 +193,7 @@ module.exports.validatePasswordResetToken = async (req,res) => {
         const validator = Validator.email(req.body.email);
 
         if(validator.error){
-            res.status(400).json({error: validator.error[0].message});
+            res.status(400).json({error: validator.error[0]});
             return;
         }
 
