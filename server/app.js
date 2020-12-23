@@ -2,7 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
-const passport = require('passport')
+const passport = require('passport');
+const cors = require('cors');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('cookie-session');
 const User = require('./models/user')
@@ -15,6 +16,11 @@ const historyRoutes = require('./controllers/history');
 const userRoutes = require('./controllers/users');
 
 dotenv.config();
+app.use(cors({
+    origin: 'https://newsprint.app',
+    credentials: true,
+    exposedHeaders: "*"
+}));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
@@ -35,6 +41,7 @@ passport.use(new LocalStrategy(userRoutes.login));
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
+
 passport.deserializeUser((id, done) => {
     User.findOne(id)
         .then(user => {
@@ -46,14 +53,14 @@ passport.deserializeUser((id, done) => {
         })
 });
 
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', `${process.env.ALLOW_ORGIN}`);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Cache-Control', 'no-cache');
-    next();
-});
+// app.use(function (req, res, next) {
+//     res.setHeader('Access-Control-Allow-Origin', `${process.env.ALLOW_ORGIN}`);
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//     res.setHeader('Access-Control-Allow-Credentials', true);
+//     res.setHeader('Cache-Control', 'no-cache');
+//     next();
+// });
 
 app.post('/login',passport.authenticate('local'), (req, res) => {
       if(req.user)
