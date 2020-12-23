@@ -34,7 +34,7 @@ module.exports.create = async (req,res) => {
         const validator = schema.validate({article: req.body.article});
 
         if(validator.error){
-            res.status(400).json({error: validator.error.details[0].message});
+            res.status(400).json({error: validator.error.details[0]});
             return;
         }
 
