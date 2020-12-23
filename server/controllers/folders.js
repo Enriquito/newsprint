@@ -9,7 +9,7 @@ module.exports.findOne = async (req,res) => {
           const validator = Validator.id(req.params.id);
 
           if(validator.error){
-              res.status(400).json({error: validator.error.details[0].message});
+              res.status(400).json({error: validator.error.details[0]});
               return;
           }
 
@@ -56,13 +56,13 @@ module.exports.create = async (req,res) => {
         const Joi = require('@hapi/joi');
 
         const schema = Joi.object({
-            name: Joi.string().min(2).required(),
+            name: Joi.string().min(2).max(15).required(),
         });
 
         const validator = schema.validate({name: req.body.name});
 
         if(validator.error){
-            res.status(400).json({error: validator.error.details[0].message});
+            res.status(400).json({error: validator.error.details});
             return;
         }
 
@@ -88,14 +88,14 @@ module.exports.update = async (req,res) => {
 
         const schema = Joi.object({
             id: Joi.number().required(),
-            name: Joi.string().min(2).required(),
+            name: Joi.string().min(2).max(15).required(),
             showOrder: Joi.number().required()
         });
 
         const validatorFolderData = schema.validate(req.body);
 
         if(validatorFolderData.error){
-            res.status(400).json({error: validatorFolderData.error.details[0].message});
+            res.status(400).json({error: validatorFolderData.error.details});
             return;
         }
 
@@ -130,7 +130,7 @@ module.exports.delete = async (req,res) => {
         const validator = Validator.id(req.params.id);
 
         if(validator.error){
-            res.status(400).json({error: validator.error.details[0].message});
+            res.status(400).json({error: validator.error.details[0]});
             return;
         }
 
