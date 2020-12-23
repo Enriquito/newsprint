@@ -58,3 +58,36 @@ module.exports.token = (token) => {
 
     return schema.validate({token: token});
 }
+module.exports.createUser = (data) => {
+    const schema = Joi.object({
+        username: Joi.string().min(2).max(30).required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().min(8).required()
+    });
+
+    return schema.validate({username: data.username,password: data.password,email: data.email});
+}
+module.exports.updateUserPreferences = (data) => {
+    const schema = Joi.object({
+        articleDeleteInterval: Joi.number().required(),
+        articleScanInterval: Joi.number().required(),
+        darkmode: Joi.number().required()
+    });
+
+    return schema.validate({
+        articleDeleteInterval: data.articleDeleteInterval,
+        articleScanInterval: data.articleScanInterval,
+        darkmode: data.darkmode
+    });
+}
+module.exports.login = (username, password) => {
+    const schema = Joi.object({
+        username: Joi.string().min(2).max(30).required(),
+        password: Joi.string().min(8).required()
+    });
+
+    return schema.validate({
+        username: username,
+        password: password
+    });
+}
