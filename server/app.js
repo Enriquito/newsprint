@@ -17,9 +17,11 @@ const userRoutes = require('./controllers/users');
 
 dotenv.config();
 app.use(cors({
-    origin: 'https://newsprint.app',
+    origin: process.env.ALLOW_ORGIN,
     credentials: true,
-    exposedHeaders: "*"
+    exposedHeaders: "*",
+    allowedHeaders: "content-type,X-Requested-With",
+    methods: ['GET','PUT','DELETE','OPTIONS', 'POST', 'PATCH']
 }));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
@@ -29,7 +31,7 @@ app.use(session({
       resave : true,
       saveUninitialized : true,
       cookie: {
-          secure: false,
+          secure: true,
           maxAge: 1000 * 60 * 60 * 24
         }
 }));
@@ -38,6 +40,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy(userRoutes.login));
+
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
@@ -67,6 +70,7 @@ app.post('/login',passport.authenticate('local'), (req, res) => {
           res.json(req.user);
       else
           res.sendStatus(401);
+    
   });
   app.get('/logout',userRoutes.isLoggedIn, (req, res) => {
       req.logout();
