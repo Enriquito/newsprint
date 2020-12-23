@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user');
 const Validator = require('../validators');
 
 module.exports.login = (username, password, done) => {
