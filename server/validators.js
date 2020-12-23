@@ -91,3 +91,16 @@ module.exports.login = (username, password) => {
         password: password
     });
 }
+module.exports.moveFolder = (data) => {
+    const schema = Joi.object({
+        feedId: Joi.number().required(),
+        from: Joi.number().required(),
+        to: Joi.number().required()
+    });
+
+    return schema.validate({
+        feedId: data.feedId,
+        from: data.from,
+        to: data.to
+    });
+}
