@@ -70,19 +70,8 @@ module.exports.create = async (req,res) => {
 }
 module.exports.moveToFolder = async (req,res) => {
     console.log(`POST move/feeds/`);
-    const Joi = require('@hapi/joi');
 
-    const schema = Joi.object({
-        feedId: Joi.number().required(),
-        from: Joi.number().required(),
-        to: Joi.number().required()
-    });
-
-    const validator = schema.validate({
-        feedId: req.body.feedId,
-        from: req.body.from,
-        to: req.body.to
-    });
+    const validator = Validator.moveFolder(req.body);
 
     if(validator.error){
         res.status(400).json({error: validator.error});
@@ -104,7 +93,7 @@ module.exports.moveToFolder = async (req,res) => {
 
         await feed.moveToFolder(validator.value.from, validator.value.to, req.user.id);
 
-        res.status(201);
+        res.sendStatus(200);
     }
     catch(error){
         console.log(error);
@@ -192,7 +181,7 @@ module.exports.delete = async (req,res) => {
     const validator = Validator.id(req.params.id);
 
     if(validator.error){
-        res.status(400).json({error: validator.error.details[0].message});
+        res.status(400).json({error: validator.error.details[0]});
         return;
     }
 
