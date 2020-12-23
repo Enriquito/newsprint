@@ -21,7 +21,6 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Access-Control-Allow-Headers', '*');
     next();
 });
 app.use(bodyParser.urlencoded({ extended: false }))
