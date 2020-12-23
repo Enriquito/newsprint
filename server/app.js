@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('cookie-session');
-const User = require('./models/User')
+const User = require('./models/user')
 
 // Controllers
 const feedRoutes = require('./controllers/feeds');
