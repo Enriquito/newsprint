@@ -325,7 +325,7 @@ class Feed{
 
                   const query = `DELETE FROM feed_folder_assignments WHERE feed = ? AND folder = ? AND user = ?; INSERT INTO feed_folder_assignments SET ?`;
 
-                  database.query(query, [this.id, from, 1, toInsert], async (error, result) => {
+                  database.query(query, [this.id, from, user, toInsert], async (error, result) => {
                       if(error){
                               reject(error);
                               return;
