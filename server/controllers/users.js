@@ -27,12 +27,12 @@ module.exports.login = (username, password, done) => {
         })
         .catch(error => {
             console.log(error);
-            return error;
+            return done(error);
         })
     })
     .catch(error => {
         console.log(error);
-        done(error);
+        return done(error);
     })
 }
 
@@ -131,7 +131,7 @@ module.exports.passwordResetRequest = async (req,res) => {
         }
 
         const token = await user.registerPasswordReset();
-        const Mailer = require('../models/Mailer');
+        const Mailer = require('../models/mailer');
         const mailer = new Mailer();
         const {passwordResetMail} = require('../mail/templates');
 
