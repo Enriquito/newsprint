@@ -16,6 +16,16 @@ const historyRoutes = require('./controllers/history');
 const userRoutes = require('./controllers/users');
 
 dotenv.config();
+
+if(process.env.NODE_ENV === 'production'){
+    app.set('trust proxy', function (ip) {
+        if (ip === '::ffff:127.0.0.1')          
+            return true; // trusted IPs
+        else
+            return false;
+    })
+}
+
 app.use(cors({
     origin: process.env.ALLOW_ORGIN,
     credentials: true,
@@ -23,6 +33,7 @@ app.use(cors({
     allowedHeaders: "content-type,X-Requested-With",
     methods: ['GET','PUT','DELETE','OPTIONS', 'POST', 'PATCH']
 }));
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
@@ -31,8 +42,10 @@ app.use(session({
       resave : true,
       saveUninitialized : true,
       cookie: {
-          secure: true,
-          maxAge: 1000 * 60 * 60 * 24
+            path: '/',
+            domain: 'newsprint.app',
+            secure: true,
+            maxAge: 1000 * 60 * 60 * 24
         }
 }));
 
