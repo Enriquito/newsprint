@@ -174,7 +174,7 @@ class Feed{
                         if(temp === null)
                               this.iconUrl = null;
                         else
-                              this.iconUrl = `${temp[1]+temp[2]}/favicon.ico`;
+                              this.iconUrl = `https://${temp[2]}/favicon.ico`;
 
                         this.title = f.title;
                         this.description = f.description;
