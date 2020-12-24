@@ -7,8 +7,7 @@ module.exports.login = (username, password, done) => {
     const validator = Validator.login(username, password);
 
     if(validator.error){
-        res.status(400).json({error: validator.error});
-        return;
+        return done(validator.error);
     }
 
     User.findOneByUsername(validator.value.username)
