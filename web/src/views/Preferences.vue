@@ -101,7 +101,6 @@ export default {
 
       if(this.$store.state.folders === undefined){
             a = setInterval(() => {
-                console.log("a");
                 if(this.$store.state.folders !== undefined){
                     this.folders = this.$store.state.folders;
                     clearInterval(a);
@@ -140,8 +139,7 @@ export default {
             },{
               withCredentials: true,
               credentials: 'include'
-            }
-            );
+            });
 
             if(response.status === 200){
               this.$eventHub.$emit('updateNavigation');
@@ -159,7 +157,10 @@ export default {
         if(!confirm(`Are you sure you want to delete the folder '${name}' and all it feeds?`))
           return;
 
-        axios.delete(`${process.env.VUE_APP_API}/folders/${id}`)
+        axios.delete(`${process.env.VUE_APP_API}/folders/${id}`,{
+          withCredentials: true,
+          credentials: 'include'
+        })
         .then(response => {
           if(response.status === 200){
             for(let i = 0; i < this.folders.length; i++){
@@ -179,6 +180,9 @@ export default {
           articleDeleteInterval: this.data.articleDeleteInterval,
           articleScanInterval: this.data.articleScanInterval,
           darkmode: 0
+        },{
+          withCredentials: true,
+          credentials: 'include'
         })
         .catch(error => {
           alert('Error updating user preferences');
@@ -186,7 +190,10 @@ export default {
         })
       },
       getPreferences(){
-        axios.get('/preferences')
+        axios.get('/preferences',{
+          withCredentials: true,
+          credentials: 'include'
+        })
         .then(response => {
           this.data = response.data;
         })
