@@ -22,7 +22,10 @@ export default {
   },
   methods:{
     getData(){
-      axios.get(`${process.env.VUE_APP_API}/folders`)
+      axios.get(`${process.env.VUE_APP_API}/folders`, {
+        withCredentials: true,
+        credentials: 'include'
+      })
       .then(response => {
           if(response.status === 200){
               this.$store.commit('setFolders', response.data);
@@ -34,7 +37,11 @@ export default {
       })
     },
     getNewArticles(){
-        axios.get(`${process.env.VUE_APP_API}/articles/count/unread`)
+        axios.get(`${process.env.VUE_APP_API}/articles/count/unread`,{
+          withCredentials: true,
+          credentials: 'include'
+        }
+        )
         .then(response => {
             if(response.status === 200){
                 this.unreadArticles = response.data.unreadArticles;

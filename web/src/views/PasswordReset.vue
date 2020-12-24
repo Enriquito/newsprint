@@ -54,7 +54,10 @@ export default {
                   axios.post(`${process.env.VUE_APP_API}/account/request/password-reset`, {
                         email: this.email
                   },
-                  {withCredentials: true})
+                  {
+                        withCredentials: true,
+                        credentials: 'include'
+                  })
                   .then(response => {
                         if(response.status === 200){
                               this.emailHasBeenSend = true;

@@ -85,6 +85,9 @@ export default {
             axios.post(`${process.env.VUE_APP_API}/feeds`,{
                 feedUrl: this.url,
                 folderId: this.folderId
+            },{
+                withCredentials: true,
+                credentials: 'include'
             })
             .then(result => {
                 if(result.status === 201){
@@ -116,7 +119,12 @@ export default {
                 this.addingNewFolder = true;
         },
         async createFolder(){
-            return axios.post('/folders',{name: this.newFolderName});
+            return axios.post('/folders',{
+                name: this.newFolderName
+            },{
+                withCredentials: true,
+                credentials: 'include'
+            });
         }
     }
 }

@@ -45,7 +45,11 @@ export default {
   },
   methods:{
       getData(){
-          axios.get(`${process.env.VUE_APP_API}/favorite/articles`)
+          axios.get(`${process.env.VUE_APP_API}/favorite/articles`,
+          {
+            withCredentials: true,
+            credentials: 'include'
+          })
           .then(response => {
               if(response.status === 200){
                   this.data = response.data;

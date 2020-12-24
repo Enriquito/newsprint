@@ -110,6 +110,9 @@ export default {
                     displayName: this.feed.displayName,
                     folderId: this.folderId
                 }
+            },{
+                withCredentials: true,
+                credentials: 'include'
             })
             .then(result => {
                 if(result.status === 200){

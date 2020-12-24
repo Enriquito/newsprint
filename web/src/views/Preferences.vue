@@ -133,7 +133,15 @@ export default {
         for(let i = 0; i < ar.length; i++){
           try{
             const el = ar[i];
-            const response = await axios.put(`${process.env.VUE_APP_API}/folders/`, {name: el.name, id: el.id, showOrder: el.showOrder});
+            const response = await axios.put(`${process.env.VUE_APP_API}/folders/`,{
+              name: el.name, 
+              id: el.id, 
+              showOrder: el.showOrder
+            },{
+              withCredentials: true,
+              credentials: 'include'
+            }
+            );
 
             if(response.status === 200){
               this.$eventHub.$emit('updateNavigation');

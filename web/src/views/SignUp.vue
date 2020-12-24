@@ -59,7 +59,10 @@ export default {
                   email: this.email,
                   password: this.password
             },
-            {withCredentials: true})
+            {
+                  withCredentials: true,
+                  credentials: 'include'
+            })
             .then(response => {
                   if(response.status === 201){
                         this.login();
@@ -78,7 +81,10 @@ export default {
                   username: this.username,
                   password: this.password
             },
-            {withCredentials: true})
+            {
+                  withCredentials: true,
+                  credentials: 'include'
+            })
             .then(response => {
                   if(response.status === 200){
                         this.$eventHub.$emit('updateNavigation');

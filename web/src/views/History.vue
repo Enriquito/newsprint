@@ -40,7 +40,11 @@ export default {
   },
   methods:{
       getData(){
-          axios.get(`${process.env.VUE_APP_API}/history`)
+          axios.get(`${process.env.VUE_APP_API}/history`,
+          {
+            withCredentials: true,
+            credentials: 'include'
+          })
           .then(response => {
               if(response.status === 200){
                   this.data = response.data;

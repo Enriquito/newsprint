@@ -100,7 +100,10 @@ export default {
     },
     methods:{
         logout(){
-            axios.get(`${process.env.VUE_APP_API}/logout`)
+            axios.get(`${process.env.VUE_APP_API}/logout`,{
+                withCredentials: true,
+                credentials: 'include'
+            })
             .then(response => {
                 if(response.status === 200){
                     this.$store.commit('setFolders', null);
@@ -147,6 +150,9 @@ export default {
                 from: from,
                 to: to,
                 feedId: feedId
+            },{
+                withCredentials: true,
+                credentials: 'include'
             })
             .catch(error => {
                 alert('Error moving feed to folder');

@@ -84,7 +84,10 @@ export default {
                   email: this.email,
                   token: this.token
             },
-            {withCredentials: true})
+            {
+                  withCredentials: true,
+                  credentials: 'include'
+            })
             .then(response => {
                   if(response.status === 200){
                         this.validateScreen = false;

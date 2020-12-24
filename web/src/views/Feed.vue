@@ -71,7 +71,11 @@ export default {
   },
   methods:{
     getData(){
-      axios.get(`${process.env.VUE_APP_API}/feeds/${this.feedId}/?offset=${(this.$route.params.page - 1) * 10}&max=10`)
+      axios.get(`${process.env.VUE_APP_API}/feeds/${this.feedId}/?offset=${(this.$route.params.page - 1) * 10}&max=10`,
+      {
+        withCredentials: true,
+        credentials: 'include'
+      })
         .then(response => {
           if(response.status === 200){
               this.feed = response.data;
