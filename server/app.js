@@ -43,6 +43,8 @@ app.use(session({
       saveUninitialized : true,
       cookie: {
             path: '/',
+            httpOnly: true,
+            secureProxy: true,
             domain: 'newsprint.app',
             secure: true,
             maxAge: 1000 * 60 * 60 * 24
@@ -68,15 +70,6 @@ passport.deserializeUser((id, done) => {
             done(null,null);
         })
 });
-
-// app.use(function (req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', `${process.env.ALLOW_ORGIN}`);
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-//     res.setHeader('Cache-Control', 'no-cache');
-//     next();
-// });
 
 app.post('/login',passport.authenticate('local'), (req, res) => {
       if(req.user)
