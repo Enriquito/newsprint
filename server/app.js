@@ -30,7 +30,7 @@ app.use(cors({
     origin: process.env.ALLOW_ORGIN,
     credentials: true,
     exposedHeaders: "*",
-    allowedHeaders: "content-type,X-Requested-With",
+    allowedHeaders: "content-type,X-Requested-With", //Zo niet probeer: "Origin,Accept,Content-Type,X-Requested-With"
     methods: ['GET','PUT','DELETE','OPTIONS', 'POST', 'PATCH']
 }));
 
@@ -45,7 +45,7 @@ app.use(session({
             path: '/',
             httpOnly: true,
             secureProxy: true,
-            domain: 'newsprint.app',
+            domain: '.newsprint.app',
             secure: true,
             maxAge: 1000 * 60 * 60 * 24
         }
