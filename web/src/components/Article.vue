@@ -109,7 +109,13 @@ export default {
       setArticleToRead(){
         this.data.isRead = true;
         this.AddToHistory();
-        axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{id: this.data.id})
+        axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{
+          id: this.data.id
+        },
+        {
+          withCredentials: true,
+          credentials: 'include'
+        })
           .then(response => {
             if(response.status === 200){
               this.$eventHub.$emit('updateNavigation');
@@ -122,7 +128,13 @@ export default {
       },
       setToUnread(){
         this.data.isRead = false;
-        axios.put(`${process.env.VUE_APP_API}/articles/set/unread`,{id: this.data.id})
+        axios.put(`${process.env.VUE_APP_API}/articles/set/unread`,{
+          id: this.data.id
+          }),
+          {
+            withCredentials: true,
+            credentials: 'include'
+          }
           .then(response => {
             if(response.status === 200){
               this.$eventHub.$emit('updateNavigation');
@@ -136,7 +148,13 @@ export default {
       saveToFavorites(){
         this.data.favorite = true;
 
-        axios.post(`${process.env.VUE_APP_API}/articles/save/favorite`,{id: this.data.id})
+        axios.post(`${process.env.VUE_APP_API}/articles/save/favorite`,{
+            id: this.data.id
+          },
+          {
+            withCredentials: true,
+            credentials: 'include'
+          })
         .catch(error => {
           this.data.favorites = false;
           console.log(error);
@@ -144,14 +162,26 @@ export default {
       },
       RemoveFromFavorites(){
         this.data.favorite = false;
-        axios.post(`${process.env.VUE_APP_API}/articles/remove/favorite`,{id: this.data.id})
+        axios.post(`${process.env.VUE_APP_API}/articles/remove/favorite`,{
+            id: this.data.id
+          },
+          {
+            withCredentials: true,
+            credentials: 'include'
+          })
         .catch(error => {
           this.data.favorites = true;
           console.log(error);
         })
       },
       AddToHistory(){
-        axios.post(`${process.env.VUE_APP_API}/history`, {article: this.data.id})
+        axios.post(`${process.env.VUE_APP_API}/history`, {
+            id: this.data.id
+          },
+          {
+            withCredentials: true,
+            credentials: 'include'
+          })
         .catch(error => {
           console.error(error);
         });

@@ -146,7 +146,10 @@ export default {
             if(!confirm(`Are you sure you want to delete the feed '${this.feed.title}'?`))
                 return;
 
-            axios.delete(`/feeds/${this.feed.id}`)
+            axios.delete(`/feeds/${this.feed.id}`,{
+                withCredentials: true,
+                credentials: 'include'
+            })
             .then(response => {
                 if(response.status === 200){
                     this.$eventHub.$emit('updateNavigation');
@@ -161,7 +164,12 @@ export default {
             });
         },
         async createFolder(){
-            return axios.post('/folders',{name: this.newFolderName});
+            return axios.post('/folders',{
+                name: this.newFolderName,
+            },{
+                withCredentials: true,
+                credentials: 'include'
+            });
         },
     }
 }
