@@ -36,7 +36,7 @@ module.exports.create = async (req,res) => {
         if(rowsInDB === maxHistoryRows)
             await History.destroyNextInLine(req.user.id);
 
-        await History.create(req.user.id, validator.value.article);
+        await History.create(req.user.id, validator.value.id);
 
         res.sendStatus(201);
     }
