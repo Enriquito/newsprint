@@ -130,11 +130,11 @@ export default {
         this.data.isRead = false;
         axios.put(`${process.env.VUE_APP_API}/articles/set/unread`,{
           id: this.data.id
-          }),
+          },
           {
             withCredentials: true,
             credentials: 'include'
-          }
+          })
           .then(response => {
             if(response.status === 200){
               this.$eventHub.$emit('updateNavigation');
