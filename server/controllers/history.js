@@ -1,4 +1,5 @@
 const History = require('../models/history');
+const Validator = require('../validators');
 
 module.exports.getAll = async (req,res) => {
     try{
@@ -25,13 +26,7 @@ module.exports.create = async (req,res) => {
         const maxHistoryRows = 25;
         const rowsInDB = await History.getHistoryItemsCount(req.user.id);
 
-        const Joi = require('@hapi/joi');
-
-        const schema = Joi.object({
-            article: Joi.number().required()
-        });
-
-        const validator = schema.validate({article: req.body.article});
+        const validator = Validator.id(req.body.id);
 
         if(validator.error){
             res.status(400).json({error: validator.error.details[0]});
