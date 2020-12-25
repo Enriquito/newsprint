@@ -176,7 +176,7 @@ export default {
         })
       },
       updateUserPreferences(){
-        axios.put('/preferences',{
+        axios.put(`${process.env.VUE_APP_API}/preferences`,{
           articleDeleteInterval: this.data.articleDeleteInterval,
           articleScanInterval: this.data.articleScanInterval,
           darkmode: 0
@@ -190,7 +190,7 @@ export default {
         })
       },
       getPreferences(){
-        axios.get('/preferences',{
+        axios.get(`${process.env.VUE_APP_API}/preferences`,{
           withCredentials: true,
           credentials: 'include'
         })
