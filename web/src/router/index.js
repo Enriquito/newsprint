@@ -45,8 +45,7 @@ const routes = [
   {
     path: '/',
     name: 'Root',
-    component: Favorites,
-    beforeEnter: Guard
+    component: Login
   },
   {
     path: '/404',
