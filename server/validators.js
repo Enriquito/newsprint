@@ -28,7 +28,7 @@ module.exports.updateFeed = (data) => {
         language: Joi.string(),
         lastBuildDate: Joi.string(),
         lastScanDate: Joi.string(),
-        folderId: Joi.number()
+        folderId: Joi.number().required()
     });
 
     return schema.validate({
