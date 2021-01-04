@@ -87,6 +87,7 @@ export default {
 @media (max-width: 720px) {
     #overlay .content{
         width: 100% !important;
+        margin: 20px;
     }
 }
 </style>
