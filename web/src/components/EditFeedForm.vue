@@ -173,7 +173,7 @@ export default {
             });
         },
         async createFolder(){
-            return axios.post('/folders',{
+            return axios.post(`${process.env.VUE_APP_API}/folders`,{
                 name: this.newFolderName,
             },{
                 withCredentials: true,
