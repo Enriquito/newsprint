@@ -184,6 +184,11 @@ export default {
           withCredentials: true,
           credentials: 'include'
         })
+        .then(response => {
+            if(response.status === 200){
+              alert("Preferences has been saved.")
+            }
+        })
         .catch(error => {
           alert('Error updating user preferences');
           console.log(error);
