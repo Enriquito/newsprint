@@ -287,6 +287,10 @@ nav::-webkit-scrollbar
     }
 }
 @media (max-width: 350px) {
+    nav
+    {
+        width: 100% !important;
+    }
     nav ul{
         padding: 20px;
     }
