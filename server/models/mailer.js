@@ -1,15 +1,17 @@
 const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+dotenv.config();
 
 class Mailer{
     constructor(){
         this.from = "Newsprint <noreply@newsprint.app>";
         this.transporter = nodemailer.createTransport({
-            host: "mail.newsprint.app",
-            port: 465,
+            host: process.env.SMTP_SERVER,
+            port: process.env.SMTP_PORT,
             secure: true, // upgrade later with STARTTLS
             auth: {
-              user: "noreply@newsprint.app",
-              pass: "Qybcz8qRjT%hKL2ujnN9@X"
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASSWORD
             }
           });
     }
