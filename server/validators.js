@@ -20,7 +20,7 @@ module.exports.addFeed = (data) => {
 module.exports.updateFeed = (data) => {
     const schema = Joi.object({
         id: Joi.number().required(),
-        displayName: Joi.string(),
+        displayName: Joi.string().allow(null),
         title: Joi.string(),
         description: Joi.string(),
         iconUrl: Joi.string(),
@@ -31,18 +31,7 @@ module.exports.updateFeed = (data) => {
         folderId: Joi.number().required()
     });
 
-    return schema.validate({
-        id: data.id,
-        displayName: data.displayName,
-        title: data.title,
-        description: data.description, 
-        iconUrl: data.iconUrl,
-        link: data.link, 
-        language: data.language,
-        lastBuildDate: data.lastBuildDate,
-        lastScanDate: data.lastScanDate,
-        folderId: data.folderId
-    });
+    return schema.validate(data);
 }
 module.exports.email = (email) => {
     const schema = Joi.object({
