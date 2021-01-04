@@ -78,6 +78,19 @@ export default {
     },
     methods:{
         async editFeed(){
+            const feed = {
+                feed: {
+                    id: this.feed.id,
+                    feedUrl: this.feed.url,
+                    displayName: this.feed.displayName,
+                    iconUrl: this.feed.iconUrl,
+                    folderId: this.folderId
+                }
+            }
+
+            if(feed.feed.displayName === "")
+                feed.feed.displayName = null;
+                
             this.buttonText = "Saving..."
 
             if(this.newFolderName !== null){
@@ -102,15 +115,11 @@ export default {
                 }
             }
 
-            axios.put(`${process.env.VUE_APP_API}/feeds`,{
-                feed: {
-                    id: this.feed.id,
-                    feedUrl: this.feed.url,
-                    iconUrl: this.feed.iconUrl,
-                    displayName: this.feed.displayName,
-                    folderId: this.folderId
-                }
-            },{
+            // if(this.feed.displayName != null)
+            //     feed.feed["displayName"] = ;
+
+
+            axios.put(`${process.env.VUE_APP_API}/feeds`,feed,{
                 withCredentials: true,
                 credentials: 'include'
             })
