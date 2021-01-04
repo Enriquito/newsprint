@@ -86,7 +86,7 @@ async function startJobs (){
                   cron.schedule('0 */2 * * *', () => {
                         console.log('--------------------------------');
                         console.log(moment().format('LL HH:MM'))
-                        console.log(`Article scan started for one hour intervals`);
+                        console.log(`Article scan started for two hours intervals`);
                         console.log(`job queued for ${two.length} accounts`);
 
                         two.forEach(async el => {
@@ -97,7 +97,7 @@ async function startJobs (){
                   cron.schedule('0 */3 * * *', () => {
                         console.log('--------------------------------');
                         console.log(moment().format('LL HH:MM'))
-                        console.log(`Article scan started for one hour intervals`);
+                        console.log(`Article scan started for three hours intervals`);
                         console.log(`job queued for ${three.length} accounts`);
 
                         three.forEach(async el => {
@@ -108,7 +108,7 @@ async function startJobs (){
                   cron.schedule('0 */4 * * *', () => {
                         console.log('--------------------------------');
                         console.log(moment().format('LL HH:MM'))
-                        console.log(`Article scan started for one hour intervals`);
+                        console.log(`Article scan started for four hours intervals`);
                         console.log(`job queued for ${four.length} accounts`);
 
                         four.forEach(async el => {
