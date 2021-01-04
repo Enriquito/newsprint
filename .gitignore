@@ -3,7 +3,7 @@ web/node_modules
 web/test-build
 server/node_modules
 server/.env
-/dist
+web/dist
 
 
 # local env files
