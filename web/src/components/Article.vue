@@ -231,6 +231,7 @@ article #article-content
   overflow: hidden;
   transition: max-height 0.5s;
 }
+
 article p
 {
   font-weight: 100;
@@ -257,7 +258,7 @@ article .spacer
 }
 </style>
 <style>
-#article-content * > img
+#article-content * > img, #article-content img
 {
   width: 100%;
   border-radius: 10px;
