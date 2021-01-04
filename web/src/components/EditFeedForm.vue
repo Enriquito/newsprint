@@ -146,7 +146,7 @@ export default {
             if(!confirm(`Are you sure you want to delete the feed '${this.feed.title}'?`))
                 return;
 
-            axios.delete(`/feeds/${this.feed.id}`,{
+            axios.delete(`${process.env.VUE_APP_API}/feeds/${this.feed.id}`,{
                 withCredentials: true,
                 credentials: 'include'
             })
