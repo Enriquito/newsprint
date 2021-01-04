@@ -21,48 +21,48 @@ class Feed{
             this.articles = [];
       }
       // Afmaken
-      getCompleteArticle(){
-            const fetch = (url) =>{
-                  const { data } = await axios.get(url);
-                  return cheerio.load(data);
-            }
+      // getCompleteArticle(){
+      //       const fetch = (url) =>{
+      //             const { data } = await axios.get(url);
+      //             return cheerio.load(data);
+      //       }
 
-            const cleanData = (data) => {
-                  let result = data.replace(/\r?\n|\r/g, "");
-                  result = result.replace(/<script .*>(.*)<\/script>/g, "");
-                  result = result.replace(/<!--(.*?)-->/g, "");
+      //       const cleanData = (data) => {
+      //             let result = data.replace(/\r?\n|\r/g, "");
+      //             result = result.replace(/<script .*>(.*)<\/script>/g, "");
+      //             result = result.replace(/<!--(.*?)-->/g, "");
 
-                  return result;
-            }
+      //             return result;
+      //       }
 
-            const splitData = (data) => {
-                  const split = {
-                        title: null,
-                        content: null
-                  };
+      //       const splitData = (data) => {
+      //             const split = {
+      //                   title: null,
+      //                   content: null
+      //             };
 
-                  const $ = cheerio.load(data);
+      //             const $ = cheerio.load(data);
                     
-                  split.title = $.html('h1');
-                  split.content = $.html('article');
+      //             split.title = $.html('h1');
+      //             split.content = $.html('article');
                     
-                  return split;
-            }
+      //             return split;
+      //       }
 
 
 
-            try{
-                  const $ = await fetch(url)
-                  let data = $.html('article');
+      //       try{
+      //             const $ = await fetch(url)
+      //             let data = $.html('article');
 
-                  let result = cleanData(data);
+      //             let result = cleanData(data);
 
-                  const splitted = splitData(result);
-            }
-            catch(error){
-                  console.log(error);
-            }
-      }
+      //             const splitted = splitData(result);
+      //       }
+      //       catch(error){
+      //             console.log(error);
+      //       }
+      // }
 
       static findOne(id){
             return new Promise( async (resolve, reject) => {
