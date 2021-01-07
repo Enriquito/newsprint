@@ -141,7 +141,7 @@ module.exports.passwordResetRequest = async (req,res) => {
                         just ignor this email. Otherwise please open the link to change your password.
                         https://newsprint.app/#/account/password-reset/token/${token}
                         `,
-            html: passwordResetMail(user.username, `https://beta.newsprint.app/#/account/password-reset/token/${token}`)
+            html: passwordResetMail(user.username, `https://newsprint.app/#/account/password-reset/token/${token}`)
         }); 
 
         res.sendStatus(200);
