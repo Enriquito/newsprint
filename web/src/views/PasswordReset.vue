@@ -19,7 +19,7 @@
                                     </div>
                                     <div style="text-align: center; padding-top: 30px">
                                           <span>
-                                                No need for a password reset? <router-link :to="{name: 'Login'}">Login here</router-link>
+                                                No need for a password reset? <router-link :to="{name: 'Login'}">Sign in here</router-link>
                                           </span>
                                     </div>
                               </div>
