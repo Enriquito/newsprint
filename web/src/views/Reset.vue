@@ -140,6 +140,7 @@ export default {
                   })
             }
             else{
+                  this.loginButtonText = "Reset Password";
                   this.error = "Passwords does not match.";
             }
       }
