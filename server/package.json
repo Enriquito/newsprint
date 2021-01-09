@@ -1,6 +1,6 @@
 {
-  "name": "rss-server",
-  "version": "1.0.0",
+  "name": "newsprint-server",
+  "version": "1.0",
   "description": "",
   "main": "app.js",
   "dependencies": {
