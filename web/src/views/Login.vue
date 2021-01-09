@@ -31,7 +31,7 @@
                                           <span>
                                                 Dont have an account?
                                           </span>
-                                          <router-link :to="{name: 'SignUp'}">Sing up here</router-link>
+                                          <router-link :to="{name: 'SignUp'}">Sign up here</router-link>
                                     </div>
                               </div>
                         </div>
