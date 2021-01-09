@@ -115,10 +115,6 @@ export default {
                 }
             }
 
-            // if(this.feed.displayName != null)
-            //     feed.feed["displayName"] = ;
-
-
             axios.put(`${process.env.VUE_APP_API}/feeds`,feed,{
                 withCredentials: true,
                 credentials: 'include'
