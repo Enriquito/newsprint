@@ -141,6 +141,14 @@ module.exports.delete = async (req,res) => {
             return;
         }
 
+        await folder.getFeeds();
+
+        for(let i = 0; i < folder.feeds.length; i++){
+            const feed = folder.feeds[i];
+
+            await feed.delete();
+        }
+
         await folder.delete();
 
         res.json(folder);
