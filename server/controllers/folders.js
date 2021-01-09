@@ -67,9 +67,11 @@ module.exports.create = async (req,res) => {
         }
 
         const folder = new Folder();
+        const allFolders = await Folder.findAllByUser(req.user.id);
 
         folder.name = validator.value.name;
         folder.user = req.user.id;
+        folder.showOrder = allFolders.length;
 
         await folder.create();
 
