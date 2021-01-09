@@ -37,15 +37,15 @@ export default {
       })
     },
     getNewArticles(){
-        axios.get(`${process.env.VUE_APP_API}/articles/count/unread`,{
+        axios.get(`${process.env.VUE_APP_API}/articles/count/newtoday`,{
           withCredentials: true,
           credentials: 'include'
         }
         )
         .then(response => {
             if(response.status === 200){
-                this.unreadArticles = response.data.unreadArticles;
-                this.$store.commit('setUnreadArticles', response.data.unreadArticles);
+                this.unreadArticles = response.data.newArticleCount;
+                this.$store.commit('setUnreadArticles', response.data.newArticleCount);
             }
         })
         .catch(error => {
