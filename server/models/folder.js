@@ -6,7 +6,7 @@ class Folder{
             this.id;
             this.user;
             this.name;
-            this.showOrder;
+            this.showOrder = 0;
             this.totalUnread = 0;
             this.feeds = [];
       }
@@ -92,7 +92,7 @@ class Folder{
                   const toInsert = {
                         user: this.user,
                         name: this.name,
-                        show_order: 0,
+                        show_order: this.showOrder,
                   };
 
                   database.query('INSERT INTO folders SET ?', [toInsert], (error, result) => {
