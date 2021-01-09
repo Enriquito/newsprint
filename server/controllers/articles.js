@@ -64,6 +64,7 @@ module.exports.unreadArticles = async (req,res) => {
         });
 
         const validator = schema.validate({offset: offset,max: max});
+        
 
         if(validator.error){
             res.status(400).json({error: validator.error.details[0].message});
@@ -230,4 +231,53 @@ module.exports.getFavoriteArticles = async (req,res) => {
         res.sendStatus(500);
     }
 }
+module.exports.getCountNewArticlesToday = async (req,res) => {
+    try{
+          console.log(`GET /articles/count/newtoday`);
 
+          const articleCount = await Article.getCountNewArticlesToday(req.user.id);
+
+          if(articleCount === null){
+              res.sendStatus(500);
+              return;
+          }
+
+          res.json(articleCount);
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+module.exports.getNewArticlesToday = async (req,res) => {
+    try{
+        console.log(`GET /articles/count/newtoday`);
+
+        const Joi = require('@hapi/joi');
+
+        const schema = Joi.object({
+            offset: Joi.number().required(),
+            max: Joi.number().required()
+        });
+
+        const validator = schema.validate({offset: req.query.offset,max: req.query.max});
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details});
+            return;
+        }
+
+        const articles = await Article.getNewArticlesToday(req.user.id, validator.value.offset, validator.value.max);
+
+        if(articles === null){
+            res.sendStatus(500);
+            return;
+        }
+
+        res.json(articles);
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
