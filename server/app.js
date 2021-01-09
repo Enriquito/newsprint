@@ -114,6 +114,8 @@ app.route('/articles/:id')
 .get(userRoutes.isLoggedIn,articleRoutes.findOne)
 
 app.get('/articles/count/unread',userRoutes.isLoggedIn, articleRoutes.unreadArticlesCount)
+app.get('/articles/count/newtoday',userRoutes.isLoggedIn, articleRoutes.getCountNewArticlesToday)
+app.get('/newtoday/articles',userRoutes.isLoggedIn, articleRoutes.getNewArticlesToday)
 app.get('/unread/articles',userRoutes.isLoggedIn, articleRoutes.unreadArticles)
 app.put('/articles/set/read', userRoutes.isLoggedIn,articleRoutes.setToRead)
 app.put('/articles/set/unread',userRoutes.isLoggedIn, articleRoutes.setToUnread)
