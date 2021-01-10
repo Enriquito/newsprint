@@ -67,7 +67,6 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300;1,500;1,700&display=swap');
-
 body
 {
   background-color: #fbf8f8;
@@ -130,6 +129,14 @@ section span
   .small-screen-div
   {
     width: 100%;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  body{
+    background-color: #707070;
+  }
+  #app{
+    color: #FFF;
   }
 }
 </style>

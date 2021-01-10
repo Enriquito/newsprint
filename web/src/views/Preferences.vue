@@ -43,8 +43,8 @@
                   <span>{{folder.feeds.length}}</span>
                 </div>
                 <div class="folder-actions">
-                  <svg v-if="folder.name != 'No folder'" style="cursor: pointer;" @click="deleteFolder(folder.id, folder.name)" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="18" viewBox="0 0 64 64">
-                    <path d="M12 64h40l4-44h-48zM40 8v-8h-16v8h-20v12l4-4h48l4 4v-12h-20zM36 8h-8v-4h8v4z" fill="#000000"></path>
+                  <svg class="icon" v-if="folder.name != 'No folder'" style="cursor: pointer;" @click="deleteFolder(folder.id, folder.name)" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="18" viewBox="0 0 64 64">
+                    <path d="M12 64h40l4-44h-48zM40 8v-8h-16v8h-20v12l4-4h48l4 4v-12h-20zM36 8h-8v-4h8v4z"></path>
                   </svg>
                 </div>
               </div>
@@ -236,6 +236,10 @@ export default {
 }
 </script>
 <style scoped>
+.icon
+{
+  fill : #000;
+}
 label{
   margin: 0;
   margin-top: 10px;
@@ -314,5 +318,15 @@ button
   min-width: 50px;
   text-align: center;
 }
-
+@media (prefers-color-scheme: dark)
+{
+  .icon
+  {
+    fill: #fff !important;
+  }
+  button
+  {
+    background: rgb(168, 176, 255) !important;
+  }
+}
 </style>

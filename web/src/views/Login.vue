@@ -1,5 +1,5 @@
 <template>
-      <section id="login" class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%; background: #5867FC;">
+      <section id="login" class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
             <div id="login-container" class="d-flex" style="heigth: 500px;">
                   <div id="form" class="d-flex align-items-center justify-content-center">
                         <div style="width: 100%;">
@@ -109,6 +109,7 @@ section span
 {
       height: 500px;
       border: 1px solid rgba(0,0,0,1);
+      background: #5867FC;
 }
 #login #form
 {
@@ -159,6 +160,34 @@ section span
       outline: none;
       color: #FFF;
       font-weight: 900;
+}
+@media (prefers-color-scheme: dark)
+{
+      span a, a
+      {
+            color: rgb(168, 176, 255) !important;
+      }
+      #login
+      {
+            background: #333 !important;
+            color: #FFF;
+      }
+      #login #form
+      {
+            background-color: #707070;
+      }
+      #login #form h1.app-name
+      {
+            color: rgb(168, 176, 255) !important;
+      }
+      #login #form button
+      {
+            background:rgb(168, 176, 255) !important;
+      }
+      #login #form input
+      {
+            outline: rgb(168, 176, 255) !important;
+      }
 }
 @media (max-width: 720px) {
       #login div

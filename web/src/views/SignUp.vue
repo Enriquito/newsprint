@@ -179,6 +179,34 @@ section span
       font-weight: 900;
       margin-top: 15px;
 }
+@media (prefers-color-scheme: dark)
+{
+      span a
+      {
+            color: rgb(168, 176, 255) !important;
+      }
+      #login
+      {
+            background: #333 !important;
+            color: #FFF;
+      }
+      #login #form
+      {
+            background-color: #707070;
+      }
+      #login #form h1.app-name
+      {
+            color: rgb(168, 176, 255) !important;
+      }
+      #login #form button
+      {
+            background:rgb(168, 176, 255) !important;
+      }
+      #login #form input
+      {
+            outline: rgb(168, 176, 255) !important;
+      }
+}
 @media (max-width: 720px) {
       #login div
       {
