@@ -44,7 +44,7 @@ article
 {
     margin-top: 30px;
     padding: 10px;
-    width: 1024px;
+    width: 640px;
 }
 .block
 {

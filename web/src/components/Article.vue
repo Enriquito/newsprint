@@ -212,13 +212,14 @@ export default {
 }
 article
 {
-  width: 1024px;
+  background: #FFF;
+  width: 640px;
   margin: 0;
   margin-top: 30px;
-  /* border: 1px solid rgba(0,0,0,0.1); */
-  border-radius: 15px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 5px;
   padding: 20px;
-  box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1); */
 }
 article a h2
 {
@@ -276,11 +277,14 @@ article .spacer
 {
   color: inherit;
 }
-@media (max-width: 1500px) {
-    article
+@media (max-width: 450px)
+{
+  article
     {
-        width: auto !important;
+      width: auto !important;
     }
+}
+@media (max-width: 1500px) {
     .date-time
     {
       max-width: 120px !important;
