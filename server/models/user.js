@@ -145,11 +145,12 @@ class User{
             })
         }
 
-        updatePreference(articleDeleteInterval,articleScanInterval,darkmode){
+        updatePreference(articleDeleteInterval,articleScanInterval,darkmode, setArticlesReadOnNextPage){
             return new Promise((resolve, reject) => {
                 const data = {
                     article_delete_interval: articleDeleteInterval,
                     article_scan_interval: articleScanInterval,
+                    articles_read_on_next_page: setArticlesReadOnNextPage,
                     darkmode: darkmode
                 }
 
@@ -181,6 +182,7 @@ class User{
                       const data = {
                         articleDeleteInterval: result.article_delete_interval,
                         articleScanInterval: result.article_scan_interval,
+                        setArticlesReadOnNextPage: result.articles_read_on_next_page,
                         darkmode: result.darkmode
                       }
 

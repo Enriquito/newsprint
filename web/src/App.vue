@@ -14,6 +14,7 @@ export default {
 
     this.getData();
     this.getNewArticles();
+    this.getPreferences();
 
     this.$eventHub.$on('updateNavigation', () => {
       this.getData();
@@ -53,6 +54,19 @@ export default {
             console.log(error);
         })
     },
+    getPreferences(){
+        axios.get(`${process.env.VUE_APP_API}/preferences`,{
+          withCredentials: true,
+          credentials: 'include'
+        })
+        .then(response => {
+           this.$store.commit('setPreferences', response.data);
+        })
+        .catch(error => {
+          console.log(error);
+          alert('Error loading user preferences');
+        })
+      }
   },
   watch: {
         $route: {

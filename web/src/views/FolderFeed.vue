@@ -31,6 +31,9 @@ export default {
   mounted(){
     this.getData();
   },
+  updated(){
+    document.querySelector('section').scrollTo(0,0);
+  },
   data(){
     return({
       folders: null,

@@ -60,12 +60,14 @@ module.exports.updateUserPreferences = (data) => {
     const schema = Joi.object({
         articleDeleteInterval: Joi.number().required(),
         articleScanInterval: Joi.number().required(),
+        setArticlesReadOnNextPage: Joi.boolean().required(),
         darkmode: Joi.number().required()
     });
 
     return schema.validate({
         articleDeleteInterval: data.articleDeleteInterval,
         articleScanInterval: data.articleScanInterval,
+        setArticlesReadOnNextPage: data.setArticlesReadOnNextPage,
         darkmode: data.darkmode
     });
 }

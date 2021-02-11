@@ -12,6 +12,9 @@ export default new Vuex.Store({
     },
     setUnreadArticles(state, count){
       state.unreadArticles = count;
+    },
+    setPreferences(state, pref){
+      state.preferences = pref;
     }
   },
   actions: {

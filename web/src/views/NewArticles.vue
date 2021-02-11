@@ -68,11 +68,29 @@ export default {
     },
     loadMoreArticles(event){
       event.preventDefault();
+      
+      if(this.$store.state.preferences.setArticlesReadOnNextPage === 1){
+        this.articles.forEach(article => {
+          this.setArticleToRead(article.id);
+        });
+      }
+      
       const page = parseInt(this.$route.params.page) + 1;
       this.$router.push({name: 'NewArticles', params: {page: page}});
       this.articles = null;
       this.getData();
-    }
+    },
+    setArticleToRead(id){
+        axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{
+          id: id
+        },{
+          withCredentials: true,
+          credentials: 'include'
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
   }
 }
 </script>

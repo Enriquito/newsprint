@@ -61,6 +61,9 @@ export default {
   mounted(){
     this.getData();
   },
+  updated(){
+    document.querySelector('section').scrollTo(0,0);
+  },
   data(){
     return({
       feed: null,
@@ -119,8 +122,26 @@ export default {
     },
     nextPage(event){
       event.preventDefault();
-      this.loadingNewData = true;
+      
+      if(this.$store.state.preferences.setArticlesReadOnNextPage === 1){
+        this.feed.articles.forEach(article => {
+          this.setArticleToRead(article.id);
+        });
+      }
+
+      this.feed = null;
       this.loadMoreArticles();
+    },
+    setArticleToRead(id){
+        axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{
+          id: id
+        },{
+          withCredentials: true,
+          credentials: 'include'
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   watch:{
@@ -162,7 +183,7 @@ button
       align-items: center;
       justify-content: center;
       font-size: 1.8em;
-      width: 1024px;
+      width: 640px;
       background: none;
       border-radius: 10px;
       margin-top: 50px;

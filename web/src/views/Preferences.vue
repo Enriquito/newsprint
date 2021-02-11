@@ -73,6 +73,13 @@
           </select>
         </div>
         <div>
+          <label>Next page button behavior</label>
+          <br />
+          <small>When loading the next page, set previous articles to read.</small>
+          <br />
+          <input type="checkbox" v-model="data.setArticlesReadOnNextPage" />
+        </div>
+        <div>
           <button @click="updateUserPreferences">Save</button>
         </div>
     </section>
@@ -179,6 +186,7 @@ export default {
         axios.put(`${process.env.VUE_APP_API}/preferences`,{
           articleDeleteInterval: this.data.articleDeleteInterval,
           articleScanInterval: this.data.articleScanInterval,
+          setArticlesReadOnNextPage: this.data.setArticlesReadOnNextPage,
           darkmode: 0
         },{
           withCredentials: true,
@@ -204,7 +212,7 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          alert('Error updating user preferences');
+          alert('Error loading user preferences');
         })
       }
     }
