@@ -115,10 +115,6 @@ export default {
                 }
             }
 
-            // if(this.feed.displayName != null)
-            //     feed.feed["displayName"] = ;
-
-
             axios.put(`${process.env.VUE_APP_API}/feeds`,feed,{
                 withCredentials: true,
                 credentials: 'include'
@@ -173,7 +169,7 @@ export default {
             });
         },
         async createFolder(){
-            return axios.post('/folders',{
+            return axios.post(`${process.env.VUE_APP_API}/folders`,{
                 name: this.newFolderName,
             },{
                 withCredentials: true,

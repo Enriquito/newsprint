@@ -7,7 +7,7 @@
                     <path d="M19,3H4.99A1.982,1.982,0,0,0,3.01,5L3,19a1.991,1.991,0,0,0,1.99,2H19a2.006,2.006,0,0,0,2-2V5A2.006,2.006,0,0,0,19,3Zm0,12H15a3,3,0,0,1-6,0H4.99V5H19Zm-3-5H14V7H10v3H8l4,4Z" transform="translate(-3 -3)"/>
                 </svg>
 
-                <router-link :to="{name: 'NewArticles', params: {page: 1}}">New</router-link>
+                <router-link :to="{name: 'NewArticles', params: {page: 1}}">New Today</router-link>
                 <small>{{getNotificationCount(unreadArticles)}}</small>
             </li>
 
@@ -27,15 +27,15 @@
             </li>
 
             <li class="d-flex align-items-center">
-                <svg class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
-                    <path d="M58.362 38.141c-3.358-5.816-1.339-13.269 4.51-16.655l-6.289-10.893c-1.797 1.053-3.886 1.657-6.115 1.657-6.721 0-12.169-5.484-12.169-12.249h-12.579c0.017 2.088-0.505 4.205-1.622 6.141-3.358 5.816-10.822 7.794-16.679 4.422l-6.289 10.893c1.811 1.029 3.378 2.537 4.493 4.467 3.352 5.807 1.345 13.245-4.482 16.639l6.289 10.893c1.791-1.044 3.87-1.641 6.088-1.641 6.7 0 12.134 5.45 12.169 12.185h12.578c-0.005-2.067 0.517-4.161 1.623-6.076 3.352-5.807 10.798-7.787 16.651-4.438l6.289-10.893c-1.799-1.029-3.356-2.531-4.465-4.452zM32 44.958c-7.157 0-12.959-5.801-12.959-12.958s5.802-12.958 12.959-12.958c7.157 0 12.958 5.802 12.958 12.958s-5.801 12.958-12.958 12.958z" fill="#000000"></path>
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
+                    <path d="M58.362 38.141c-3.358-5.816-1.339-13.269 4.51-16.655l-6.289-10.893c-1.797 1.053-3.886 1.657-6.115 1.657-6.721 0-12.169-5.484-12.169-12.249h-12.579c0.017 2.088-0.505 4.205-1.622 6.141-3.358 5.816-10.822 7.794-16.679 4.422l-6.289 10.893c1.811 1.029 3.378 2.537 4.493 4.467 3.352 5.807 1.345 13.245-4.482 16.639l6.289 10.893c1.791-1.044 3.87-1.641 6.088-1.641 6.7 0 12.134 5.45 12.169 12.185h12.578c-0.005-2.067 0.517-4.161 1.623-6.076 3.352-5.807 10.798-7.787 16.651-4.438l6.289-10.893c-1.799-1.029-3.356-2.531-4.465-4.452zM32 44.958c-7.157 0-12.959-5.801-12.959-12.958s5.802-12.958 12.959-12.958c7.157 0 12.958 5.802 12.958 12.958s-5.801 12.958-12.958 12.958z"></path>
                 </svg>
                 <router-link :to="{name: 'Preferences'}">Preferences</router-link>
             </li>
 
             <li class="d-flex align-items-center">
-                <svg class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
-                    <path d="M48 40v-8h-20v-8h20v-8l12 12zM44 36v16h-20v12l-24-12v-52h44v20h-4v-16h-32l16 8v36h16v-12z" fill="#000000"></path>
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
+                    <path d="M48 40v-8h-20v-8h20v-8l12 12zM44 36v16h-20v12l-24-12v-52h44v20h-4v-16h-32l16 8v36h16v-12z"></path>
                 </svg>
                 <strong @click="logout">Logout</strong>
             </li>
@@ -43,7 +43,7 @@
         <div>
             <div style="" class="d-flex align-items-center feed-spacer">
                 <span>Feeds</span>
-                <svg v-if="data" style="cursor: pointer" @click="openAddFeedPopUp" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                <svg v-if="data" class="icon" style="cursor: pointer" @click="openAddFeedPopUp" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
                     <path d="M19,13H13v6H11V13H5V11h6V5h2v6h6Z" transform="translate(-5 -5)"/>
                 </svg>
                 <div class="d-flex align-items-center" style="cursor:default">
@@ -260,6 +260,21 @@ nav::-webkit-scrollbar
 {
   display: none;
 }
+@media (prefers-color-scheme: dark)
+{
+    nav h3
+    {
+        color: rgb(168, 176, 255) !important;
+    }
+    .router-link-active, .router-link-exact-active
+    {
+        color: rgb(168, 176, 255) !important;
+    }
+    nav
+    {
+        background: #333 !important;
+    }
+}
 @media (max-width: 720px) {
     nav{
         /* display: none; */
@@ -287,6 +302,10 @@ nav::-webkit-scrollbar
     }
 }
 @media (max-width: 350px) {
+    nav
+    {
+        width: 100% !important;
+    }
     nav ul{
         padding: 20px;
     }
@@ -305,6 +324,13 @@ nav .icon
 {
     width: 21px;
     height: 18px;
+}
+@media (prefers-color-scheme: dark)
+{
+    nav .icon
+    {
+        fill: #FFF;
+    }
 }
 @media (max-width: 720px)
 {

@@ -93,6 +93,94 @@ class Article{
             });
       }
 
+      static getCountNewArticlesToday(userId){
+            return new Promise((resolve, reject) => {
+                  const query = `SELECT COUNT(a.id) as 'new_articles' 
+                  FROM articles a JOIN feeds f ON f.id = a.feed
+                  WHERE a.is_read = 0 AND f.user = ? AND DATE(a.iso_date) = DATE(NOW())`;
+
+                  database.query(query,[userId], async (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
+
+                        if(result.length === 0){
+                              reject();
+                              return;
+                        }
+
+                       resolve({newArticleCount: result[0].new_articles});
+                  });
+            });
+      }
+
+      static getNewArticlesToday(userId,offset,max){
+            return new Promise((resolve, reject) => {
+                  const query = `SELECT DISTINCT
+                  a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read, fe.icon_url,
+                  CASE WHEN fe.display_name IS NOT NULL THEN fe.display_name ELSE fe.title END as 'display_name',
+                  fe.id as 'feed_id', CASE WHEN f.article IS NOT NULL THEN 1 ELSE 0 END as 'favorite'
+                  FROM articles a
+                  LEFT JOIN favorites f
+                  ON a.id = f.article
+                  LEFT JOIN users u
+                  ON u.id = f.user
+                  LEFT JOIN feeds fe
+                  ON fe.id = a.feed
+                  WHERE a.is_read = 0
+                  AND fe.user = ? AND DATE(a.iso_date) = DATE(NOW()) AND a.is_read = 0
+                  ORDER BY a.iso_date DESC LIMIT ? OFFSET ?
+                  `;
+
+                  database.query(query,[userId,max,offset], async (error, result) => {
+                        if(error){
+                              reject(error);
+                              return;
+                        }
+
+                        if(result.length === 0){
+                              resolve([]);
+                              return;
+                        }
+
+                        const articles = [];
+                        const Feed = require('./feed');
+
+                        for(let i = 0; i < result.length; i++){
+                              const f = result[i];
+
+                              const article = new Article();
+                              const feed = new Feed();
+
+                              feed.iconUrl = f.icon_url;
+                              feed.displayName = f.display_name;
+                              feed.id = f.feed;
+
+                              article.id = f.id;
+                              article.creator = f.creator;
+                              article.title = f.title;
+                              article.link = f.link;
+                              article.pubDate = f.pub_date;
+                              article.content = f.content;
+                              article.contentSnippet = f.content_snippet;
+                              article.isoDate = f.iso_date
+                              article.favorite = f.favorite;
+                              article.feed = feed;
+
+                              if(f.is_read == 1)
+                                    article.isRead = true;
+                              else
+                                    article.isRead = false;
+
+                              articles.push(article);
+                        }
+
+                       resolve(articles);
+                  });
+            });
+      }
+
       static getAllUnreadArticles(userId, min,max){
             return new Promise((resolve, reject) => {
                   const query = `SELECT DISTINCT

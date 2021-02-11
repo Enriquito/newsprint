@@ -38,15 +38,15 @@ export default {
       })
     },
     getNewArticles(){
-        axios.get(`${process.env.VUE_APP_API}/articles/count/unread`,{
+        axios.get(`${process.env.VUE_APP_API}/articles/count/newtoday`,{
           withCredentials: true,
           credentials: 'include'
         }
         )
         .then(response => {
             if(response.status === 200){
-                this.unreadArticles = response.data.unreadArticles;
-                this.$store.commit('setUnreadArticles', response.data.unreadArticles);
+                this.unreadArticles = response.data.newArticleCount;
+                this.$store.commit('setUnreadArticles', response.data.newArticleCount);
             }
         })
         .catch(error => {
@@ -81,7 +81,6 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300;1,500;1,700&display=swap');
-
 body
 {
   background-color: #fbf8f8;
@@ -144,6 +143,14 @@ section span
   .small-screen-div
   {
     width: 100%;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  body{
+    background-color: #707070;
+  }
+  #app{
+    color: #FFF;
   }
 }
 </style>

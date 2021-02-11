@@ -24,7 +24,7 @@
                                     </div>
                                     <div style="text-align: center; padding-top: 30px">
                                           <span>
-                                                Already have an account? <router-link :to="{name: 'Login'}">Login</router-link>
+                                                Already have an account? <router-link :to="{name: 'Login'}">Sign in</router-link>
                                           </span>
                                     </div>
                               </div>
@@ -34,7 +34,7 @@
                                           <br />
                                           <input type="password" id="password" v-model="password" placeholder="Password" />
                                     </div>
-                                    <div style="text-align: left; margin-top: 15px;">
+                                    <div style="text-align: left; margin-top: 15px; margin-top: 20px;">
                                           <label for="retype-password">Retype Password</label>
                                           <br />
                                           <input type="password" id="retype-password" v-model="reTypePassword" placeholder="Retype Password" />
@@ -78,7 +78,7 @@ export default {
     methods:{
       validate(event){
             event.preventDefault();
-            this.loginButtonText = "Checking...";
+            this.loginButtonText = "Validating...";
 
             axios.post(`${process.env.VUE_APP_API}/account/password-reset/validate`, {
                   email: this.email,
@@ -119,7 +119,10 @@ export default {
                         token: this.token,
                         password: this.password
                   },
-                  {withCredentials: true})
+                  {
+                        withCredentials: true,
+                        credentials: 'include'
+                  })
                   .then(response => {
                         if(response.status === 200){
                               this.resetSuccess = true;
@@ -137,10 +140,10 @@ export default {
                   })
             }
             else{
-                  this.error = "Retypedpassword is not valid";
+                  this.loginButtonText = "Reset Password";
+                  this.error = "Passwords does not match.";
             }
       }
-
     }
 }
 </script>
@@ -215,6 +218,34 @@ section span
       color: #FFF;
       font-weight: 900;
       margin-top: 15px;
+}
+@media (prefers-color-scheme: dark)
+{
+      span a
+      {
+            color: rgb(168, 176, 255) !important;
+      }
+      #login
+      {
+            background: #333 !important;
+            color: #FFF;
+      }
+      #login #form
+      {
+            background-color: #707070;
+      }
+      #login #form h1.app-name
+      {
+            color: rgb(168, 176, 255) !important;
+      }
+      #login #form button
+      {
+            background:rgb(168, 176, 255) !important;
+      }
+      #login #form input
+      {
+            outline: rgb(168, 176, 255) !important;
+      }
 }
 @media (max-width: 720px) {
       #login div

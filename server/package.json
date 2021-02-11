@@ -1,5 +1,5 @@
 {
-  "name": "rss-server",
+  "name": "newsprint-server",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",

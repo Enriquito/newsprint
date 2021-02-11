@@ -233,7 +233,7 @@ class User{
                 return new Promise((resolve, reject) => {
                     const data = {
                         user : this.id,
-                        name: "No folder",
+                        name: "Unsorted",
                         show_order: 0
                     };
 

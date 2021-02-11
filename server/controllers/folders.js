@@ -67,9 +67,11 @@ module.exports.create = async (req,res) => {
         }
 
         const folder = new Folder();
+        const allFolders = await Folder.findAllByUser(req.user.id);
 
         folder.name = validator.value.name;
         folder.user = req.user.id;
+        folder.showOrder = allFolders.length;
 
         await folder.create();
 
@@ -139,6 +141,14 @@ module.exports.delete = async (req,res) => {
         if(folder === null){
             res.sendStatus(404);
             return;
+        }
+
+        await folder.getFeeds();
+
+        for(let i = 0; i < folder.feeds.length; i++){
+            const feed = folder.feeds[i];
+
+            await feed.delete();
         }
 
         await folder.delete();

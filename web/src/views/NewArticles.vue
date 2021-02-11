@@ -52,7 +52,12 @@ export default {
   },
   methods:{
     getData(){
+<<<<<<< HEAD
       axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.$route.params.page * 10}`,{
+=======
+      axios.get(`${process.env.VUE_APP_API}/newtoday/articles?max=10&offset=${this.$route.params.page * 10}`,
+       {
+>>>>>>> 50244d194c71a2cf097df4006376b711e87df335
         withCredentials: true,
         credentials: 'include'
       })

@@ -33,15 +33,18 @@
                     <option value="0">0</option>
                   </select>
                 </div>
-                <div class="folder-name">
+                <div v-if="selectedFolder == folder.id && folder.showOrder != 0" class="folder-name">
+                  <input @change="changeFolderName" type="text" :value="folder.name" style="max-width: 150px; padding: 0;" />
+                </div>
+                <div v-else @click="selectFolderRename(folder.id)" class="folder-name">
                   <span>{{folder.name}}</span>
                 </div>
                 <div class="folder-feeds-count">
                   <span>{{folder.feeds.length}}</span>
                 </div>
                 <div class="folder-actions">
-                  <svg v-if="folder.name != 'No folder'" style="cursor: pointer;" @click="deleteFolder(folder.id, folder.name)" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="18" viewBox="0 0 64 64">
-                    <path d="M12 64h40l4-44h-48zM40 8v-8h-16v8h-20v12l4-4h48l4 4v-12h-20zM36 8h-8v-4h8v4z" fill="#000000"></path>
+                  <svg class="icon" v-if="folder.name != 'No folder'" style="cursor: pointer;" @click="deleteFolder(folder.id, folder.name)" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="18" viewBox="0 0 64 64">
+                    <path d="M12 64h40l4-44h-48zM40 8v-8h-16v8h-20v12l4-4h48l4 4v-12h-20zM36 8h-8v-4h8v4z"></path>
                   </svg>
                 </div>
               </div>
@@ -99,7 +102,8 @@ export default {
         data: null,
         deleteTime: 1,
         scanTime: 1,
-        folders: null
+        folders: null,
+        selectedFolder: null
       });
     },
     beforeMount(){
@@ -119,6 +123,27 @@ export default {
       }
     },
     methods:{
+      async changeFolderName(event){
+
+        let arrayIndex = null;
+
+        this.folders.forEach((folder, index) => {
+          if(folder.id === this.selectedFolder){
+            if(event.target.value === ""){
+              event.target.value = folder.name;
+              return;
+            }
+
+            folder.name = event.target.value;
+            arrayIndex = index;
+          }
+        });
+
+        this.updateFolderOrder([this.folders[arrayIndex]]);
+      },
+      selectFolderRename(id){
+        this.selectedFolder = id;
+      },
       changeOrder(event, folder){
         const newVal = event.target.value;
         const oldVal = event.target.getAttribute('data-original-val');
@@ -219,6 +244,10 @@ export default {
 }
 </script>
 <style scoped>
+.icon
+{
+  fill : #000;
+}
 label{
   margin: 0;
   margin-top: 10px;
@@ -285,10 +314,27 @@ button
   min-width: 150px;
   width: auto;
 }
+.folder-name input[type="text"]
+{
+  font-size: 18px;
+  border-radius: 5px;
+  padding: 5px;
+  border: none;
+}
 .folder-feeds-count{
   flex-shrink: 1;
   min-width: 50px;
   text-align: center;
 }
-
+@media (prefers-color-scheme: dark)
+{
+  .icon
+  {
+    fill: #fff !important;
+  }
+  button
+  {
+    background: rgb(168, 176, 255) !important;
+  }
+}
 </style>

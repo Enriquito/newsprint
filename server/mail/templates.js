@@ -80,7 +80,7 @@ module.exports.passwordResetMail = (username, url) => {
                     </header>
                     
                     <main>
-                        <h2>Hi, ${username}</h2>
+                        <h2>Hi ${username},</h2>
                         <h4>There was a requested to change your password.</h4>
                         <p>
                             <span>If you did not make this request, just ignor this email. Otherwise please click the button below to change your password.</span>
