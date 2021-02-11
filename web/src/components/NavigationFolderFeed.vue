@@ -19,7 +19,7 @@
                 <small class="side-content" v-if="!showEditIcon">{{getNotificationCount(feed.unreadArticles)}}</small>
 
                 <svg @click="openOverlay" class="side-content" v-else version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18" viewBox="0 0 64 64">
-                    <path d="M24 40l8-4 28-28-4-4-28 28-4 8zM18.081 54.194c-1.977-4.17-4.104-6.298-8.275-8.275l6.193-17.049 8-4.869 24-24h-12l-24 24-12 40 40-12 24-24v-12l-24 24-4.87 8z" fill="#000000"></path>
+                    <path d="M24 40l8-4 28-28-4-4-28 28-4 8zM18.081 54.194c-1.977-4.17-4.104-6.298-8.275-8.275l6.193-17.049 8-4.869 24-24h-12l-24 24-12 40 40-12 24-24v-12l-24 24-4.87 8z"></path>
                 </svg>
             </div>
         </div>
@@ -88,6 +88,7 @@ export default {
         position: absolute;
         right: 10px;
         top: 7px;
+        fill: #000;
     }
     nav ul li div strong
     {
@@ -131,4 +132,12 @@ export default {
             font-size: 12px !important;
         }
     }
+    @media (prefers-color-scheme: dark)
+    {
+        nav ul li .side-content
+        {
+            fill: #FFF !important;
+        }
+    }
+
 </style>
