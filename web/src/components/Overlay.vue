@@ -66,6 +66,8 @@ export default {
     border-bottom: 1px solid rgba(0,0,0,0.1);
     width: 100%;
     outline: none;
+    padding: 5px;
+    border-radius: 5px;
 }
 #overlay .content select
 {
@@ -89,5 +91,16 @@ export default {
         width: 100% !important;
         margin: 20px;
     }
+}
+@media (prefers-color-scheme: dark)
+{
+ #overlay .content
+ {
+     background: #333;
+ }
+ #overlay .overlay-icon
+ {
+     fill: #FFF;
+ }
 }
 </style>
