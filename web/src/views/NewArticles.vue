@@ -39,6 +39,9 @@ export default {
     ArticleSkeleton,
     DefaultTemplate
   },
+  updated(){
+    document.querySelector('section').scrollTo(0,0);
+  },
   mounted(){
     this.getData();
   },
@@ -49,8 +52,7 @@ export default {
   },
   methods:{
     getData(){
-      axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.$route.params.page * 10}`,
-       {
+      axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.$route.params.page * 10}`,{
         withCredentials: true,
         credentials: 'include'
       })
@@ -68,7 +70,7 @@ export default {
       event.preventDefault();
       const page = parseInt(this.$route.params.page) + 1;
       this.$router.push({name: 'NewArticles', params: {page: page}});
-      this.articles = [];
+      this.articles = null;
       this.getData();
     }
   }
@@ -84,7 +86,7 @@ button
       align-items: center;
       justify-content: center;
       font-size: 1.8em;
-      width: 1024px;
+      width: 640px;
       background: none;
       border-radius: 10px;
       margin-top: 50px;
