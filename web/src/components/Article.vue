@@ -220,14 +220,9 @@ article
   width: 640px;
   margin: 0;
   margin-top: 30px;
-<<<<<<< HEAD
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 5px;
-=======
-  border-radius: 15px;
->>>>>>> 50244d194c71a2cf097df4006376b711e87df335
   padding: 20px;
-  /* box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.1); */
 }
 article a h2
 {
@@ -269,7 +264,7 @@ article .spacer
 {
   article
   {
-    box-shadow: 1px 3px 7px rgba(0, 0, 0, 0.23) !important;
+    background: #333 !important;
   }
   .icon-buttons
   {
@@ -309,11 +304,13 @@ article .spacer
 {
   color: inherit;
 }
-<<<<<<< HEAD
 @media (max-width: 450px)
 {
   article
-=======
+  {
+    width: auto;
+  }
+}
 @media (prefers-color-scheme: dark)
 {
   #article-content * > a
@@ -321,13 +318,7 @@ article .spacer
     color:  rgb(168, 176, 255) !important;
   }
 }
-@media (max-width: 1500px) {
-    article
->>>>>>> 50244d194c71a2cf097df4006376b711e87df335
-    {
-      width: auto !important;
-    }
-}
+
 @media (max-width: 1500px) {
     .date-time
     {
