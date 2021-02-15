@@ -308,7 +308,7 @@ article .spacer
 {
   article
   {
-    width: auto;
+    width: auto !important;
   }
 }
 @media (prefers-color-scheme: dark)
