@@ -219,7 +219,7 @@ article
   background: #FFF;
   width: 640px;
   margin: 0;
-  margin-top: 30px;
+  margin-top: 10px;
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 5px;
   padding: 20px;
