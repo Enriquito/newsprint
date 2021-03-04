@@ -12,7 +12,7 @@
                 <div v-else>
                   <h2>No articles found.</h2>
                 </div>
-                <button v-if="articles.length > 0" id="load-more-button" @click="loadMoreArticles">
+                <button v-if="articles.length > 0" id="load-more-button" class="theme-color-background" @click="loadMoreArticles">
                       Load more articles
                 </button>
             </div>
@@ -105,11 +105,8 @@ button
       justify-content: center;
       font-size: 1.8em;
       width: 640px;
-      background: none;
       border-radius: 10px;
       margin-top: 50px;
-      color: inherit;
-      background: #5867FC;
       color: #FFF;
       outline: none;
 }

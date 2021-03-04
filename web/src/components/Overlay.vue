@@ -82,7 +82,6 @@ export default {
     padding: 5px;
     border-radius: 5px;
     width: 100px;
-    background: #fff;
     border: 1px solid rgba(0,0,0, 0.1);
     outline: none;
 }

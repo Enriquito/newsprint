@@ -41,8 +41,7 @@ export default {
         axios.get(`${process.env.VUE_APP_API}/articles/count/newtoday`,{
           withCredentials: true,
           credentials: 'include'
-        }
-        )
+        })
         .then(response => {
             if(response.status === 200){
                 this.unreadArticles = response.data.newArticleCount;
@@ -128,6 +127,15 @@ section span
   overflow: hidden;
   width: 100%;
 }
+.theme-color-background
+{
+  background: #5867FC;
+}
+.theme-color-text
+{
+  color: #5867FC;
+}
+
 @media (max-width: 720px) {
     section{
         padding: 10px !important;
@@ -151,6 +159,10 @@ section span
   }
   #app{
     color: #FFF;
+  }
+  .theme-color-background
+  {
+    background: rgb(168, 176, 255)
   }
 }
 </style>

@@ -27,7 +27,7 @@
             </div>
 
             <div style="margin-top: 10px" class="d-flex justify-content-center">
-                <button style="width: 100% !important; background: #5867FC; color: #FFF; border: none;" @click="createFeed">{{buttonText}}</button>
+                <button class="theme-color-background" style="width: 100% !important; color: #FFF; border: none;" @click="createFeed">{{buttonText}}</button>
             </div>
         </div>
     </Overlay>

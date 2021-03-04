@@ -83,7 +83,7 @@
           <input type="checkbox" v-model="data.setArticlesReadOnNextPage" />
         </div>
         <div>
-          <button @click="updateUserPreferences">Save</button>
+          <button class="theme-color-background" @click="updateUserPreferences">Save</button>
         </div>
     </section>
 </DefaultTemplate>
@@ -278,7 +278,7 @@ ul li:first-child
 }
 .folder-name, .folder-feeds-count, .folder-actions, .folder-order
 {
-  padding: 0 5px;
+  padding: 5px;
 }
 .folder-order
 {
@@ -303,7 +303,6 @@ button
     border-radius: 5px;
     padding: 5px;
     border: 1px solid rgba(0,0,0, 0.1);
-    background: #5867FC;
     color: #FFF;
     width: 100px;
     margin-top: 10px;
@@ -331,10 +330,6 @@ button
   .icon
   {
     fill: #fff !important;
-  }
-  button
-  {
-    background: rgb(168, 176, 255) !important;
   }
 }
 </style>

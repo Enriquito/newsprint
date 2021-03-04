@@ -41,7 +41,7 @@
             </div>
 
             <div style="margin-top: 10px">
-                <button style="width: 100% !important; background: #5867FC; color: #FFF; border: none;" @click="editFeed">{{buttonText}}</button>
+                <button class="theme-color-background" style="width: 100% !important; color: #FFF; border: none;" @click="editFeed">{{buttonText}}</button>
                 <button style="width: 100% !important; margin-top: 5px; background: tomato; color: #FFF; border: none;" @click="deleteFeed">{{deleteText}}</button>
             </div>
         </div>
