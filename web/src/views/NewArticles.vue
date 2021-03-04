@@ -124,6 +124,12 @@ export default {
         if(this.infiniteScroll && !this.firstLoad)
           this.page++;
 
+        if(this.$store.state.preferences.setArticlesReadOnNextPage === 1){
+          this.articles.forEach(article => {
+            this.setArticleToRead(article.id);
+          });
+        }
+
         this.getData();
       }
     }
