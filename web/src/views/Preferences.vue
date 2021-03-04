@@ -83,6 +83,13 @@
           <input type="checkbox" v-model="data.setArticlesReadOnNextPage" />
         </div>
         <div>
+          <label>Enable infinite scroll</label>
+          <br />
+          <small>Remove the next page button and use infinite scroll.</small>
+          <br />
+          <input type="checkbox" v-model="data.enableInfiniteScroll" />
+        </div>
+        <div>
           <button class="theme-color-background" @click="updateUserPreferences">Save</button>
         </div>
     </section>
@@ -211,7 +218,8 @@ export default {
         axios.put(`${process.env.VUE_APP_API}/preferences`,{
           articleDeleteInterval: this.data.articleDeleteInterval,
           articleScanInterval: this.data.articleScanInterval,
-          setArticlesReadOnNextPage: this.data.setArticlesReadOnNextPage,
+          setArticlesReadOnNextPage: Number(this.data.setArticlesReadOnNextPage),
+          enableInfiniteScroll: Number(this.data.enableInfiniteScroll),
           darkmode: 0
         },{
           withCredentials: true,

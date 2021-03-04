@@ -60,7 +60,8 @@ module.exports.updateUserPreferences = (data) => {
     const schema = Joi.object({
         articleDeleteInterval: Joi.number().required(),
         articleScanInterval: Joi.number().required(),
-        setArticlesReadOnNextPage: Joi.boolean().required(),
+        setArticlesReadOnNextPage: Joi.number().required(),
+        enableInfiniteScroll: Joi.number().required(),
         darkmode: Joi.number().required()
     });
 
@@ -68,6 +69,7 @@ module.exports.updateUserPreferences = (data) => {
         articleDeleteInterval: data.articleDeleteInterval,
         articleScanInterval: data.articleScanInterval,
         setArticlesReadOnNextPage: data.setArticlesReadOnNextPage,
+        enableInfiniteScroll: data.enableInfiniteScroll,
         darkmode: data.darkmode
     });
 }

@@ -88,7 +88,7 @@ module.exports.updatePreference = async (req, res) => {
             return;
         }
 
-        await user.updatePreference(validator.value.articleDeleteInterval, validator.value.articleScanInterval, validator.value.darkmode, validator.value.setArticlesReadOnNextPage);
+        await user.updatePreference(validator.value.articleDeleteInterval, validator.value.articleScanInterval, validator.value.darkmode, validator.value.setArticlesReadOnNextPage, validator.value.enableInfiniteScroll);
 
         res.sendStatus(200);
     }

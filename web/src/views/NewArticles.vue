@@ -12,7 +12,7 @@
                 <div v-else>
                   <h2>No articles found.</h2>
                 </div>
-                <button v-if="articles.length > 0" id="load-more-button" class="theme-color-background" @click="loadMoreArticles">
+                <button v-if="articles.length > 0 && !infiniteScroll" id="load-more-button" class="theme-color-background" @click="loadMoreArticles">
                       Load more articles
                 </button>
             </div>
@@ -40,25 +40,51 @@ export default {
     DefaultTemplate
   },
   updated(){
-    document.querySelector('section').scrollTo(0,0);
+    if(!this.infiniteScroll)
+      this.section.scrollTo(0,0);
   },
   mounted(){
+    if(this.$store.state.preferences !== undefined)
+      this.infiniteScroll = Boolean(this.$store.state.preferences.enableInfiniteScroll);
+
+    this.page = this.$route.params.page;
     this.getData();
+    this.section = document.querySelector('section');
+    if(this.infiniteScroll)
+      this.section.addEventListener('scroll', this.updateScroll);
+  },
+  destroy(){
+    this.section.removeEventListener('scroll', this.updateScroll)
   },
   data(){
     return({
-      articles: null
+      articles: null,
+      scrollPosition: null,
+      section: null,
+      infiniteScroll: true,
+      firstLoad: true,
+      page: 1
     });
   },
   methods:{
     getData(){
-      axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.$route.params.page * 10}`,{
+      axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.page * 10}`,{
         withCredentials: true,
         credentials: 'include'
       })
         .then(response => {
           if(response.status === 200){
-              this.articles = response.data;
+              if(this.infiniteScroll && !this.firstLoad){
+                response.data.forEach(el => {
+                  this.articles.push(el);
+                });
+              }
+              else{
+                this.articles = response.data;
+
+                if(this.firstLoad)
+                  this.firstLoad = false;
+              }
           }
       })
       .catch(error => {
@@ -91,6 +117,16 @@ export default {
           console.log(error);
         });
     },
+    updateScroll() {
+      this.scrollPosition = this.section.scrollTop;
+
+      if(this.scrollPosition === (this.section.scrollHeight - this.section.clientHeight)){
+        if(this.infiniteScroll && !this.firstLoad)
+          this.page++;
+
+        this.getData();
+      }
+    }
   }
 }
 </script>

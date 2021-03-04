@@ -145,12 +145,13 @@ class User{
             })
         }
 
-        updatePreference(articleDeleteInterval,articleScanInterval,darkmode, setArticlesReadOnNextPage){
+        updatePreference(articleDeleteInterval,articleScanInterval,darkmode, setArticlesReadOnNextPage, enableInfiniteScroll){
             return new Promise((resolve, reject) => {
                 const data = {
                     article_delete_interval: articleDeleteInterval,
                     article_scan_interval: articleScanInterval,
                     articles_read_on_next_page: setArticlesReadOnNextPage,
+                    enable_infinite_scroll: enableInfiniteScroll,
                     darkmode: darkmode
                 }
 
@@ -183,7 +184,8 @@ class User{
                         articleDeleteInterval: result.article_delete_interval,
                         articleScanInterval: result.article_scan_interval,
                         setArticlesReadOnNextPage: result.articles_read_on_next_page,
-                        darkmode: result.darkmode
+                        darkmode: result.darkmode,
+                        enableInfiniteScroll : result.enable_infinite_scroll
                       }
 
                       resolve(data);
