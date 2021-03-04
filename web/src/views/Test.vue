@@ -1,24 +1,59 @@
 <template>
-<DefaultTemplate>
-  <section>
-    <h1 @click="test">Test</h1>
-    <ArticleSkeleton />
-  </section>
-</DefaultTemplate>
+  <ArticleCollection :articles="articles" @loadMoreArticles="loadMoreArticles" />
 </template>
 <script>
-import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
-import DefaultTemplate from '@/components/DefaultTemplate.vue';
+import axios from 'axios';
+import ArticleCollection from '@/components/ArticleCollection.vue';
 
 export default {
     name: "Test",
     components: {
-          ArticleSkeleton,
-          DefaultTemplate
+          ArticleCollection
+    },
+    mounted(){
+      this.articles = this.getData();
+    },
+    data(){
+      return({
+        articles: null,
+        page: 1,
+        first: true
+      })
     },
     methods:{
-      test(){
-        this.$eventHub.$emit('toggle-overlay');
+      loadMoreArticles(options){
+        this.page++;
+
+        const data = this.getData();
+
+        if(options.addToArray){
+          data.forEach(el => {
+            this.articles.push(el);
+          });
+        }
+        else{
+          this.articles = data;
+        }
+      },
+      getData(){
+        axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.page * 10}`,{
+          withCredentials: true,
+          credentials: 'include'
+        })
+          .then(response => {
+            if(response.status === 200){
+              if(this.first){
+                this.articles = response.data;
+                this.first = false;
+              }
+              else
+                return response.data;
+            }
+        })
+        .catch(error => {
+          if(error.response.status === 500)
+            this.$router.push({name: "500"});
+        })
       }
     }
 }
