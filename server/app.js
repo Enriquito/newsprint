@@ -125,7 +125,7 @@ app.get('/favorite/articles',userRoutes.isLoggedIn, articleRoutes.getFavoriteArt
 app.post('/move/feeds',userRoutes.isLoggedIn, feedRoutes.moveToFolder)
 
 app.route('/history')
-.get(userRoutes.isLoggedIn, historyRoutes.getAll)
+.get(userRoutes.isLoggedIn, historyRoutes.getLimit)
 .post(userRoutes.isLoggedIn, historyRoutes.create)
 
 app.use(async (req, res, next) => {

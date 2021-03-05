@@ -20,6 +20,39 @@ module.exports.getAll = async (req,res) => {
     }
 }
 
+module.exports.getLimit = async (req,res) => {
+    try{
+        console.log(`GET /history`);
+
+        const Joi = require('@hapi/joi');
+
+        const schema = Joi.object({
+            offset: Joi.number().required(),
+            max: Joi.number().required()
+        });
+
+        const validator = schema.validate({offset: req.query.offset,max: req.query.max});
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details});
+            return;
+        }
+
+        const arr = await History.getLimit(req.user.id, validator.value.offset, validator.value.max);
+
+        if(arr === null){
+            res.sendStatus(500);
+            return;
+        }
+
+        res.json(arr);
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
 module.exports.create = async (req,res) => {
     try{
         console.log(`POST /history`);
