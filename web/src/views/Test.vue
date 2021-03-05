@@ -1,5 +1,5 @@
 <template>
-  <ArticleCollection :articles="articles" @loadMoreArticles="loadMoreArticles" />
+  <ArticleCollection title="Test articles" :articles="articles" @loadMoreArticles="loadMoreArticles" />
 </template>
 <script>
 import axios from 'axios';
@@ -24,18 +24,9 @@ export default {
       loadMoreArticles(options){
         this.page++;
 
-        const data = this.getData();
-
-        if(options.addToArray){
-          data.forEach(el => {
-            this.articles.push(el);
-          });
-        }
-        else{
-          this.articles = data;
-        }
+        this.getData(options.addToArray);
       },
-      getData(){
+      getData(addToArray){
         axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.page * 10}`,{
           withCredentials: true,
           credentials: 'include'
@@ -46,8 +37,16 @@ export default {
                 this.articles = response.data;
                 this.first = false;
               }
-              else
-                return response.data;
+              else{
+                if(addToArray){
+                  response.data.forEach(el => {
+                    this.articles.push(el);
+                  });
+                }
+                else{
+                  this.articles = response.data;
+                }
+              }
             }
         })
         .catch(error => {

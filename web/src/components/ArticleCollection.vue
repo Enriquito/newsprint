@@ -18,7 +18,7 @@
                                                 Load more articles
                                           </button>
                                           
-                                          <div v-else>
+                                          <div v-if="articles.length == 0">
                                                 <ArticleSkeleton v-for="index in 6" :key="index" />
                                           </div>
                                     </div>
@@ -49,17 +49,18 @@ export default {
             return({
                   scrollPosition: null,
                   section: null,
-                  infiniteScroll: true,
+                  infiniteScroll: false,
+                  fetchingData: false
             });
       },
       updated(){
             if(!this.infiniteScroll)
                   this.section.scrollTo(0,0);
+            this.fetchingData = false;
       },
       mounted(){
             if(this.$store.state.preferences !== undefined)
                   this.infiniteScroll = Boolean(this.$store.state.preferences.enableInfiniteScroll);
-
             
             this.section = document.querySelector('section');
 
@@ -69,16 +70,25 @@ export default {
       destroy(){
             this.section.removeEventListener('scroll', this.updateScroll)
       },
-      
+      computed:{
+            preferences(){
+                  return this.$store.state.preferences
+            }
+      },
+      watch:{
+            preferences(n,o){
+                  alert(n);
+            }
+      },
       methods: {
             loadMoreArticles(){
                   this.$emit('loadMoreArticles', {addToArray : this.infiniteScroll});
             },
             updateScroll() {
-                  console.log(this.section.scrollTop)
-                  if(this.section.scrollTop === (this.section.scrollHeight - this.section.clientHeight)){
-
-                        
+                  const max = (this.section.scrollHeight - this.section.clientHeight);
+                  
+                  if(this.section.scrollTop > max - 300 && !this.fetchingData){
+                        this.fetchingData = true;
 
                         if(this.$store.state.preferences.setArticlesReadOnNextPage === 1){
                               this.articles.forEach(article => {
@@ -92,3 +102,25 @@ export default {
       }
 }
 </script>
+<style scoped>
+button
+{
+      border: 1px solid rgba(0,0,0,0.1);
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8em;
+      width: 640px;
+      border-radius: 10px;
+      margin-top: 50px;
+      color: #FFF;
+      outline: none;
+}
+@media (max-width: 720px) {
+  button{
+    width: 100% !important;
+  }
+}
+</style>
