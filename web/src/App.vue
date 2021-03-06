@@ -12,10 +12,10 @@ export default {
     if(this.$route.name === 'Login' || this.$route.name === 'SignUp' || this.$route.name === 'PasswordReset' || this.$route.name === 'Reset')
       return;
 
+    this.getPreferences();
     this.getData();
     this.getNewArticles();
-    this.getPreferences();
-
+    
     this.$eventHub.$on('updateNavigation', () => {
       this.getData();
       this.getNewArticles();
@@ -60,6 +60,7 @@ export default {
         })
         .then(response => {
            this.$store.commit('setPreferences', response.data);
+           this.$eventHub.$emit('preferencesLoaded');
         })
         .catch(error => {
           console.log(error);
@@ -67,14 +68,14 @@ export default {
         })
       }
   },
-  watch: {
+  watch:{
         $route: {
             immediate: true,
             handler(to, from) {
               document.title = to.meta.title || process.env.VUE_APP_NAME;
             }
         },
-    }
+  }
 }
 </script>
 
