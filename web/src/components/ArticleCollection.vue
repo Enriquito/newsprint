@@ -9,12 +9,16 @@
                                     <div v-if="articles">
                                           <div v-if="articles.length > 0">
                                                 <Article v-for="article in articles" :key="article.id" :data="article"/>
+
+                                                <div v-if="fetchingData">
+                                                      <ArticleSkeleton v-for="index in 2" :key="index" />
+                                                </div>
                                           </div>
                                           <div v-else>
                                                 <h2>No articles found.</h2>
                                           </div>
 
-                                          <button v-if="articles.length > 0 && !infiniteScroll" id="load-more-button" class="theme-color-background" @click="loadMoreArticles">
+                                          <button v-if="articles.length > 0 && articles.length == 10 && !infiniteScroll" id="load-more-button" class="theme-color-background" @click="loadMoreArticles">
                                                 Load more articles
                                           </button>
                                           
@@ -38,7 +42,8 @@ export default {
       name: "ArticleCollection",
       props: {
             articles: Array,
-            title: String
+            title: String,
+            maxArticles: Number
       },
       components: {
             Article,
@@ -50,54 +55,67 @@ export default {
                   scrollPosition: null,
                   section: null,
                   infiniteScroll: false,
-                  fetchingData: false
+                  fetchingData: false,
+                  isSetAutoRead: false
             });
       },
       updated(){
             if(!this.infiniteScroll)
-                  this.section.scrollTo(0,0);
-            this.fetchingData = false;
+                this.section.scrollTo(0,0);
       },
       mounted(){
-            if(this.$store.state.preferences !== undefined)
+            this.$eventHub.$on('preferencesLoaded', () => {
                   this.infiniteScroll = Boolean(this.$store.state.preferences.enableInfiniteScroll);
+                  this.isSetAutoRead =  Boolean(this.$store.state.preferences.setArticlesReadOnNextPage);
+
+                  if(this.infiniteScroll)
+                        this.section.addEventListener('scroll', this.updateScroll);
+            });
+
+            this.$eventHub.$on('articleFetchingDone', () => {
+                  this.fetchingData = false;
+            }); 
             
             this.section = document.querySelector('section');
-
-            if(this.infiniteScroll)
-                  this.section.addEventListener('scroll', this.updateScroll);
       },
       destroy(){
             this.section.removeEventListener('scroll', this.updateScroll)
-      },
-      computed:{
-            preferences(){
-                  return this.$store.state.preferences
-            }
-      },
-      watch:{
-            preferences(n,o){
-                  alert(n);
-            }
       },
       methods: {
             loadMoreArticles(){
                   this.$emit('loadMoreArticles', {addToArray : this.infiniteScroll});
             },
             updateScroll() {
+                  if(this.articles.length < this.maxArticles){
+                        this.fetchingData = false;
+                        return;
+                  }
+                        
                   const max = (this.section.scrollHeight - this.section.clientHeight);
                   
                   if(this.section.scrollTop > max - 300 && !this.fetchingData){
                         this.fetchingData = true;
 
-                        if(this.$store.state.preferences.setArticlesReadOnNextPage === 1){
+                        if(this.isSetAutoRead === true){
                               this.articles.forEach(article => {
-                                    this.setArticleToRead(article.id);
+                                    if(article.isRead == false)
+                                          this.setArticleToRead(article.id);
                               });
                         }
 
                         this.$emit('loadMoreArticles', {addToArray : this.infiniteScroll});
                   }
+            },
+            setArticleToRead(id){
+                  axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{
+                        id: id
+                  },{
+                        withCredentials: true,
+                        credentials: 'include'
+                  })
+                  .catch(error => {
+                        console.log(error);
+                  });
             }
       }
 }
