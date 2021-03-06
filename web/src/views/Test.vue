@@ -1,5 +1,5 @@
 <template>
-  <ArticleCollection title="Test articles" :articles="articles" @loadMoreArticles="loadMoreArticles" />
+  <ArticleCollection title="Test articles" :articles="articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
 </template>
 <script>
 import axios from 'axios';
@@ -11,13 +11,15 @@ export default {
           ArticleCollection
     },
     mounted(){
-      this.articles = this.getData();
+        
+        this.getData();
     },
     data(){
       return({
         articles: null,
         page: 1,
-        first: true
+        first: true,
+        maxArticles: 10
       })
     },
     methods:{
@@ -27,11 +29,12 @@ export default {
         this.getData(options.addToArray);
       },
       getData(addToArray){
-        axios.get(`${process.env.VUE_APP_API}/unread/articles?max=10&offset=${this.page * 10}`,{
+        axios.get(`${process.env.VUE_APP_API}/unread/articles?max=${this.maxArticles}&offset=${this.page * 10}`,{
           withCredentials: true,
           credentials: 'include'
         })
           .then(response => {
+              
             if(response.status === 200){
               if(this.first){
                 this.articles = response.data;
@@ -47,6 +50,8 @@ export default {
                   this.articles = response.data;
                 }
               }
+
+                this.$eventHub.$emit('articleFetchingDone');
             }
         })
         .catch(error => {
