@@ -227,7 +227,8 @@ export default {
         })
         .then(response => {
             if(response.status === 200){
-              alert("Preferences has been saved.")
+              alert("Preferences has been saved.");
+              this.$store.commit('setPreferences', response.data);
             }
         })
         .catch(error => {
