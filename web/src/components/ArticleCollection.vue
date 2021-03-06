@@ -56,7 +56,8 @@ export default {
                   section: null,
                   infiniteScroll: false,
                   fetchingData: false,
-                  isSetAutoRead: false
+                  isSetAutoRead: false,
+                  lastArticleCount: 0
             });
       },
       updated(){
@@ -86,7 +87,7 @@ export default {
                   this.$emit('loadMoreArticles', {addToArray : this.infiniteScroll});
             },
             updateScroll() {
-                  if(this.articles.length < this.maxArticles){
+                  if(this.articles.length === this.lastArticleCount){
                         this.fetchingData = false;
                         return;
                   }
@@ -102,6 +103,7 @@ export default {
                                           this.setArticleToRead(article.id);
                               });
                         }
+                        this.lastArticleCount = this.articles.length
 
                         this.$emit('loadMoreArticles', {addToArray : this.infiniteScroll});
                   }
