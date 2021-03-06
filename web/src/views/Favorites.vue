@@ -1,64 +1,64 @@
 <template>
-  <DefaultTemplate>
-    <section>
-      <div class="d-flex justify-content-center">
-        <div class="small-screen-div">
-            <h1>Favorites</h1>
-            <div v-if="data">
-                <div v-if="data.length > 0">
-                  <Article v-for="article in data" :key="article.id" :data="article" />
-                </div>
-                <div v-else>
-                  <h2>You dont have favorite articles yet.</h2>
-                  <h5>Click the heart icon right of the article to favorite the article.</h5>
-                </div>
-            </div>
-            <div v-else>
-              <ArticleSkeleton v-for="index in 2" :key="index" />
-            </div>
-        </div>
-      </div>
-    </section>
-  </DefaultTemplate>
+    <ArticleCollection title="New Articles" :articles="articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
 </template>
 
 <script>
-import Article from '@/components/Article.vue';
-import ArticleSkeleton from '@/components/ArticleSkeleton.vue'
-import DefaultTemplate from '@/components/DefaultTemplate.vue';
+import ArticleCollection from '@/components/ArticleCollection.vue';
 import axios from 'axios';
 
 export default {
   name: 'Favorites',
   components: {
-    Article,
-    ArticleSkeleton,
-    DefaultTemplate
+    ArticleCollection
   },
   mounted(){
     this.getData();
   },
   data(){
     return({
-        data: null
+        articles: null,
+        page: 0,
+        first: true,
+        maxArticles: 10
     });
   },
   methods:{
-      getData(){
-          axios.get(`${process.env.VUE_APP_API}/favorite/articles`,
-          {
+    getData(addToArray){
+        axios.get(`${process.env.VUE_APP_API}/favorite/articles?max=${this.maxArticles}&offset=${this.page * 10}`,
+        {
             withCredentials: true,
             credentials: 'include'
-          })
-          .then(response => {
-              if(response.status === 200){
-                  this.data = response.data;
-              }
-          })
-          .catch(error => {
-              console.log(error);
-          })
-      }
+        })
+        .then(response => {
+            if(response.status === 200){
+                if(this.first){
+                    this.articles = response.data;
+                    this.first = false;
+                }
+                else{
+                    if(addToArray){
+                        response.data.forEach(el => {
+                        this.articles.push(el);
+                        });
+                    }
+                    else{
+                        this.articles = response.data;
+                    }
+                }
+
+            this.$eventHub.$emit('articleFetchingDone');
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        if(error.response.status === 500)
+        this.$router.push({name: "500"});
+    })
+    },
+    loadMoreArticles(options){
+        this.page++;
+        this.getData(options.addToArray);
+    }   
   }
 }
 </script>
