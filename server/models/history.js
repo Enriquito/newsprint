@@ -50,8 +50,6 @@ class History{
                 const Feed = require('./feed');
                 const articles = [];
 
-                console.log(result.length);
-
                 if(result.length > 0){
                     for(let i = 0; i < result.length; i++){
                         const f = result[i];
