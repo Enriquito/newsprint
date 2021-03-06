@@ -1,5 +1,6 @@
 <template>
-  <DefaultTemplate>
+  <ArticleCollection title="History" :articles="articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
+  <!-- <DefaultTemplate>
     <section>
       <div class="d-flex justify-content-center">
         <div class="small-screen-div">
@@ -14,13 +15,14 @@
         </div>
       </div>
     </section>
-  </DefaultTemplate>
+  </DefaultTemplate> -->
 </template>
 
 <script>
 import Article from '@/components/Article.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
 import DefaultTemplate from '@/components/DefaultTemplate.vue';
+import ArticleCollection from '@/components/ArticleCollection.vue';
 import axios from 'axios';
 
 export default {
@@ -28,31 +30,55 @@ export default {
   components: {
     Article,
     ArticleSkeleton,
-    DefaultTemplate
+    DefaultTemplate,
+    ArticleCollection
   },
   mounted(){
       this.getData();
   },
   data(){
     return({
-        data: null
+        articles: null,
+        page: 1,
+        first: true,
+        maxArticles: 10
     });
   },
   methods:{
-      getData(){
-          axios.get(`${process.env.VUE_APP_API}/history`,
-          {
-            withCredentials: true,
-            credentials: 'include'
-          })
+    loadMoreArticles(options){
+        this.page++;
+
+        this.getData(options.addToArray);
+      },
+      getData(addToArray){
+        axios.get(`${process.env.VUE_APP_API}/history?max=${this.maxArticles}&offset=${this.page * 10}`,{
+          withCredentials: true,
+          credentials: 'include'
+        })
           .then(response => {
-              if(response.status === 200){
-                  this.data = response.data;
+            if(response.status === 200){
+              if(this.first){
+                this.articles = response.data;
+                this.first = false;
               }
-          })
-          .catch(error => {
-              console.log(error);
-          })
+              else{
+                if(addToArray){
+                  response.data.forEach(el => {
+                    this.articles.push(el);
+                  });
+                }
+                else{
+                  this.articles = response.data;
+                }
+              }
+
+              this.$eventHub.$emit('articleFetchingDone');
+            }
+        })
+        .catch(error => {
+          if(error.response.status === 500)
+            this.$router.push({name: "500"});
+        })
       }
   }
 }
