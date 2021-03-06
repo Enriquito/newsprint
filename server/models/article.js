@@ -389,20 +389,22 @@ class Article{
             });
       }
 
-      static getFavorites(userId){
+      static getFavoritesLimit(userId,offset,max){
             return new Promise((resolve,reject) => {
                   const query = `
                         SELECT
-                        a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read,
+                        a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read, fe.icon_url, fe.display_name,
                         CASE WHEN f.article IS NOT NULL THEN 1 ELSE 0 END as 'favorite'
                         FROM articles a
                         LEFT JOIN favorites f
                         ON a.id = f.article
+                        LEFT JOIN feeds fe
+                        ON fe.id = a.feed
                         WHERE f.user = ?
-                        ORDER BY DATE(f.created) DESC
+                        ORDER BY DATE(f.created) DESC LIMIT ? OFFSET ?
                         `;
 
-                  database.query(query,[userId], (error, result) => {
+                  database.query(query,[userId,max,offset], (error, result) => {
                         if(error){
                               reject(error);
                               return;
@@ -412,6 +414,13 @@ class Article{
 
                         for(let i = 0; i < result.length; i++){
                               const f = result[i];
+                              const Feed = require('./feed');
+
+                              const feed = new Feed();
+
+                              feed.iconUrl = f.icon_url;
+                              feed.displayName = f.display_name;
+                              feed.id = f.feed;
 
                               const article = new Article();
 
@@ -424,6 +433,7 @@ class Article{
                               article.contentSnippet = f.content_snippet;
                               article.isoDate = f.iso_date
                               article.favorite = true;
+                              article.feed = feed;
 
 
                               if(f.is_read == 1)

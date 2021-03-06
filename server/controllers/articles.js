@@ -215,9 +215,23 @@ module.exports.removeFromFavorites = async (req,res) => {
 }
 module.exports.getFavoriteArticles = async (req,res) => {
     try{
-        console.log(`GET /favorites/articles`);
+        console.log(`GET /favorites/articles?offset=${req.query.offset}&max=${req.query.max}`);
 
-        const articles = await Article.getFavorites(req.user.id);
+        const Joi = require('@hapi/joi');
+
+        const schema = Joi.object({
+            offset: Joi.number().required(),
+            max: Joi.number().required()
+        });
+
+        const validator = schema.validate({offset: req.query.offset,max: req.query.max});
+
+        if(validator.error){
+            res.status(400).json({error: validator.error.details});
+            return;
+        }
+
+        const articles = await Article.getFavoritesLimit(req.user.id,validator.value.offset, validator.value.max);
 
         if(articles === null){
             res.sendStatus(500);
@@ -233,16 +247,16 @@ module.exports.getFavoriteArticles = async (req,res) => {
 }
 module.exports.getCountNewArticlesToday = async (req,res) => {
     try{
-          console.log(`GET /articles/count/newtoday`);
+        console.log(`GET /articles/count/newtoday`);
 
-          const articleCount = await Article.getCountNewArticlesToday(req.user.id);
+        const articleCount = await Article.getCountNewArticlesToday(req.user.id);
 
-          if(articleCount === null){
-              res.sendStatus(500);
-              return;
-          }
+        if(articleCount === null){
+            res.sendStatus(500);
+            return;
+        }
 
-          res.json(articleCount);
+        res.json(articleCount);
     }
     catch(error){
         console.log(error);
