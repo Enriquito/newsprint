@@ -1,5 +1,7 @@
 <template>
-<DefaultTemplate>
+<ArticleCollection v-if="feed" title="Loading..." :feed="feed" :articles="feed.articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
+
+<!-- <DefaultTemplate>
   <section>
     <div class="d-flex justify-content-center">
       <div class="small-screen-div">
@@ -41,56 +43,70 @@
       </div>
     </div>
     </section>
-</DefaultTemplate>
+</DefaultTemplate> -->
 </template>
 
 <script>
-import Article from '@/components/Article.vue';
-import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
-import DefaultTemplate from '@/components/DefaultTemplate.vue';
 import moment from 'moment-timezone'
+import ArticleCollection from '@/components/ArticleCollection.vue';
 import axios from 'axios';
 
 export default {
   name: 'Feed',
   components: {
-    Article,
-    ArticleSkeleton,
-    DefaultTemplate
+    ArticleCollection
   },
   mounted(){
     this.getData();
   },
   updated(){
-    document.querySelector('section').scrollTo(0,0);
+    // document.querySelector('section').scrollTo(0,0);
   },
   data(){
     return({
-      feed: null,
-      newToday: [],
-      older: [],
-      loadingNewData: false
+        articles: null,
+        page: 0,
+        first: true,
+        maxArticles: 10,
+        feed: null,
+        newToday: [],
+        older: []
     });
   },
   methods:{
-    getData(){
-      axios.get(`${process.env.VUE_APP_API}/feeds/${this.feedId}/?offset=${(this.$route.params.page - 1) * 10}&max=10`,
+    getData(addToArray){
+      axios.get(`${process.env.VUE_APP_API}/feeds/${this.feedId}/?offset=${this.page * 10}&max=${this.maxArticles}`,
       {
         withCredentials: true,
         credentials: 'include'
       })
-        .then(response => {
-          if(response.status === 200){
-              this.feed = response.data;
-              this.sortArticles();
-              this.loadingNewData = false;
-          }
-      })
-      .catch(error => {
-        if(error.response.status === 404){
-          this.$router.push({name: "NotFound"});
-        }
-      });
+      .then(response => {
+            if(response.status === 200){
+              if(this.first){
+                this.feed = response.data;
+                this.first = false;
+                // this.sortArticles();
+              }
+              else{
+                if(addToArray){
+                  response.data.articles.forEach(el => {
+                    this.feed.articles.push(el);
+                    // this.sortArticles();
+                  });
+                }
+                else{
+                  this.feed = response.data;
+                }
+              }
+
+              this.$eventHub.$emit('articleFetchingDone');
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            if(error.response.status === 500)
+            this.$router.push({name: "500"});
+        });
     },
     sortArticles(){
         this.newToday = [];
@@ -106,43 +122,47 @@ export default {
                 this.older.push(article);
         });
     },
-    loadMoreArticles(){
-      const page = parseInt(this.$route.params.page) + 1;
-      this.$router.push({
-        name: 'Feed',
-        params: {
-          page: page,
-          feedId: this.$route.params.feedId,
-          feedName: this.$route.params.feedName,
-        }
-        });
-      this.older = [];
-      this.new = [];
-      this.getData();
-    },
-    nextPage(event){
-      event.preventDefault();
+    // loadMoreArticles(){
+    //   const page = parseInt(this.$route.params.page) + 1;
+    //   this.$router.push({
+    //     name: 'Feed',
+    //     params: {
+    //       page: page,
+    //       feedId: this.$route.params.feedId,
+    //       feedName: this.$route.params.feedName,
+    //     }
+    //     });
+    //   this.older = [];
+    //   this.new = [];
+    //   this.getData();
+    // },
+    // nextPage(event){
+    //   event.preventDefault();
       
-      if(this.$store.state.preferences.setArticlesReadOnNextPage === 1){
-        this.feed.articles.forEach(article => {
-          this.setArticleToRead(article.id);
-        });
-      }
+    //   if(this.$store.state.preferences.setArticlesReadOnNextPage === 1){
+    //     this.feed.articles.forEach(article => {
+    //       this.setArticleToRead(article.id);
+    //     });
+    //   }
 
-      this.feed = null;
-      this.loadMoreArticles();
-    },
-    setArticleToRead(id){
-        axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{
-          id: id
-        },{
-          withCredentials: true,
-          credentials: 'include'
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
+    //   this.feed = null;
+    //   this.loadMoreArticles();
+    // },
+    // setArticleToRead(id){
+    //     axios.put(`${process.env.VUE_APP_API}/articles/set/read`,{
+    //       id: id
+    //     },{
+    //       withCredentials: true,
+    //       credentials: 'include'
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // },
+    loadMoreArticles(options){
+        this.page++;
+        this.getData(options.addToArray);
+    }  
   },
   watch:{
     feedId(){
@@ -159,13 +179,6 @@ export default {
     feedId(){
       if(this.$route.params.feedId){
         return this.$route.params.feedId
-      }
-      else
-        return ""
-    },
-    pageNum(){
-       if(this.$route.params.page){
-        return this.$route.params.page
       }
       else
         return ""
