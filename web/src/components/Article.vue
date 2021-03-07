@@ -12,10 +12,10 @@
             name: 'Feed',
                 params:{
                     feedId: data.feed.id,
-                    feedName: urlFriendlyTitle(data.feed.displayName),
+                    feedName: urlFriendlyTitle,
                     page: 1
                 }
-          }">{{data.feed.displayName}}</router-link>
+          }">{{title}}</router-link>
         </div>
         <span class="date-time">{{date}}</span>
         <span v-if="data.creator" class="spacer">by</span>
@@ -95,16 +95,6 @@ export default {
         else{
           this.content = "No content."
         }
-      },
-      urlFriendlyTitle(name){
-        if(name === null){
-          console.log(this.data);
-          return;
-        }
-
-        let res = name;
-        res = res.replaceAll('-', '');
-        return res.replaceAll(' ', '');
       },
       setArticleToRead(){
         this.data.isRead = true;
@@ -194,6 +184,21 @@ export default {
           return `Today ${moment(this.data.isoDate).format('HH:MM')}`
         else
           return moment(this.data.isoDate).format('LL')
+      },
+      urlFriendlyTitle(){
+        let f = this.data.feed.displayName;
+
+        if(f === null)
+          f = this.data.feed.title;
+
+        f = f.replaceAll(' ', '');
+        return f;
+      },
+      title(){
+        if(this.data.feed.displayName !== null)
+            return this.data.feed.displayName;
+        else
+            return this.data.feed.title;
       }
     }
 }

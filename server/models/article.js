@@ -393,7 +393,7 @@ class Article{
             return new Promise((resolve,reject) => {
                   const query = `
                         SELECT
-                        a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read, fe.icon_url, fe.display_name,
+                        a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read, fe.icon_url, fe.display_name, fe.title as 'feedTitle',
                         CASE WHEN f.article IS NOT NULL THEN 1 ELSE 0 END as 'favorite'
                         FROM articles a
                         LEFT JOIN favorites f
@@ -421,6 +421,7 @@ class Article{
                               feed.iconUrl = f.icon_url;
                               feed.displayName = f.display_name;
                               feed.id = f.feed;
+                              feed.title = f.feedTitle
 
                               const article = new Article();
 

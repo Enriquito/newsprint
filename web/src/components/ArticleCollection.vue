@@ -3,7 +3,11 @@
             <section>
                   <div class="d-flex justify-content-center">
                         <div class="small-screen-div">
-                              <h1>{{title}}</h1>
+                            <div v-if="feed">
+                                <h1 v-if="feed.displayName != null">{{feed.displayName}}</h1>
+                                <h1 v-else>{{feed.title}}</h1>
+                            </div>
+                            <h1 v-else>{{title}}</h1>
 
                               <div style="padding-bottom: 50px">
                                     <div v-if="articles">
@@ -43,7 +47,11 @@ export default {
       props: {
             articles: Array,
             title: String,
-            maxArticles: Number
+            maxArticles: Number,
+            feed: {
+                type: Object,
+                required: false
+            }
       },
       components: {
             Article,
