@@ -25,7 +25,7 @@
                                           </div>
                                     </div>
                                     <div>
-                                          <button @click="login">{{loginButtonText}}</button>
+                                          <button class="theme-color-background" @click="login">{{loginButtonText}}</button>
                                     </div>
                                     <div style="text-align: center; padding-top: 30px">
                                           <span>
@@ -169,24 +169,25 @@ section span
       }
       #login
       {
-            background: #333 !important;
-            color: #FFF;
+        background-color: #707070 !important;
+        color: #FFF;
       }
       #login #form
       {
-            background-color: #707070;
+            background: #333;
       }
       #login #form h1.app-name
       {
-            color: rgb(168, 176, 255) !important;
+            color: #5867FC !important;
       }
       #login #form button
       {
-            background:rgb(168, 176, 255) !important;
+            /* background:rgb(168, 176, 255) !important; */
       }
       #login #form input
       {
-            outline: rgb(168, 176, 255) !important;
+            border: 1px solid #FFFFFF47 !important;
+            outline: none;
       }
 }
 @media (max-width: 720px) {
