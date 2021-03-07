@@ -1,5 +1,5 @@
 <template>
-    <ArticleCollection title="New Articles" :articles="articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
+    <ArticleCollection title="Favorites" :articles="articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
 </template>
 
 <script>
