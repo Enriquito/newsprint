@@ -52,9 +52,9 @@
           </ul>
         </div>
         <div>
-          <label>Article removal internval</label>
+          <label>Article removal</label>
           <br />
-          <small>Delete all articles that are older then {{data.articleDeleteInterval}} month(s).</small>
+          <small style="margin-bottom: 10px; display: inline-block;">Delete all articles that are older then {{data.articleDeleteInterval}} month(s).</small>
           <br />
           <select v-model="data.articleDeleteInterval">
             <option value="1">1 month</option>
@@ -64,9 +64,9 @@
           </select>
         </div>
         <div>
-          <label>Article scan internval</label>
+          <label>Article scan</label>
           <br />
-          <small>Scan every {{data.articleScanInterval}} hour(s) for new articles.</small>
+          <small style="margin-bottom: 10px; display: inline-block;">Scan every {{data.articleScanInterval}} hour(s) for new articles.</small>
           <br />
           <select v-model="data.articleScanInterval">
             <option value="1">1 hour</option>
@@ -83,7 +83,7 @@
           <ToggleSwitch id="npbb" v-model="data.setArticlesReadOnNextPage" />
         </div>
         <div>
-          <label for="eis">Enable infinite scroll</label>
+          <label for="eis">Infinite scroll</label>
           <br />
           <small>Remove the next page button and use infinite scroll.</small>
           <br />
