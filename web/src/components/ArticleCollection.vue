@@ -95,7 +95,7 @@ export default {
                   this.$emit('loadMoreArticles', {addToArray : this.infiniteScroll});
             },
             updateScroll() {
-                  if(this.articles.length === this.lastArticleCount){
+                  if(this.articles.length === this.lastArticleCount && !this.fetchingData){
                         this.fetchingData = false;
                         return;
                   }
@@ -113,7 +113,7 @@ export default {
                         }
                         this.lastArticleCount = this.articles.length
 
-                        // this.$emit('loadMoreArticles', {addToArray : this.infiniteScroll});
+                       this.loadMoreArticles();
                   }
             },
             setArticleToRead(id){
