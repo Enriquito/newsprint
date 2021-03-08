@@ -33,7 +33,7 @@
                 <svg v-if="!addingNewFolder" @click="toggleNewFolderfield" class="overlay-icon" style="cursor: pointer; margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
                     <path id="ic_add_24px" d="M19,13H13v6H11V13H5V11h6V5h2v6h6Z" transform="translate(-5 -5)"/>
                 </svg>
-                <div v-else class="d-flex align-items-center">
+                <div v-else class="d-flex align-items-center" style="padding: 0px 0 0 5px;">
                     <svg @click="toggleNewFolderfield" class="overlay-icon" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 7.41 12">
                         <path id="ic_chevron_right_24px" d="M10,6,8.59,7.41,13.17,12,8.59,16.59,10,18l6-6Z" transform="translate(-8.59 -6)"/>
                     </svg>
