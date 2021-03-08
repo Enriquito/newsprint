@@ -19,7 +19,7 @@ export default {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
+  width: 50px;
   height: 24px;
 }
 
@@ -47,7 +47,7 @@ export default {
   content: "";
   height: 20px;
   width: 20px;
-  left: 7px;
+  left: 6px;
   bottom: 2px;
   background-color: white;
   -webkit-transition: .4s;
@@ -56,19 +56,19 @@ export default {
 
 input:checked + .slider
 {
-  background-color: #5867FC;
+  background-color: #00b16a;
 }
 
 input:focus + .slider
 {
-  box-shadow: 0 0 1px #5867FC;
+  box-shadow: 0 0 1px #00b16a;
 }
 
 input:checked + .slider:before
 {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
 }
 
 .slider.round
