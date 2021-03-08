@@ -80,14 +80,14 @@
           <br />
           <small>When loading the next page, set previous articles to read.</small>
           <br />
-          <input type="checkbox" v-model="data.setArticlesReadOnNextPage" />
+          <ToggleSwitch v-model="data.setArticlesReadOnNextPage" />
         </div>
         <div>
           <label>Enable infinite scroll</label>
           <br />
           <small>Remove the next page button and use infinite scroll.</small>
           <br />
-          <input type="checkbox" v-model="data.enableInfiniteScroll" />
+          <ToggleSwitch v-model="data.enableInfiniteScroll" />
         </div>
         <div>
           <button class="theme-color-background" @click="updateUserPreferences">Save</button>
@@ -97,12 +97,14 @@
 </template>
 <script>
 import DefaultTemplate from '@/components/DefaultTemplate.vue';
+import ToggleSwitch from '@/components/inputs/ToggleSwitch.vue';
 import axios from 'axios';
 
 export default {
     name: "Settings",
     components: {
-          DefaultTemplate
+      DefaultTemplate,
+      ToggleSwitch
     },
     data(){
       return({
