@@ -1,13 +1,21 @@
 <template>
       <label class="switch">
-            <input @input="handleInput" v-model="value" type="checkbox">
+            <input :id="id" @input="handleInput" v-model="value" type="checkbox">
             <span class="slider round"></span>
       </label>
 </template>
 <script>
 export default {
       name: "ToggleSwitch",
-      props:['value'],
+      // ['value']
+      props:{
+        value:{
+          requierd: false
+        },
+        id: {
+          requierd: false
+        }
+      },
       methods: {
         handleInput (e) {        
           this.$emit('input', e.target.checked ? 1 : 0)

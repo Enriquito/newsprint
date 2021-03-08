@@ -76,18 +76,18 @@
           </select>
         </div>
         <div>
-          <label>Next page button behavior</label>
+          <label for="npbb">Next page button behavior</label>
           <br />
           <small>When loading the next page, set previous articles to read.</small>
           <br />
-          <ToggleSwitch v-model="data.setArticlesReadOnNextPage" />
+          <ToggleSwitch id="npbb" v-model="data.setArticlesReadOnNextPage" />
         </div>
         <div>
-          <label>Enable infinite scroll</label>
+          <label for="eis">Enable infinite scroll</label>
           <br />
           <small>Remove the next page button and use infinite scroll.</small>
           <br />
-          <ToggleSwitch v-model="data.enableInfiniteScroll" />
+          <ToggleSwitch id="eis" v-model="data.enableInfiniteScroll" />
         </div>
         <div>
           <button class="theme-color-background" @click="updateUserPreferences">Save</button>
