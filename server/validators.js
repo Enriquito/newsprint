@@ -97,3 +97,14 @@ module.exports.moveFolder = (data) => {
         to: data.to
     });
 }
+module.exports.limitTest = (limit, max) => {
+    const schema = Joi.object({
+        limit: Joi.number().min(1).required(),
+        max: Joi.number().min(1).required()
+    });
+
+    return schema.validate({
+        limit: limit,
+        max: max
+    });
+}
