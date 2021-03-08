@@ -161,9 +161,5 @@ section span
   #app{
     color: #FFF;
   }
-  .theme-color-background
-  {
-    background: rgb(168, 176, 255)
-  }
 }
 </style>
