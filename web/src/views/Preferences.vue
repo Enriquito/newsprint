@@ -297,9 +297,13 @@ ul li:first-child
 }
 .folder-order select
 {
-  width: 40px;
-  border: none;
-  outline-color: #5867FC;
+    width: 40px;
+    border: none;
+    padding: 5px 10px;
+    width: auto;
+    outline: none;
+    -webkit-appearance: none;
+    cursor: pointer;
 }
 select
 {

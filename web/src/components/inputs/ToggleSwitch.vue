@@ -1,6 +1,7 @@
 <template>
       <label class="switch">
-            <input :id="id" @input="handleInput" v-model="value" type="checkbox">
+            <input v-if="value" :id="id" @input="handleInput" checked type="checkbox">
+            <input v-else :id="id" @input="handleInput" type="checkbox">
             <span class="slider round"></span>
       </label>
 </template>
