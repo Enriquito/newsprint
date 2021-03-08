@@ -53,10 +53,10 @@ export default {
 {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
-  left: 6px;
-  bottom: 2px;
+  height: 24px;
+  width: 24px;
+  left: 0;
+  bottom: 0;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
@@ -74,9 +74,9 @@ input:focus + .slider
 
 input:checked + .slider:before
 {
-  -webkit-transform: translateX(18px);
-  -ms-transform: translateX(18px);
-  transform: translateX(18px);
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 
 .slider.round
