@@ -18,7 +18,7 @@
                                                       <ArticleSkeleton v-for="index in 2" :key="index" />
                                                 </div>
                                           </div>
-                                          <div v-else>
+                                          <div v-if="articles.length == 0 && !fetchingData">
                                                 <h2>No articles found.</h2>
                                           </div>
 
@@ -63,7 +63,7 @@ export default {
                   scrollPosition: null,
                   section: null,
                   infiniteScroll: false,
-                  fetchingData: false,
+                  fetchingData: true,
                   isSetAutoRead: false,
                   lastArticleCount: 0
             });
@@ -113,7 +113,7 @@ export default {
                         }
                         this.lastArticleCount = this.articles.length
 
-                        this.$emit('loadMoreArticles', {addToArray : this.infiniteScroll});
+                        // this.$emit('loadMoreArticles', {addToArray : this.infiniteScroll});
                   }
             },
             setArticleToRead(id){

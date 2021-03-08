@@ -16,7 +16,7 @@ export default {
   },
   data(){
     return({
-        articles: null,
+        articles: [],
         page: 0,
         first: true,
         maxArticles: 10
