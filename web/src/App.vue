@@ -13,47 +13,8 @@ export default {
       return;
 
     this.getPreferences();
-    this.getFolders();
-    this.getNewArticles();
-    
-    this.$eventHub.$on('updateNavigation', () => {
-      this.getFolders();
-      this.getNewArticles();
-    })
   },
   methods:{
-    getFolders(){
-      axios.get(`${process.env.VUE_APP_API}/folders`, {
-        withCredentials: true,
-        credentials: 'include'
-      })
-      .then(response => {
-          if(response.status === 200){
-              this.$store.commit('setFolders', response.data);
-              this.$eventHub.$emit('foldersLoaded')
-          }
-      })
-      .catch(error => {
-          alert('Error fetching folders');
-          console.log(error);
-      })
-    },
-    getNewArticles(){
-        axios.get(`${process.env.VUE_APP_API}/articles/count/newtoday`,{
-          withCredentials: true,
-          credentials: 'include'
-        })
-        .then(response => {
-            if(response.status === 200){
-                this.unreadArticles = response.data.newArticleCount;
-                this.$eventHub.$emit('updateUnreadArticleCount', response.data.newArticleCount)
-            }
-        })
-        .catch(error => {
-            alert('Error fetching new articles');
-            console.log(error);
-        })
-    },
     getPreferences(){
         axios.get(`${process.env.VUE_APP_API}/preferences`,{
           withCredentials: true,
