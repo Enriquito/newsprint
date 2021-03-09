@@ -30,6 +30,7 @@ export default {
       .then(response => {
           if(response.status === 200){
               this.$store.commit('setFolders', response.data);
+              this.$eventHub.$emit('foldersLoaded')
           }
       })
       .catch(error => {
@@ -45,7 +46,7 @@ export default {
         .then(response => {
             if(response.status === 200){
                 this.unreadArticles = response.data.newArticleCount;
-                this.$store.commit('setUnreadArticles', response.data.newArticleCount);
+                this.$eventHub.$emit('updateUnreadArticleCount', response.data.newArticleCount)
             }
         })
         .catch(error => {

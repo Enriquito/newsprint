@@ -108,7 +108,8 @@ export default {
         })
           .then(response => {
             if(response.status === 200){
-              this.$eventHub.$emit('updateNavigation');
+              // this.$eventHub.$emit('updateNavigation');
+              this.$eventHub.$emit('updateUnreadArticleCount', null);
             }
           })
           .catch(error => {

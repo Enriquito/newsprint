@@ -119,17 +119,9 @@ export default {
       this.getPreferences();
       let a = null;
 
-      if(this.$store.state.folders === undefined){
-            a = setInterval(() => {
-                if(this.$store.state.folders !== undefined){
-                    this.folders = this.$store.state.folders;
-                    clearInterval(a);
-                }
-            }, 50);
-      }
-      else{
+      this.$eventHub.$on('foldersLoaded', () => {
         this.folders = this.$store.state.folders;
-      }
+      });
     },
     methods:{
       async changeFolderName(event){

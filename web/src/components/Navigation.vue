@@ -71,26 +71,16 @@ export default {
         AddFeedForm
     },
     mounted(){
-        this.$eventHub.$on('updateNavigation', () => {
-            setTimeout(() =>{
-                this.data = this.$store.state.folders;
-            }, 1000)
+        this.$eventHub.$on('foldersLoaded', () => {
+            this.data = this.$store.state.folders;
         });
 
-        let a = null;
-        if(this.$store.state.folders === undefined || this.$store.state.unreadArticles === undefined){
-            a = setInterval(() => {
-                if(this.$store.state.folders !== undefined && this.$store.state.unreadArticles !== undefined){
-                    this.data = this.$store.state.folders;
-                    this.unreadArticles = this.$store.state.unreadArticles;
-                    clearInterval(a);
-                }
-            }, 100);
-        }
-        else{
-            this.data = this.$store.state.folders;
-            this.unreadArticles = this.$store.state.unreadArticles;
-        }
+        this.$eventHub.$on('updateUnreadArticleCount', (count) => {
+            if(count !== null)
+                this.unreadArticles = count;
+            else
+                this.unreadArticles = this.unreadArticles - 1;
+        });
     },
     data(){
         return({
