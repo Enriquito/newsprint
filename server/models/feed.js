@@ -18,6 +18,7 @@ class Feed{
             this.lastBuildDate; // Or pubDate
             this.lastScanDate;
             this.unreadArticles = 0;
+            this.hideInNewList = 0;
             this.articles = [];
       }
       // Afmaken
@@ -389,7 +390,8 @@ class Feed{
                         feed_url: this.feedUrl,
                         link: this.link,
                         language: this.language,
-                        last_build_date: this.lastBuildDate
+                        last_build_date: this.lastBuildDate,
+                        hide_in_new_list: this.hideInNewList
                   };
 
                   database.query('UPDATE feeds SET ? WHERE id = ?', [toUpdate, this.id], async (error, result) => {

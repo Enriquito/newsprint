@@ -5,8 +5,6 @@ module.exports.id = (id) =>{
         id: Joi.number()
     });
 
-    console.log(id);
-
     return schema.validate({id: id});
 }
 module.exports.addFeed = (data) => {
@@ -28,7 +26,8 @@ module.exports.updateFeed = (data) => {
         language: Joi.string(),
         lastBuildDate: Joi.string(),
         lastScanDate: Joi.string(),
-        folderId: Joi.number().required()
+        folderId: Joi.number().required(),
+        hideInNewList: Joi.number().required()
     });
 
     return schema.validate(data);

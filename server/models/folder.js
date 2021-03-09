@@ -112,7 +112,7 @@ class Folder{
             return new Promise( async (resolve, reject) => {
                   const query = `SELECT
                   f.id, f.user, fo.id as 'folder', f.display_name, f.title, f.description, f.icon_url, f.feed_url, f.link, f.language, f.last_build_date, f.last_scan_date,
-                  (SELECT COUNT(*) FROM articles WHERE feed = f.id AND is_read = 0) as 'unread_articles'
+                  (SELECT COUNT(*) FROM articles WHERE feed = f.id AND is_read = 0) as 'unread_articles', f.hide_in_new_list
                   FROM feeds f
                   JOIN feed_folder_assignments ffa
                   ON ffa.feed = f.id
@@ -147,6 +147,7 @@ class Folder{
                               feed.lastBuildDate = f.last_build_date;
                               feed.lastScanDate = f.last_scan_date;
                               feed.unreadArticles = f.unread_articles;
+                              feed.hideInNewList = f.hide_in_new_list;
 
                               this.feeds.push(feed);
                         }

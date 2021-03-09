@@ -151,6 +151,9 @@ module.exports.update = async (req,res) => {
                 case "lastScanDate:" :
                     feed.lastScanDate = value;
                     break;
+                case "hideInNewList" :
+                    feed.hideInNewList = value;
+                    break;
                 case "folderId" :{
                     if(feed.folderId !== value){
                         await feed.moveToFolder(feed.folderId, value, req.user.id);

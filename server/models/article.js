@@ -185,7 +185,7 @@ class Article{
             return new Promise((resolve, reject) => {
                   const query = `SELECT DISTINCT
                         a.id, a.feed, a.title, a.link, a.pub_date, a.content, a.content_snippet, a.iso_date, a.is_read, fe.icon_url,
-                        CASE WHEN fe.display_name IS NOT NULL THEN fe.display_name ELSE fe.title END as 'display_name',
+                        CASE WHEN fe.display_name IS NOT NULL THEN fe.display_name ELSE fe.title END as 'display_name', fe.hide_in_new_list,
                         fe.id as 'feed_id', CASE WHEN f.article IS NOT NULL THEN 1 ELSE 0 END as 'favorite'
                         FROM articles a
                         LEFT JOIN favorites f
@@ -196,6 +196,7 @@ class Article{
                         ON fe.id = a.feed
                         WHERE a.is_read = 0
                         AND fe.user = ?
+                        AND fe.hide_in_new_list = 0
                         ORDER BY a.iso_date DESC LIMIT ? OFFSET ?
                   `;
 
