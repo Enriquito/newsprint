@@ -39,6 +39,11 @@
                     </svg>
                 </div>
             </div>
+            <div>
+                <label for="hinf">Hide in 'New Today' feed</label>
+                <br />
+                <ToggleSwitch id="hinf" v-model="feed.hideInNewList" />
+            </div>
 
             <div style="margin-top: 10px">
                 <button class="theme-color-background" style="width: 100% !important; color: #FFF; border: none;" @click="editFeed">{{buttonText}}</button>
@@ -49,12 +54,14 @@
 </template>
 <script>
 import Overlay from '@/components/Overlay.vue';
+import ToggleSwitch from '@/components/inputs/ToggleSwitch.vue';
 import axios from 'axios';
 
 export default {
     name: "EditFeedForm",
     components:{
-        Overlay
+        Overlay,
+        ToggleSwitch
     },
     mounted(){
         this.folders = this.$store.state.folders;
@@ -84,7 +91,8 @@ export default {
                     feedUrl: this.feed.url,
                     displayName: this.feed.displayName,
                     iconUrl: this.feed.iconUrl,
-                    folderId: this.folderId
+                    folderId: this.folderId,
+                    hideInNewList: this.feed.hideInNewList
                 }
             }
 
