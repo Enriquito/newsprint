@@ -13,16 +13,16 @@ export default {
       return;
 
     this.getPreferences();
-    this.getData();
+    this.getFolders();
     this.getNewArticles();
     
     this.$eventHub.$on('updateNavigation', () => {
-      this.getData();
+      this.getFolders();
       this.getNewArticles();
     })
   },
   methods:{
-    getData(){
+    getFolders(){
       axios.get(`${process.env.VUE_APP_API}/folders`, {
         withCredentials: true,
         credentials: 'include'
