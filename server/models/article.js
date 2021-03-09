@@ -96,8 +96,13 @@ class Article{
       static getCountNewArticlesToday(userId){
             return new Promise((resolve, reject) => {
                   const query = `SELECT COUNT(a.id) as 'new_articles' 
-                  FROM articles a JOIN feeds f ON f.id = a.feed
-                  WHERE a.is_read = 0 AND f.user = ? AND DATE(a.iso_date) = DATE(NOW())`;
+                  FROM articles a 
+                  JOIN feeds f 
+                  ON f.id = a.feed
+                  WHERE a.is_read = 0 
+                  AND f.hide_in_new_list = 0
+                  AND f.user = ? 
+                  AND DATE(a.iso_date) = DATE(NOW())`;
 
                   database.query(query,[userId], async (error, result) => {
                         if(error){
