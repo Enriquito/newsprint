@@ -11,7 +11,6 @@ module.exports.findOne = async (req,res) => {
                 res.status(400).json({error: validator.error.details[0].message});
                 return;
             }
-            //validator.value.id
 
             const article = await Article.findOne(validator.value.id);
 
@@ -64,7 +63,6 @@ module.exports.unreadArticles = async (req,res) => {
         });
 
         const validator = schema.validate({offset: offset,max: max});
-        
 
         if(validator.error){
             res.status(400).json({error: validator.error.details[0].message});
