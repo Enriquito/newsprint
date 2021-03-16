@@ -78,8 +78,8 @@ async function deleteCron(deleteTime){
             console.log(`purging of articles started`);
             console.log(`puring job queued for ${data.length} accounts`);
 
-            for(let i = 0; i < result.length; i++){
-                  const el = result[i];
+            for(let i = 0; i < data.length; i++){
+                  const el = data[i];
                   await Article.deleteOldArticles(el.article_delete_interval, el.user);
             }
       });
@@ -100,8 +100,8 @@ async function scanCron(interval){
             console.log(`job queued for ${data.length} accounts`);
             console.log('--------------------------------');
 
-            for(let i = 0; i < result.length; i++){
-                  const el = result[i];
+            for(let i = 0; i < data.length; i++){
+                  const el = data[i];
                   await Feed.getNewItems(el.user);
             }
       });
