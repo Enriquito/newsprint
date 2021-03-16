@@ -305,8 +305,9 @@ class Feed{
                               createdArticles++;
                         }
                         catch(error){
-                              if(error.errno !== 1062){
-                                    console.log(error);
+                              if(error){
+                                    if(error.errno !== 1062)
+                                          console.log(error);
                               }
                               failedInserts.push(article);
                         }

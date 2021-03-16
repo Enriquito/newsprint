@@ -274,7 +274,7 @@ class Article{
 
       create(){
             return new Promise((resolve,reject) => {
-                  if(this.isoDate === null){
+                  if(this.isoDate == null || this.link == null || this.title == null){
                         reject();
                         return;
                   }
@@ -290,18 +290,15 @@ class Article{
                   };
 
                   database.query('INSERT INTO articles SET ?', [toInsert], (error, result) => {
-                        if(error){
-                              // console.log(error);
+                        if(error)
                               reject(error);
-                        }
 
                         if(result){
                               this.id = result.insertId
                               resolve(this);
                         }
-                        else{
+                        else
                               reject();
-                        }
                   });
             });
       }
