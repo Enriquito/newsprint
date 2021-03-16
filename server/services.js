@@ -28,7 +28,8 @@ async function startJobs (){
       }
       else{
             try{
-                  devTest();
+                  // devTest();
+                  delTest(1);
             }
             catch(error){
                   console.log(error);
@@ -73,6 +74,7 @@ async function deleteCron(deleteTime){
       });
 
       cron.schedule(`0 ${deleteTime} * * *`, async () => {
+            let delteCount = 0;
             console.log('--------------------------------');
             console.log(moment().format('LL HH:mm'))
             console.log(`purging of articles started`);
@@ -80,8 +82,10 @@ async function deleteCron(deleteTime){
 
             for(let i = 0; i < data.length; i++){
                   const el = data[i];
-                  await Article.deleteOldArticles(el.article_delete_interval, el.user);
+                  delteCount += await Article.deleteOldArticles(el.article_delete_interval, el.user);
             }
+
+            console.log(`${delteCount} articles deleted.`);
       });
 }
 
@@ -134,6 +138,35 @@ async function devTest(){
             }
             console.log('--------------End Test------------------');
       });
+}
+
+async function delTest(deleteTime){
+      const data = await new Promise((resolve, reject) =>{
+            const query = `SELECT u.id as 'user', up.article_delete_interval
+                        FROM users u
+                        JOIN user_preferences up
+                        ON u.id = up.user
+                        `;
+            database.query(query, (error, result) => {
+                  if(error){
+                        reject(error);
+                        return;
+                  }
+
+                  resolve(result);
+            });
+      });
+
+      console.log('--------------------------------');
+      console.log(moment().format('LL HH:mm'))
+      console.log(`purging of articles started`);
+      console.log(`puring job queued for ${data.length} accounts`);
+
+      for(let i = 0; i < data.length; i++){
+            const el = data[i];
+            console.log(`Delting items for user: ${el.user}`)
+            await Article.deleteOldArticles(el.article_delete_interval, el.user);
+      }
 }
 
 

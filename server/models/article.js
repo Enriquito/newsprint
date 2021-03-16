@@ -473,7 +473,7 @@ class Article{
                               return;
                         }
 
-                        resolve(result);
+                        resolve(result.affectedRows);
                   });
             });
       }
