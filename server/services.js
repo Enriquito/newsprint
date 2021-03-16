@@ -93,7 +93,7 @@ async function scanCron(interval){
       else
             interval = `*/${interval}`;
 
-      return cron.schedule(`0 ${interval} * * *`, () => {
+      return cron.schedule(`0 ${interval} * * *`, async () => {
             console.log('--------------------------------');
             console.log(moment().format('LL HH:mm'))
             console.log(`Article scan started for one hour intervals`);
