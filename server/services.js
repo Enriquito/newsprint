@@ -72,7 +72,7 @@ async function deleteCron(deleteTime){
             });
       });
 
-      cron.schedule(`0 ${deleteTime} * * *`, () => {
+      cron.schedule(`0 ${deleteTime} * * *`, async () => {
             console.log('--------------------------------');
             console.log(moment().format('LL HH:mm'))
             console.log(`purging of articles started`);
