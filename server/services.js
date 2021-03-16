@@ -7,16 +7,46 @@ const database = require('./database');
 dotenv.config();
 
 console.log(`${process.env.NODE_ENV} service started.`);
+let jobs = [];
 
-function getData(){
+async function startJobs (){
+      if(process.env.NODE_ENV === 'production'){
+            try{
+                  // Vaste tijd bijv. 12 uur
+                  deleteCron(12);
+
+                  jobs.push(scanCron(1));
+                  jobs.push(scanCron(2));
+                  jobs.push(scanCron(3));
+                  jobs.push(scanCron(4));
+            }
+            catch(error){
+                  console.log('Cron error')
+                  console.log(error)
+            }
+
+      }
+      else{
+            try{
+                  devTest();
+            }
+            catch(error){
+                  console.log(error);
+            }
+      }
+}
+
+function getData(interval){
       return new Promise((resolve, reject) =>{
-            const query = `SELECT u.id as 'user', up.article_delete_interval, up.article_scan_interval, up.darkmode
+            const query = `SELECT u.id as 'user', up.article_delete_interval, up.article_scan_interval
                         FROM users u
                         JOIN user_preferences up
-                        ON u.id = up.user`;
-            database.query(query, (error, result) => {
+                        ON u.id = up.user
+                        WHERE up.article_scan_interval = ?
+                        `;
+            database.query(query,[interval], (error, result) => {
                   if(error){
-                        console.log(error);
+                        reject(error);
                         return;
                   }
 
@@ -25,124 +55,86 @@ function getData(){
       });
 }
 
-async function startJobs (){
-      if(process.env.NODE_ENV === 'production'){
-            try{
-                  let data = null;
-                  data = await getData();
-
-                  setInterval(async () => {
-                        console.log('--------------------------------');
-                        console.log(moment().format('LL HH:MM'))
-                        console.log('Getting new data..');
-                        data = await getData();
-                  }, (1000  * 60 * 30))
-
-                  const one = [];
-                  const two = [];
-                  const three = [];
-                  const four = [];
-
-                  data.forEach(el => {
-                        switch(el.article_scan_interval){
-                              case 1:
-                                    one.push(el);
-                              break
-                              case 2:
-                                    two.push(el);
-                              break;
-                              case 3:
-                                    three.push(el);
-                              break;
-                              case 4:
-                                    four.push(el);
-                              break;
-                        }
-                  });
-
-                  cron.schedule('0 12 * * *', () => {
-                        console.log('--------------------------------');
-                        console.log(moment().format('LL HH:MM'))
-                        console.log(`purging of articles started`);
-                        console.log(`puring job queued for ${data.length} accounts`);
-
-                        data.forEach(async el => {
-                              await Article.deleteOldArticles(el.article_delete_interval, el.user);
-                        });
-                  });
-
-                  // Every hour
-                  cron.schedule('0 * * * *', () => {
-                        console.log('--------------------------------');
-                        console.log(moment().format('LL HH:MM'))
-                        console.log(`Article scan started for one hour intervals`);
-                        console.log(`job queued for ${one.length} accounts`);
-
-                        one.forEach(async el => {
-                              await Feed.getNewItems(el.user);
-                        });
-                  });
-
-                  cron.schedule('0 */2 * * *', () => {
-                        console.log('--------------------------------');
-                        console.log(moment().format('LL HH:MM'))
-                        console.log(`Article scan started for two hours intervals`);
-                        console.log(`job queued for ${two.length} accounts`);
-
-                        two.forEach(async el => {
-                              await Feed.getNewItems(el.user);
-                        });
-                  });
-
-                  cron.schedule('0 */3 * * *', () => {
-                        console.log('--------------------------------');
-                        console.log(moment().format('LL HH:MM'))
-                        console.log(`Article scan started for three hours intervals`);
-                        console.log(`job queued for ${three.length} accounts`);
-
-                        three.forEach(async el => {
-                              await Feed.getNewItems(el.user);
-                        })
-                  });
-
-                  cron.schedule('0 */4 * * *', () => {
-                        console.log('--------------------------------');
-                        console.log(moment().format('LL HH:MM'))
-                        console.log(`Article scan started for four hours intervals`);
-                        console.log(`job queued for ${four.length} accounts`);
-
-                        four.forEach(async el => {
-                              await Feed.getNewItems(el.user);
-                        })
-                  });
-            }
-            catch(error){
-
-            }
-
-      }
-      else{
-            console.log('--------------------------------');
-            console.log(moment().format('LL HH:MM'))
-            const query = `SELECT u.id as 'user', up.article_delete_interval, up.article_scan_interval, up.darkmode
-                              FROM users u
-                              JOIN user_preferences up
-                              ON u.id = up.user`;
-            const data = null;
-
+async function deleteCron(deleteTime){
+      const data = await new Promise((resolve, reject) =>{
+            const query = `SELECT u.id as 'user', up.article_delete_interval
+                        FROM users u
+                        JOIN user_preferences up
+                        ON u.id = up.user
+                        `;
             database.query(query, (error, result) => {
                   if(error){
-                        console.log(error);
+                        reject(error);
                         return;
                   }
 
-                  result.forEach(async el => {
-                        console.log(`running for userId: ${el.user}`);
-                        await Feed.getNewItems(el.user);
-                        await Article.deleteOldArticles(el.article_delete_interval, el.user);
-                  })
+                  resolve(result);
             });
-      }
+      });
+
+      cron.schedule(`0 ${deleteTime} * * *`, () => {
+            console.log('--------------------------------');
+            console.log(moment().format('LL HH:mm'))
+            console.log(`purging of articles started`);
+            console.log(`puring job queued for ${data.length} accounts`);
+
+            for(let i = 0; i < result.length; i++){
+                  const el = result[i];
+                  await Article.deleteOldArticles(el.article_delete_interval, el.user);
+            }
+      });
 }
+
+async function scanCron(interval){
+      let data = await getData(interval);
+
+      if(interval === 1)
+            interval = '*';
+      else
+            interval = `*/${interval}`;
+
+      return cron.schedule(`0 ${interval} * * *`, () => {
+            console.log('--------------------------------');
+            console.log(moment().format('LL HH:mm'))
+            console.log(`Article scan started for one hour intervals`);
+            console.log(`job queued for ${data.length} accounts`);
+            console.log('--------------------------------');
+
+            for(let i = 0; i < result.length; i++){
+                  const el = result[i];
+                  await Feed.getNewItems(el.user);
+            }
+      });
+}
+
+async function devTest(){
+      console.log('--------------Start Test------------------');
+      console.log(moment().format('LL HH:mm'))
+      const query = `SELECT u.id as 'user', up.article_delete_interval, up.article_scan_interval
+                        FROM users u
+                        JOIN user_preferences up
+                        ON u.id = up.user`;
+
+      database.query(query, async(error, result) => {
+            if(error){
+                  console.log(error);
+                  return;
+            }
+
+            for(let i = 0; i < result.length; i++){
+                  const el = result[i];
+
+                  console.log(`---running for userId: ${el.user}---`);
+
+                  console.log(`Started article scan`);
+                  await Feed.getNewItems(el.user);
+
+                  console.log(`Started article deletion`);
+                  await Article.deleteOldArticles(el.article_delete_interval, el.user);
+            }
+            console.log('--------------End Test------------------');
+      });
+}
+
 
 startJobs();
