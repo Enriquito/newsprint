@@ -297,6 +297,7 @@ article .spacer
   width: 100%;
   border-radius: 10px;
   margin: 15px 0;
+  height: auto;
 }
 #article-content * > a
 {
