@@ -91,24 +91,24 @@ async function deleteCron(deleteTime){
 
 async function scanCron(interval){
     let data = await getData(interval);
-    let cron = "";
+    let cronj = "";
 
     switch(interval){
         case 15:
-            cron = `*/15 * * * *`;
+            cronj = `*/15 * * * *`;
             break;
         case 30:
-            cron = `*/30 * * * *`;
+            cronj = `*/30 * * * *`;
             break;
         case 45:
-            cron = `*/45 * * * *`;
+            cronj = `*/45 * * * *`;
             break;
         case 60:
-            cron = `0 * * * *`;
+            cronj = `0 * * * *`;
             break;            
     }
 
-    return cron.schedule(cron, async () => {
+    return cron.schedule(cronj, async () => {
         console.log('--------------------------------');
         console.log(moment().format('LL HH:mm'))
         console.log(`Article scan started for ${interval} minutes intervals`);
