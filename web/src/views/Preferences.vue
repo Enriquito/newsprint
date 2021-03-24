@@ -69,10 +69,10 @@
           <small style="margin-bottom: 10px; display: inline-block;">Scan every {{data.articleScanInterval}} hour(s) for new articles.</small>
           <br />
           <select v-model="data.articleScanInterval">
-            <option value="1">1 hour</option>
-            <option value="2">2 hours</option>
-            <option value="3">3 hours</option>
-            <option value="4">4 hours</option>
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60">60 minutes</option>
           </select>
         </div>
         <div>

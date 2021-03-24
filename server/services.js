@@ -15,10 +15,10 @@ async function startJobs (){
                   // Vaste tijd bijv. 12 uur
                   deleteCron(12);
 
-                  jobs.push(scanCron(1));
-                  jobs.push(scanCron(2));
-                  jobs.push(scanCron(3));
-                  jobs.push(scanCron(4));
+                  jobs.push(scanCron(15));
+                  jobs.push(scanCron(30));
+                  jobs.push(scanCron(45));
+                  jobs.push(scanCron(60));
             }
             catch(error){
                   console.log('Cron error')
@@ -90,25 +90,35 @@ async function deleteCron(deleteTime){
 }
 
 async function scanCron(interval){
-      let data = await getData(interval);
+    let data = await getData(interval);
+    let cron = "";
 
-      if(interval === 1)
-            interval = '*';
-      else
-            interval = `*/${interval}`;
+    switch(interval){
+        case 15:
+            cron = `*/15 * * * *`;
+            break;
+        case 30:
+            cron = `*/30 * * * *`;
+            break;
+        case 45:
+            cron = `*/45 * * * *`;
+            break;
+        case 60:
+            cron = `0 * * * *`;
+            break;            
+    }
 
-      return cron.schedule(`0 ${interval} * * *`, async () => {
-            console.log('--------------------------------');
-            console.log(moment().format('LL HH:mm'))
-            console.log(`Article scan started for one hour intervals`);
-            console.log(`job queued for ${data.length} accounts`);
-            console.log('--------------------------------');
+    return cron.schedule(cron, async () => {
+        console.log('--------------------------------');
+        console.log(moment().format('LL HH:mm'))
+        console.log(`Article scan started for ${interval} minutes intervals`);
+        console.log(`job queued for ${data.length} accounts`);
 
-            for(let i = 0; i < data.length; i++){
-                  const el = data[i];
-                  await Feed.getNewItems(el.user);
-            }
-      });
+        for(let i = 0; i < data.length; i++){
+                const el = data[i];
+                await Feed.getNewItems(el.user);
+        }
+    });
 }
 
 async function devTest(){

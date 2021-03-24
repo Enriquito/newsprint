@@ -57,11 +57,11 @@ module.exports.createUser = (data) => {
 }
 module.exports.updateUserPreferences = (data) => {
     const schema = Joi.object({
-        articleDeleteInterval: Joi.number().required(),
-        articleScanInterval: Joi.number().required(),
-        setArticlesReadOnNextPage: Joi.number().required(),
-        enableInfiniteScroll: Joi.number().required(),
-        darkmode: Joi.number().required()
+        articleDeleteInterval: Joi.number().valid(1,2,3,4).required(),
+        articleScanInterval: Joi.number().valid(15,30,45,60).required(),
+        setArticlesReadOnNextPage: Joi.number().valid(0,1).required(),
+        enableInfiniteScroll: Joi.number().valid(0,1).required(),
+        darkmode: Joi.number().valid(0,1).required()
     });
 
     return schema.validate({
