@@ -1,6 +1,7 @@
 
 const cheerio = require('cheerio');
 const axios = require("axios");
+const e = require('express');
 
 async function fetchHTML(url) {
   const { data } = await axios.get(url);
@@ -11,6 +12,8 @@ function cleanData(data){
   let result = data.replace(/\r?\n|\r/g, "");
   result = result.replace(/<script .*>(.*)<\/script>/g, "");
   result = result.replace(/<!--(.*?)-->/g, "");
+  result = result.replace(/class=\"(.*?)\"/g, "");
+  result = result.replace(/data-.*?=\".*?\"/g, "");
 
   return result;
 }
@@ -20,33 +23,54 @@ function splitData(data){
     title: null,
     content: null
   };
+
   const $ = cheerio.load(data);
 
-  split.title = $.html('h1');
-  split.content = $.html('article');
+  split.title = cleanData($.html('h1'));
+  split.content = cleanData($.html('article'));
 
-  console.log(split);
+  return split;
 }
 
-async function test(url){
+async function buildArticle(url){
   try{
-    const $ = await fetchHTML(url)
-    let data = $.html('article');
+    const $ = await fetchHTML(url);
 
-    let result = cleanData(data);
+    console.log(cleanData($.html('h1')).split(/<h1>(.*?)<\/h1>/));
+    const articleTitle = $.html('h1').split(/<h1>(.*?)<\/h1>/);
+    const articleParagraphs = $.html('p').split(/<p>(.*?)<\/p>/);
+    const articlePictures = [];
 
-    let a = splitData(result);
+    $('article').find('img').each((i,el) => {
+      articlePictures.push($(el).attr('src'));
+    });
 
-    console.log($.html());
+    for(let i = 0; i < articleParagraphs.length; i++){
+      if(articleParagraphs[i].length === 0){
+        articleParagraphs.splice(i, 1);
+      }
+    }
+
+    const article = {
+      title: articleTitle[1],
+      paragraphs: articleParagraphs,
+      pictures: articlePictures
+    }
+
+    console.log(article);
   }
   catch(error){
     console.log(error);
   }
 }
 
-// test("https://www.bbc.co.uk/news/world-europe-55344970");
+async function test(url){
+  buildArticle(url);
+}
+
+test("https://www.bbc.co.uk/news/world-europe-55344970");
 // test("https://hackaday.com/2020/12/27/hackaday-links-december-27-2020/");
 // test("http://www.webdesignernews.com/external/some-early-observations-on-the-google-december-core-update")
-// test("https://nos.nl/artikel/2362282-belgie-overweegt-uitstel-tweede-inenting.html");
-test("https://tweakers.net/geek/176156/ontwikkelaar-publiceert-nintendo-64-port-van-linux-kernel.html");
+// test("https://nos.nl/artikel/2374546-urker-die-inreed-op-journalist-aangehouden.html");
+// test("https://tweakers.net/geek/176156/ontwikkelaar-publiceert-nintendo-64-port-van-linux-kernel.html");
 
