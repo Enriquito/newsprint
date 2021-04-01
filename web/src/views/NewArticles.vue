@@ -13,6 +13,9 @@ export default {
   },
   mounted(){
     this.getData();
+    setInterval((el) => {
+      this.checkNewArticles();
+    }, 30000);
   },
   data(){
     return({
@@ -57,6 +60,40 @@ export default {
     loadMoreArticles(options){
         this.page++;
         this.getData(options.addToArray);
+    },
+    checkNewArticles(){
+      const newFetchedArticles = [];
+      const acualNewArticles = [];
+      
+
+      axios.get(`${process.env.VUE_APP_API}/unread/articles?max=${this.maxArticles}&offset=${this.page * 10}`,{
+            withCredentials: true,
+            credentials: 'include'
+        })
+        .then(response => {
+          if(response.status === 200){
+            response.data.forEach(el => {
+              newFetchedArticles.push(el);
+            });
+ 
+            for(let x = 0; x < this.articles.length; x++){
+              for(let i = 0; i < newFetchedArticles.length; i++){
+                let found = false;
+
+                if(newFetchedArticles[i].id === this.articles[x].id){
+                  found = true;
+                }
+
+                if(!found){
+                  acualNewArticles.push(newFetchedArticles[i]);
+                  break;
+                }
+              }
+            }
+            
+            console.log(acualNewArticles);
+          }
+        });
     }   
   }
 }
