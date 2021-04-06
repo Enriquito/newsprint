@@ -14,15 +14,11 @@ export default {
   mounted(){
     this.getData();
 
-    this.newArticleInterval = setInterval((el) => {
-      this.checkNewArticles();
-    }, 30000);
+    this.startNewArticleSearchInterval();
 
-    this.$eventHub.$on('loadNewFoundArticles', () => {
-      this.loadInNewArticles();
-    });
+    this.$eventHub.$on('loadNewFoundArticles', this.loadInNewArticles);
   },
-  destroy(){
+  destroyed(){
     clearInterval(this.newArticleInterval);
   },
   data(){
@@ -102,8 +98,8 @@ export default {
           }
 
           if(foundNew){
-            console.log(`New articles found`);
             this.newArticlesFound = true;
+            clearInterval(this.newArticleInterval);
           }
         });
     },
@@ -111,6 +107,10 @@ export default {
       this.page = 0;
       this.getData();
       this.newArticlesFound = false;
+      this.startNewArticleSearchInterval();
+    },
+    startNewArticleSearchInterval(){
+        this.newArticleInterval = setInterval(this.checkNewArticles, 30000);
     }
   }
 }
