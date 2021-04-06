@@ -99,7 +99,7 @@ const routes = [
     meta: { title: `Feed - ${process.env.VUE_APP_NAME}` }
   },
   {
-    path: '/new/page/:page',
+    path: '/new',
     name: 'NewArticles',
     component: NewArticles,
     beforeEnter: Guard,
