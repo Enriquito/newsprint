@@ -1,7 +1,7 @@
 <template>
       <DefaultTemplate>
-            <section>
-                  <div class="d-flex justify-content-center">
+            <section class="d-flex justify-content-center">
+                  <div class="d-flex">
                         <div class="small-screen-div">
                             <div v-if="feed">
                                 <h1 v-if="feed.displayName != null">{{feed.displayName}}</h1>
@@ -33,6 +33,7 @@
                               </div>
                         </div>
                   </div>
+                  <!-- <FeedRecommendation /> -->
             </section>
       </DefaultTemplate>
 </template>
@@ -41,6 +42,7 @@
 import Article from '@/components/Article.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
 import DefaultTemplate from '@/components/DefaultTemplate.vue';
+import FeedRecommendation from '@/components/FeedRecommendation.vue';
 
 export default {
       name: "ArticleCollection",
@@ -56,7 +58,8 @@ export default {
       components: {
             Article,
             ArticleSkeleton,
-            DefaultTemplate
+            DefaultTemplate,
+            FeedRecommendation
       },
       data(){
             return({
@@ -146,6 +149,7 @@ button
       color: #FFF;
       outline: none;
 }
+
 @media (max-width: 720px) {
   button{
     width: 100% !important;
