@@ -6,7 +6,7 @@
     <div class="d-flex">
       <div style="padding: 10px 0;" class="d-flex align-items-center mobile-block">
         <div v-if="data.feed" class="d-flex align-items-center">
-          <img style="width: 20px;" :src="data.feed.iconUrl" />
+          <img style="width: 20px;" :src="secureIconUrl" />
           <router-link style="margin-left: 5px"  class="feed_link date-time"
           :to="{
             name: 'Feed',
@@ -88,6 +88,10 @@ export default {
 
           doc.querySelectorAll('a').forEach(a => {
             a.setAttribute('target', '_blank');
+          });
+
+          doc.querySelectorAll('img').forEach(img => {
+            img.setAttribute('src', img.getAttribute('src').replace(/(http\:\/\/)/, "https://"));
           });
 
           this.content = doc.body.innerHTML;
@@ -200,6 +204,9 @@ export default {
             return this.data.feed.displayName;
         else
             return this.data.feed.title;
+      },
+      secureIconUrl(){
+        return this.data.feed.iconUrl.replace(/(http\:\/\/)/, "https://")
       }
     }
 }
