@@ -1,5 +1,5 @@
 <template>
-    <ArticleCollection title="New Articles" :articles="articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
+    <ArticleCollection title="New Articles" :newArticlesFound="newArticlesFound" :articles="articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
 </template>
 
 <script>
@@ -13,13 +13,26 @@ export default {
   },
   mounted(){
     this.getData();
+
+    this.newArticleInterval = setInterval((el) => {
+      this.checkNewArticles();
+    }, 30000);
+
+    this.$eventHub.$on('loadNewFoundArticles', () => {
+      this.loadInNewArticles();
+    });
+  },
+  destroy(){
+    clearInterval(this.newArticleInterval);
   },
   data(){
     return({
         articles: [],
         page: 0,
         first: true,
-        maxArticles: 10
+        maxArticles: 10,
+        newArticleInterval: null,
+        newArticlesFound: false
     });
   },
   methods:{
@@ -57,7 +70,48 @@ export default {
     loadMoreArticles(options){
         this.page++;
         this.getData(options.addToArray);
-    }   
+    },
+    checkNewArticles(){
+      const newFetchedArticles = [];
+      let foundNew = false;
+      
+      axios.get(`${process.env.VUE_APP_API}/unread/articles?max=${this.maxArticles}&offset=0`,{
+            withCredentials: true,
+            credentials: 'include'
+        })
+        .then(response => {
+          if(response.status === 200){
+            response.data.forEach(el => {
+              newFetchedArticles.push(el);
+            });
+
+            for(let i = 0; i < newFetchedArticles.length; i++){
+              let found = false;
+
+              for(let x = 0; x < this.articles.length; x++){
+                if(newFetchedArticles[i].id === this.articles[x].id){
+                  found = true;
+                  break;
+                }
+              }
+
+              if(!found){
+                foundNew = true;
+              }
+            }
+          }
+
+          if(foundNew){
+            console.log(`New articles found`);
+            this.newArticlesFound = true;
+          }
+        });
+    },
+    loadInNewArticles(){
+      this.page = 0;
+      this.getData();
+      this.newArticlesFound = false;
+    }
   }
 }
 </script>

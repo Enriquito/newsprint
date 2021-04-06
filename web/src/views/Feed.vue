@@ -57,7 +57,9 @@ export default {
         .catch(error => {
             console.log(error);
             if(error.response.status === 500)
-            this.$router.push({name: "500"});
+              this.$router.push({name: "500"});
+            else if(error.response.status === 404)
+              this.$router.push({name: "404"});
         });
     },
     sortArticles(){

@@ -2,6 +2,7 @@
 const cheerio = require('cheerio');
 const axios = require("axios");
 const e = require('express');
+const Feed = require('./models/feed');
 
 async function fetchHTML(url) {
   const { data } = await axios.get(url);
@@ -18,31 +19,21 @@ function cleanData(data){
   return result;
 }
 
-function splitData(data){
-  const split = {
-    title: null,
-    content: null
-  };
-
-  const $ = cheerio.load(data);
-
-  split.title = cleanData($.html('h1'));
-  split.content = cleanData($.html('article'));
-
-  return split;
-}
-
 async function buildArticle(url){
   try{
     const $ = await fetchHTML(url);
 
-    console.log(cleanData($.html('h1')).split(/<h1>(.*?)<\/h1>/));
-    const articleTitle = $.html('h1').split(/<h1>(.*?)<\/h1>/);
-    const articleParagraphs = $.html('p').split(/<p>(.*?)<\/p>/);
+    const articleTitle = $('article').find('h1').text();
+    const articleParagraphs = [];
     const articlePictures = [];
+    //$.html('p').split(/<p>(.*?)<\/p>/);
 
     $('article').find('img').each((i,el) => {
       articlePictures.push($(el).attr('src'));
+    });
+
+    $('article').find('p').each((i,el) => {
+      articleParagraphs.push($(el).text());
     });
 
     for(let i = 0; i < articleParagraphs.length; i++){
@@ -52,7 +43,7 @@ async function buildArticle(url){
     }
 
     const article = {
-      title: articleTitle[1],
+      title: articleTitle,
       paragraphs: articleParagraphs,
       pictures: articlePictures
     }
@@ -64,13 +55,39 @@ async function buildArticle(url){
   }
 }
 
-async function test(url){
-  buildArticle(url);
+const snippet = `Looks like all the content of MDN is on GitHub now. That’s pretty rad. That’s been the public plan for a while.`;
+
+async function test(url,contentSnippet){
+  try{
+    const $ = await fetchHTML(url);
+    const test = cleanData($('body').html());
+
+    // console.log($('body').html());
+    
+    const a = $('root').filter(function(i,el) {
+      return $(this).text().indexOf(`Looks:`) > -1;
+    }).next().text();
+
+    console.log(a);
+  }
+  catch(error){
+
+  }
 }
 
-test("https://www.bbc.co.uk/news/world-europe-55344970");
-// test("https://hackaday.com/2020/12/27/hackaday-links-december-27-2020/");
-// test("http://www.webdesignernews.com/external/some-early-observations-on-the-google-december-core-update")
-// test("https://nos.nl/artikel/2374546-urker-die-inreed-op-journalist-aangehouden.html");
-// test("https://tweakers.net/geek/176156/ontwikkelaar-publiceert-nintendo-64-port-van-linux-kernel.html");
+async function a (url) {
+  let Parser = require('rss-parser');
+  let parser = new Parser();
+  const f = await parser.parseURL(url);
+  
+  console.log(f);
+}
+
+a('http://feeds.nos.nl/nosnieuwsalgemeen');
+
+//test("https://css-tricks.com/mdn-on-github/",snippet);
+// buildArticle("https://hackaday.com/2020/12/27/hackaday-links-december-27-2020/");
+// buildArticle("http://www.webdesignernews.com/external/some-early-observations-on-the-google-december-core-update")
+// buildArticle("https://nos.nl/artikel/2374546-urker-die-inreed-op-journalist-aangehouden.html");
+// buildArticle("https://tweakers.net/geek/176156/ontwikkelaar-publiceert-nintendo-64-port-van-linux-kernel.html");
 

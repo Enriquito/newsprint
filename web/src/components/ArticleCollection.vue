@@ -1,7 +1,10 @@
 <template>
       <DefaultTemplate>
-            <section class="d-flex justify-content-center">
-                  <div class="d-flex">
+            <section>
+                  <div v-if="newArticlesFound" class="d-flex justify-content-center">
+                        <button @click="loadNewFoundArticles" class="theme-color-background " id="new-article-notification">Load new articles</button>
+                  </div>
+                  <div class="d-flex justify-content-center">
                         <div class="small-screen-div">
                             <div v-if="feed">
                                 <h1 v-if="feed.displayName != null">{{feed.displayName}}</h1>
@@ -49,6 +52,7 @@ export default {
       props: {
             articles: Array,
             title: String,
+            newArticlesFound: Boolean,
             maxArticles: Number,
             feed: {
                 type: Object,
@@ -129,6 +133,10 @@ export default {
                   .catch(error => {
                         console.log(error);
                   });
+            },
+            loadNewFoundArticles(event){
+                  event.preventDefault();
+                  this.$eventHub.$emit('loadNewFoundArticles');
             }
       }
 }
@@ -136,9 +144,15 @@ export default {
 <style scoped>
 button
 {
-      border: 1px solid rgba(0,0,0,0.1);
-      padding: 10px;
+      border:none;
       text-align: center;
+      color: #FFF;
+      outline: none;
+      border-radius: 10px;
+}
+#load-more-button
+{
+      padding: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -146,12 +160,32 @@ button
       width: 640px;
       border-radius: 10px;
       margin-top: 50px;
-      color: #FFF;
       outline: none;
 }
+<<<<<<< HEAD
 
+=======
+#new-article-notification
+{
+    /* width: 150px; */
+    font-weight: bold;
+    padding: 5px 20px;
+    position: fixed;
+    top: -40px;
+    font-size: 1.5em;
+    animation: slideInNotification 0.5s forwards;
+}
+@keyframes slideInNotification {
+    0%{
+        top: -40px;
+    }
+    100%{
+        top: 50px;
+    }
+}
+>>>>>>> fac1252c980b4d97d90ae937841a963978c478cd
 @media (max-width: 720px) {
-  button{
+  #load-more-button{
     width: 100% !important;
   }
 }
