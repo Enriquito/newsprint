@@ -162,12 +162,10 @@ button
       margin-top: 50px;
       outline: none;
 }
-<<<<<<< HEAD
 
-=======
 #new-article-notification
 {
-    /* width: 150px; */
+    width: 25%;
     font-weight: bold;
     padding: 5px 20px;
     position: fixed;
@@ -183,7 +181,7 @@ button
         top: 50px;
     }
 }
->>>>>>> fac1252c980b4d97d90ae937841a963978c478cd
+
 @media (max-width: 720px) {
   #load-more-button{
     width: 100% !important;
