@@ -2,6 +2,7 @@
 const cheerio = require('cheerio');
 const axios = require("axios");
 const e = require('express');
+const Feed = require('./models/feed');
 
 async function fetchHTML(url) {
   const { data } = await axios.get(url);
@@ -74,7 +75,17 @@ async function test(url,contentSnippet){
   }
 }
 
-test("https://css-tricks.com/mdn-on-github/",snippet);
+async function a (url) {
+  let Parser = require('rss-parser');
+  let parser = new Parser();
+  const f = await parser.parseURL(url);
+  
+  console.log(f);
+}
+
+a('http://feeds.nos.nl/nosnieuwsalgemeen');
+
+//test("https://css-tricks.com/mdn-on-github/",snippet);
 // buildArticle("https://hackaday.com/2020/12/27/hackaday-links-december-27-2020/");
 // buildArticle("http://www.webdesignernews.com/external/some-early-observations-on-the-google-december-core-update")
 // buildArticle("https://nos.nl/artikel/2374546-urker-die-inreed-op-journalist-aangehouden.html");
