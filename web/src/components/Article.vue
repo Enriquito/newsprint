@@ -186,7 +186,7 @@ export default {
     computed:{
       date(){
         if(moment(this.data.isoDate).format('D-MM-YYYY') === moment().format('D-MM-YYYY'))
-          return `Today ${moment(this.data.isoDate).format('HH:mm')}`
+          return `Today ${moment(this.data.pubDate).utcOffset(moment.tz.guess()).format('HH:mm')}`
         else
           return moment(this.data.isoDate).format('LL')
       },
