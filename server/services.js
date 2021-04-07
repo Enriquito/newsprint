@@ -13,7 +13,7 @@ async function startJobs (){
       if(process.env.NODE_ENV === 'production'){
             try{
                   // Vaste tijd bijv. 12 uur
-                  deleteCron(12);
+                  deleteCron(0);
 
                   jobs.push(scanCron(15));
                   jobs.push(scanCron(30));
