@@ -110,8 +110,8 @@ export default {
         });
     },
     loadInNewArticles(){
-      this.page = 0;
       this.$eventHub.$emit('articleFetching', true);
+      this.page = 0;
       this.articles = [];
       this.getData();
       this.newArticlesFound = false;
