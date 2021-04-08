@@ -14,9 +14,14 @@ export default {
   mounted(){
     this.getData();
 
-    this.startNewArticleSearchInterval();
-
     this.$eventHub.$on('loadNewFoundArticles', this.loadInNewArticles);
+
+    this.$eventHub.$on('preferencesLoaded', () => {
+      this.infiniteScroll = Boolean(this.$store.state.preferences.enableInfiniteScroll);
+
+      if(this.infiniteScroll)
+        this.startNewArticleSearchInterval();
+    });
   },
   destroyed(){
     clearInterval(this.newArticleInterval);
@@ -28,7 +33,8 @@ export default {
         first: true,
         maxArticles: 10,
         newArticleInterval: null,
-        newArticlesFound: false
+        newArticlesFound: false,
+        infiniteScroll: false
     });
   },
   methods:{
@@ -54,7 +60,7 @@ export default {
                 }
               }
 
-              this.$eventHub.$emit('articleFetchingDone');
+              this.$eventHub.$emit('articleFetching', false);
             }
         })
         .catch(error => {
@@ -105,6 +111,8 @@ export default {
     },
     loadInNewArticles(){
       this.page = 0;
+      this.$eventHub.$emit('articleFetching', true);
+      this.articles = [];
       this.getData();
       this.newArticlesFound = false;
       this.startNewArticleSearchInterval();

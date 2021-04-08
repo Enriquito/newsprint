@@ -25,7 +25,7 @@ export default {
         older: []
     });
   },
-  methods:{
+  methods: {
     getData(addToArray){
       axios.get(`${process.env.VUE_APP_API}/feeds/${this.feedId}/?offset=${this.page * 10}&max=${this.maxArticles}`,
       {
@@ -37,13 +37,11 @@ export default {
               if(this.first){
                 this.feed = response.data;
                 this.first = false;
-                // this.sortArticles();
               }
               else{
                 if(addToArray){
                   response.data.articles.forEach(el => {
                     this.feed.articles.push(el);
-                    // this.sortArticles();
                   });
                 }
                 else{
@@ -51,7 +49,7 @@ export default {
                 }
               }
 
-              this.$eventHub.$emit('articleFetchingDone');
+              this.$eventHub.$emit('articleFetching', false);
             }
         })
         .catch(error => {
@@ -60,20 +58,6 @@ export default {
               this.$router.push({name: "500"});
             else if(error.response.status === 404)
               this.$router.push({name: "404"});
-        });
-    },
-    sortArticles(){
-        this.newToday = [];
-        this.older = [];
-
-        this.feed.articles.forEach(article => {
-            const postDate = moment(article.isoDate);
-            const now = moment();
-
-            if(postDate.format('D-MM-YYYY') === now.format('D-MM-YYYY'))
-                this.newToday.push(article);
-            else
-                this.older.push(article);
         });
     },
     loadMoreArticles(options){

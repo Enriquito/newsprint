@@ -88,8 +88,8 @@ export default {
                         this.section.addEventListener('scroll', this.updateScroll);
             });
 
-            this.$eventHub.$on('articleFetchingDone', () => {
-                  this.fetchingData = false;
+            this.$eventHub.$on('articleFetching', state => {
+                  this.fetchingData = state;
             }); 
             
             this.section = document.querySelector('section');
@@ -135,8 +135,9 @@ export default {
                   });
             },
             loadNewFoundArticles(event){
-                  event.preventDefault();
                   this.$eventHub.$emit('loadNewFoundArticles');
+                  this.section.scrollTo(0,0);
+                  event.preventDefault();
             }
       }
 }
