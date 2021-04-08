@@ -7,7 +7,7 @@
                     <path d="M19,3H4.99A1.982,1.982,0,0,0,3.01,5L3,19a1.991,1.991,0,0,0,1.99,2H19a2.006,2.006,0,0,0,2-2V5A2.006,2.006,0,0,0,19,3Zm0,12H15a3,3,0,0,1-6,0H4.99V5H19Zm-3-5H14V7H10v3H8l4,4Z" transform="translate(-3 -3)"/>
                 </svg>
 
-                <router-link :to="{name: 'NewArticles'}">New Today</router-link>
+                <router-link :to="{name: 'NewArticles'}">New</router-link>
                 <small>{{getNotificationCount(unreadArticles)}}</small>
             </li>
 
