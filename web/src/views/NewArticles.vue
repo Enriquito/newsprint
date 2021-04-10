@@ -19,8 +19,10 @@ export default {
     this.$eventHub.$on('preferencesLoaded', () => {
       this.infiniteScroll = Boolean(this.$store.state.preferences.enableInfiniteScroll);
 
-      if(this.infiniteScroll)
-        this.startNewArticleSearchInterval();
+        if(this.infiniteScroll)
+            this.startNewArticleSearchInterval(30);
+        else
+            this.startNewArticleSearchInterval(120);
     });
   },
   destroyed(){
@@ -117,8 +119,8 @@ export default {
       this.newArticlesFound = false;
       this.startNewArticleSearchInterval();
     },
-    startNewArticleSearchInterval(){
-        this.newArticleInterval = setInterval(this.checkNewArticles, 30000);
+    startNewArticleSearchInterval(seconds){
+        this.newArticleInterval = setInterval(this.checkNewArticles, (1000 * seconds));
     }
   }
 }
