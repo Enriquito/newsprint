@@ -4,15 +4,9 @@
   </div>
 </template>
 <script>
-import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
-import Navigation from '@/components/Navigation.vue';
 
 export default {
-    name: "DefaultTemplate",
-    components: {
-          MobileMenuIcon,
-          Navigation
-    }
+    name: "FeedRecommendation"
 }
 </script>
 <style scoped>
