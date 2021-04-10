@@ -9,7 +9,7 @@
 </template>
 <script>
 import MobileMenuIcon from '@/components/MobileMenuIcon.vue';
-import Navigation from '@/components/Navigation.vue';
+import Navigation from '@/components/navigation/Navigation.vue';
 
 export default {
     name: "DefaultTemplate",

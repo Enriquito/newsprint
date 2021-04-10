@@ -21,7 +21,7 @@
     </li>
 </template>
 <script>
-import NavigationFolderFeed from '@/components/NavigationFolderFeed.vue';
+import NavigationFolderFeed from '@/components/navigation/NavigationFolderFeed.vue';
 import EditFeedForm from '@/components/EditFeedForm.vue';
 
 export default {

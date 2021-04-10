@@ -52,7 +52,6 @@
             </div>
             <ul class="feeds folder-holder">
                 <div style="padding-bottom: 20px;" v-if="data">
-                    <!-- <NavigationFolder name="All" :notifications="allFeeds.totalNotifications" :feeds="allFeeds.feeds" /> -->
                     <NavigationFolder @move="moveFeedToFolder" v-for="folder in data" :key="folder.id" :name="folder.name" :id="folder.id" :notifications="folder.totalUnread" :feeds="folder.feeds" />
                 </div>
             </ul>
@@ -60,7 +59,7 @@
     </nav>
 </template>
 <script>
-import NavigationFolder from '@/components/NavigationFolder.vue'
+import NavigationFolder from '@/components/navigation/NavigationFolder.vue'
 import AddFeedForm from '@/components/AddFeedForm.vue'
 import axios from 'axios'
 
