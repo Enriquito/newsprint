@@ -1,5 +1,5 @@
 <template>
-    <ArticleCollection title="New Articles" :newArticlesFound="newArticlesFound" :articles="articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
+    <ArticleCollection title="New Articles" :page="page" :newArticlesFound="newArticlesFound" :articles="articles" @loadMoreArticles="loadMoreArticles" :maxArticles="maxArticles" />
 </template>
 
 <script>
@@ -15,6 +15,25 @@ export default {
     this.getData();
 
     this.$eventHub.$on('loadNewFoundArticles', this.loadInNewArticles);
+
+    this.$eventHub.$on('nextPage', () => {
+        this.page++;
+        this.articles = [];
+        this.getData();
+    });
+    this.$eventHub.$on('prevPage', () => {
+        if(this.page === 0)
+            return;
+
+        this.page--;
+        this.articles = [];
+        this.getData();
+    });
+    this.$eventHub.$on('goToPage', (page) => {
+        this.page = page;
+        this.articles = [];
+        this.getData();
+    });
 
     this.$eventHub.$on('preferencesLoaded', () => {
       this.infiniteScroll = Boolean(this.$store.state.preferences.enableInfiniteScroll);

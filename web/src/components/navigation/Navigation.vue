@@ -180,7 +180,7 @@ export default {
             .then(response => {
                 if(response.status === 200){
                     this.unreadArticles = response.data.newArticleCount;
-                    // this.$eventHub.$emit('updateUnreadArticleCount', response.data.newArticleCount)
+                    this.$eventHub.$emit('updateUnreadArticleCount', this.unreadArticles);
                 }
             })
             .catch(error => {

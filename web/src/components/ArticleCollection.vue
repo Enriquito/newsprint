@@ -2,7 +2,7 @@
       <DefaultTemplate>
             <section>
                   <div v-if="newArticlesFound" class="d-flex justify-content-center">
-                        <button @click="loadNewFoundArticles" class="theme-color-background " id="new-article-notification">Load new articles</button>
+                        <button @click="loadNewFoundArticles" class="theme-color-background " id="new-article-notification">New articles</button>
                   </div>
                   <div class="d-flex justify-content-center">
                         <div class="small-screen-div">
@@ -25,9 +25,11 @@
                                                 <h2>No articles found.</h2>
                                           </div>
 
-                                          <button v-if="articles.length > 0 && articles.length == 10 && !infiniteScroll" id="load-more-button" class="theme-color-background" @click="loadMoreArticles">
+                                          <!-- <button v-if="articles.length > 0 && articles.length == 10 && !infiniteScroll" id="load-more-button" class="theme-color-background" @click="loadMoreArticles">
                                                 Load more articles
-                                          </button>
+                                          </button> -->
+
+                                          <Pagination v-if="articles.length > 0" :pageCount="pageCount" :page="page" />
                                           
                                           <div v-if="articles.length == 0">
                                                 <ArticleSkeleton v-for="index in 6" :key="index" />
@@ -46,6 +48,7 @@ import Article from '@/components/Article.vue';
 import ArticleSkeleton from '@/components/ArticleSkeleton.vue';
 import DefaultTemplate from '@/components/DefaultTemplate.vue';
 import FeedRecommendation from '@/components/FeedRecommendation.vue';
+import Pagination from '@/components/article/Pagination.vue';
 
 export default {
       name: "ArticleCollection",
@@ -54,6 +57,7 @@ export default {
             title: String,
             newArticlesFound: Boolean,
             maxArticles: Number,
+            page: 0,
             feed: {
                 type: Object,
                 required: false
@@ -63,7 +67,8 @@ export default {
             Article,
             ArticleSkeleton,
             DefaultTemplate,
-            FeedRecommendation
+            FeedRecommendation,
+            Pagination
       },
       data(){
             return({
@@ -72,7 +77,9 @@ export default {
                   infiniteScroll: false,
                   fetchingData: true,
                   isSetAutoRead: false,
-                  lastArticleCount: 0
+                  lastArticleCount: 0,
+                  unreadArticles: 0,
+                  pageCount: 0
             });
       },
       updated(){
@@ -86,6 +93,13 @@ export default {
 
                   if(this.infiniteScroll)
                         this.section.addEventListener('scroll', this.updateScroll);
+            });
+
+            this.$eventHub.$on('updateUnreadArticleCount', (count) => {
+                if(count !== null)
+                    this.unreadArticles = count;
+                else
+                    this.unreadArticles = this.unreadArticles - 1;
             });
 
             this.$eventHub.$on('articleFetching', state => {
@@ -138,7 +152,19 @@ export default {
                   this.$eventHub.$emit('loadNewFoundArticles');
                   this.section.scrollTo(0,0);
                   event.preventDefault();
-            }
+            },
+            
+      },
+      watch:{
+        unreadArticles(newVal, oldVal){
+            const rest = newVal % this.maxArticles;
+            let pageCount = newVal / this.maxArticles;
+
+            if(rest > 0)
+                pageCount++;
+
+            this.pageCount = Math.round(pageCount);
+          }
       }
 }
 </script>
