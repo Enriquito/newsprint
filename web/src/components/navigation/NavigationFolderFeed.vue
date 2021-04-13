@@ -11,7 +11,7 @@
                 name: 'Feed',
                 params:{
                     feedId: feed.id,
-                    feedName: urlFriendlyTitle(feed.title),
+                    feedName: urlFriendlyTitle(),
                     page: 1
                 }
             }">{{feedName(feed)}}</router-link>
@@ -54,8 +54,18 @@ export default {
             else
                 return feed.title;
         },
-        urlFriendlyTitle(name){
-            let res = name;
+        urlFriendlyTitle(){
+            let res;
+
+            if(this.feed.title === "" || this.feed.title === null){
+                if(this.feed.displayName !== "" || this.feed.displayName !== null)
+                    res = this.feed.displayName;
+                else
+                    res = "unknow-feed-title"
+            }
+            else
+                res = this.feed.title;
+
             res = res.replaceAll('-', '');
             return res.replaceAll(' ', '');
         },
