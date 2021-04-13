@@ -38,10 +38,7 @@ export default {
     this.$eventHub.$on('preferencesLoaded', () => {
       this.infiniteScroll = Boolean(this.$store.state.preferences.enableInfiniteScroll);
 
-        if(this.infiniteScroll)
-            this.startNewArticleSearchInterval(30);
-        else
-            this.startNewArticleSearchInterval(120);
+        this.checkNewArticleIntervalTimes();
     });
   },
   destroyed(){
@@ -136,10 +133,17 @@ export default {
       this.articles = [];
       this.getData();
       this.newArticlesFound = false;
-      this.startNewArticleSearchInterval();
+      this.checkNewArticleIntervalTimes();
     },
     startNewArticleSearchInterval(seconds){
+      console.log('call');
         this.newArticleInterval = setInterval(this.checkNewArticles, (1000 * seconds));
+    },
+    checkNewArticleIntervalTimes(){
+      if(this.infiniteScroll)
+            this.startNewArticleSearchInterval(30);
+        else
+            this.startNewArticleSearchInterval(120);
     }
   }
 }
