@@ -152,11 +152,10 @@ export default {
                   this.$eventHub.$emit('loadNewFoundArticles');
                   this.section.scrollTo(0,0);
                   event.preventDefault();
-            },
-            
+            }
       },
       watch:{
-        unreadArticles(newVal, oldVal){
+            unreadArticles(newVal, oldVal){
             const rest = newVal % this.maxArticles;
             let pageCount = newVal / this.maxArticles;
 
@@ -164,7 +163,7 @@ export default {
                 pageCount++;
 
             this.pageCount = Math.round(pageCount);
-          }
+            }
       }
 }
 </script>
