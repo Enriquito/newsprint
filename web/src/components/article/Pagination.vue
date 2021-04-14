@@ -2,6 +2,21 @@
     <div class="d-flex justify-content-center align-items-center" id="pagination">
         <span @click="prevPageEvent" v-if="page != 0" class="page-number">&#60;</span>
 
+        <div v-for="pagenr in pageList" :key="pagenr">
+            <span class="page-number active" v-if="pagenr == page + 1">{{pagenr}}</span>
+            <span 
+            @click="goToPageEvent(pagenr - 1)"
+            class="page-number"
+            v-else-if="pagenr != page + 1"
+            >{{pagenr}}</span>
+        </div>
+
+        <span @click="nextPageEvent" class="page-number">&#62;</span>
+    </div>
+
+    <!-- <div class="d-flex justify-content-center align-items-center" id="pagination">
+        <span @click="prevPageEvent" v-if="page != 0" class="page-number">&#60;</span>
+
         <span class="page-number active" v-if="page + 1 < pageCount">{{page + 1}}</span>
         <span class="page-number active" v-else>{{page}}</span>
 
@@ -11,16 +26,37 @@
         <span @click="goToPageEvent(pageCount)" v-if="page + 1 < pageCount" class="page-number">{{pageCount}}</span>
 
         <span @click="nextPageEvent" v-if="page + 1 != pageCount && page + 1 < pageCount" class="page-number">&#62;</span>
-    </div>
+    </div> -->
 </template>
 <script>
     export default {
-        name: 'NewArticles',
+        name: 'Pagnination',
         props: {
             pageCount: Number,
             page: Number
         },
+        data(){
+            return({
+                startNumber: 1,
+                pageList: []
+            });
+        },
+        mounted(){
+            this.getPageList();
+        },
         methods: {
+            getPageList(){
+                const list = [];
+
+                if(this.page + 1 > this.startnumber * 3)
+                    this.startNumber++;
+
+                for(let i = this.startNumber; i < this.pageCount; i++){
+                    list.push(i);
+                }
+
+                this.pageList = list;
+            },
             nextPageEvent(){
                 if(this.page + 1 >= this.pageCount)
                     return;
@@ -33,6 +69,9 @@
                 this.$eventHub.$emit('prevPage');
             },
             goToPageEvent(page){
+                if(page === 0 || page < 0)
+                    return;
+
                 this.fetchingData = true;
                 this.$eventHub.$emit('goToPage', page);
             }
