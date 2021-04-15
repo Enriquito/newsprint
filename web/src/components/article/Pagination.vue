@@ -13,20 +13,6 @@
 
         <span @click="nextPageEvent" class="page-number">&#62;</span>
     </div>
-
-    <!-- <div class="d-flex justify-content-center align-items-center" id="pagination">
-        <span @click="prevPageEvent" v-if="page != 0" class="page-number">&#60;</span>
-
-        <span class="page-number active" v-if="page + 1 < pageCount">{{page + 1}}</span>
-        <span class="page-number active" v-else>{{page}}</span>
-
-        <span @click="goToPageEvent(page + 1)" v-if="page + 1 < pageCount" class="page-number">{{page + 2}}</span>
-        <span class="page-number" v-if="Math.abs(page + 1 - pageCount) >= 3">...</span>
-
-        <span @click="goToPageEvent(pageCount)" v-if="page + 1 < pageCount" class="page-number">{{pageCount}}</span>
-
-        <span @click="nextPageEvent" v-if="page + 1 != pageCount && page + 1 < pageCount" class="page-number">&#62;</span>
-    </div> -->
 </template>
 <script>
     export default {
@@ -47,11 +33,20 @@
         methods: {
             getPageList(){
                 const list = [];
+                const page = this.page + 1;
+                let startNumber = 1;
+                let currentShowMax = 10;
 
-                if(this.page + 1 > this.startnumber * 3)
-                    this.startNumber++;
+                console.log(page > this.startNumber * 3);
 
-                for(let i = this.startNumber; i < this.pageCount; i++){
+                if(page === startNumber * 3){
+                    startNumber++
+                    currentShowMax++;
+                }
+
+                console.log(`Start: ${this.startNumber} End: ${currentShowMax}`)
+                    
+                for(let i = this.startNumber; i < currentShowMax; i++){
                     list.push(i);
                 }
 
@@ -61,18 +56,18 @@
                 if(this.page + 1 >= this.pageCount)
                     return;
 
-                this.fetchingData = true;
+                this.$eventHub.$emit('articleFetching', true);
                 this.$eventHub.$emit('nextPage');
             },
             prevPageEvent(){
-                this.fetchingData = true;
+                this.$eventHub.$emit('articleFetching', true);
                 this.$eventHub.$emit('prevPage');
             },
             goToPageEvent(page){
-                if(page === 0 || page < 0)
+                if(page < 0)
                     return;
 
-                this.fetchingData = true;
+                this.$eventHub.$emit('articleFetching', true);
                 this.$eventHub.$emit('goToPage', page);
             }
         }
