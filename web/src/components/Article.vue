@@ -206,6 +206,9 @@ export default {
             return this.data.feed.title;
       },
       secureIconUrl(){
+        if(this.data.feed.iconUrl === null)
+          return "";
+        
         return this.data.feed.iconUrl.replace(/(http\:\/\/)/, "https://")
       }
     }
