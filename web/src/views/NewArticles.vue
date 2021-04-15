@@ -136,8 +136,7 @@ export default {
       this.checkNewArticleIntervalTimes();
     },
     startNewArticleSearchInterval(seconds){
-      console.log('call');
-        this.newArticleInterval = setInterval(this.checkNewArticles, (1000 * seconds));
+      this.newArticleInterval = setInterval(this.checkNewArticles, (1000 * seconds));
     },
     checkNewArticleIntervalTimes(){
       if(this.infiniteScroll)
