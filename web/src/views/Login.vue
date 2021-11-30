@@ -179,7 +179,7 @@ section span
       }
       #login #form h1.app-name
       {
-            color: #5867FC !important;
+            /* color: #5867FC !important; */
       }
       #login #form button
       {
