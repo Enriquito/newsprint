@@ -35,18 +35,10 @@
                 const list = [];
                 const page = this.page + 1;
                 let startNumber = 1;
-                let currentShowMax = 10;
-
-                console.log(page > this.startNumber * 3);
-
-                if(page === startNumber * 3){
-                    startNumber++
-                    currentShowMax++;
-                }
-
-                console.log(`Start: ${this.startNumber} End: ${currentShowMax}`)
+                let currentShowMax = 11;
+                let a = this.page * 3;
                     
-                for(let i = this.startNumber; i < currentShowMax; i++){
+                for(let i = startNumber + this.page; i < currentShowMax + this.page; i++){
                     list.push(i);
                 }
 
