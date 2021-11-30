@@ -114,7 +114,7 @@ section span
 #login #form
 {
       padding: 50px;
-      background: #F6F7F8;
+      /* background: #F6F7F8; */
       border-radius: 15px;
       width: 500px;
 }
@@ -169,12 +169,13 @@ section span
       }
       #login
       {
-        background-color: #707070 !important;
+        /* background-color: #707070 !important; */
+        background-color: #484848;
         color: #FFF;
       }
       #login #form
       {
-            background: #333;
+            /* background: #333; */
       }
       #login #form h1.app-name
       {
