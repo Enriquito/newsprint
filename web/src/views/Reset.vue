@@ -171,7 +171,7 @@ section span
 #login #form
 {
       padding: 50px;
-      background: #F6F7F8;
+      /* background: #F6F7F8; */
       border-radius: 15px;
       width: 500px;
 }
@@ -230,21 +230,10 @@ section span
             background: #333 !important;
             color: #FFF;
       }
-      #login #form
-      {
-            background-color: #707070;
-      }
-      #login #form h1.app-name
-      {
-            color: rgb(168, 176, 255) !important;
-      }
-      #login #form button
-      {
-            background:rgb(168, 176, 255) !important;
-      }
       #login #form input
       {
-            outline: rgb(168, 176, 255) !important;
+            border: 1px solid #FFFFFF47 !important;
+            outline: none;
       }
 }
 @media (max-width: 720px) {

@@ -170,7 +170,7 @@ section span
       #login
       {
         /* background-color: #707070 !important; */
-        background-color: #484848;
+        background: #333 !important;
         color: #FFF;
       }
       #login #form

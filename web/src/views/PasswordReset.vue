@@ -154,7 +154,7 @@ section span
       }
       #login
       {
-            background: #484848 !important;
+            background: #333 !important;
             color: #FFF;
       }
       #login #form

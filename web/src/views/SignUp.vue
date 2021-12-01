@@ -189,20 +189,8 @@ section span
       }
       #login
       {
-            background: #484848 !important;
+            background: #333 !important;
             color: #FFF;
-      }
-      #login #form
-      {
-            /* background-color: #707070; */
-      }
-      #login #form h1.app-name
-      {
-            /* color: rgb(168, 176, 255) !important; */
-      }
-      #login #form button
-      {
-            /* background:rgb(168, 176, 255) !important; */
       }
       #login #form input
       {
