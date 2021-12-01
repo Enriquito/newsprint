@@ -40,7 +40,6 @@ class User{
                   database.query("SELECT * FROM users WHERE username = ?",[username],(error, result) => {
                         if(error){
                               reject(error);
-                              console.log(param)
                         }
 
                         if(result === null || result === undefined || result.length === 0){
