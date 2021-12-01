@@ -1,1 +1,1 @@
-vue-cli-service build --mode production --dest dist --target app --dashboard
+npx vue-cli-service build --mode production --dest dist --target app
